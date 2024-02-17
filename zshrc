@@ -260,3 +260,7 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 alias conda=micromamba
 
+tryLink(){
+  if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
+  ln -s $1 $2
+}
