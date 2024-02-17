@@ -50,11 +50,6 @@ you should create ~/.gitconfig.user like
 ```bash
 # 安装 tpm
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-tryLink(){
-  if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
-  ln -s $1 $2
-}
 tryLink ~/.midotfiles2/tmux.conf ~/.tmux.conf
 ```
 * 安装 tmux 插件, 进入 tmux 后执行 `prefix + I`
