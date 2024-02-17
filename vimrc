@@ -76,7 +76,7 @@ Bundle 'Exafunction/codeium.vim'
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-" in vim :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs
+" in vim :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
 " other common plugin: coc-eslint coc-java coc-lists coc-markdownlint coc-perl coc-sql coc-tsserver
 
 " All of your Plugins must be added before the following line
