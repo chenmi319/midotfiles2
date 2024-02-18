@@ -260,8 +260,15 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 alias conda=micromamba
 
-tryLink(){
+try_link(){
   if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
   ln -s $1 $2
+}
+
+# git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2, git pull
+update_mi_dot_files() {
+  cd ~/.midotfiles2
+  git pull
+  cd -
 }
 

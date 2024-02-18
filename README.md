@@ -19,12 +19,12 @@ git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.o
 # powerlevel10k 用到字体安装: https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#fonts
 git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-tryLink(){
+try_link(){
   if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
   ln -s $1 $2
 }
-tryLink ~/.midotfiles2/zshrc ~/.zshrc
-tryLink ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
+try_link ~/.midotfiles2/zshrc ~/.zshrc
+try_link ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
 ```
 
 
@@ -32,8 +32,8 @@ tryLink ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
 # git
 * [安装 git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 或者 [下载 git](https://git-scm.com/downloads)
 ```bash
-tryLink ~/.midotfiles2/gitconfig ~/.gitconfig
-tryLink ~/.midotfiles2/gitignore ~/.gitignore
+try_link ~/.midotfiles2/gitconfig ~/.gitconfig
+try_link ~/.midotfiles2/gitignore ~/.gitignore
 ```
 you should create ~/.gitconfig.user like
 ```
@@ -48,7 +48,7 @@ you should create ~/.gitconfig.user like
 ```bash
 # 安装 tpm
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-tryLink ~/.midotfiles2/tmux.conf ~/.tmux.conf
+try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 ```
 * 安装 tmux 插件, 进入 tmux 后执行 `prefix + I`
 
@@ -57,8 +57,8 @@ tryLink ~/.midotfiles2/tmux.conf ~/.tmux.conf
 * [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
 ```bash
 mkdir -p ~/.config/nvim/init.vim
-tryLink ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
-tryLink ~/.midotfiles2/coc-settings.json ~/.config/nvim/coc-settings.json
+try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
+try_link ~/.midotfiles2/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # 安装 nvim 插件
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
