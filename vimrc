@@ -32,13 +32,16 @@ Bundle 'sheerun/vim-polyglot'
 " project.vundle
 Bundle 'jistr/vim-nerdtree-tabs.git'
 Bundle 'scrooloose/nerdtree.git'
-Bundle 'ctrlpvim/ctrlp.vim'
+"Bundle 'ctrlpvim/ctrlp.vim'
 
 " search.vundle
 Bundle 'rking/ag.vim'
 Bundle 'vim-scripts/IndexedSearch'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'Lokaltog/vim-easymotion'
+Bundle 'nvim-lua/plenary.nvim'
+Bundle 'nvim-telescope/telescope.nvim'
+Bundle 'fannheyward/telescope-coc.nvim'
 
 " textobjects.vundle
 Bundle 'coderifous/textobj-word-column.vim'
@@ -251,45 +254,51 @@ endif
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
 " ctrlpvim/ctrlp.vim
-let g:ctrlp_working_path_mode = 'ra'
-if exists("g:ctrlp_user_command")
-  unlet g:ctrlp_user_command
-endif
-if executable('ag')
-  let g:ctrlp_user_command =
-    \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
-  let g:ctrlp_use_caching = 0
-else
-  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
-endif
-let g:ctrlp_by_filename = 1
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_map = '<leader>ff'
-" nnoremap <silent> <leader>ff :CtrlP<CR>
-nnoremap <silent> <leader>ff :CtrlPMixed<CR>
-nnoremap <silent> <leader>fb :CtrlPBuffer<cr>
-nnoremap <silent> <D-P> :ClearCtrlPCache<cr>
-map <leader>ja :CtrlP app/assets<CR>
-map <leader>jm :CtrlP app/models<CR>
-map <leader>jc :CtrlP app/controllers<CR>
-map <leader>jv :CtrlP app/views<CR>
-map <leader>jh :CtrlP app/helpers<CR>
-map <leader>jl :CtrlP lib<CR>
-map <leader>jp :CtrlP public<CR>
-map <leader>js :CtrlP spec<CR>
-map <leader>jf :CtrlP fast_spec<CR>
-map <leader>jd :CtrlP db<CR>
-map <leader>jC :CtrlP config<CR>
-map <leader>jV :CtrlP vendor<CR>
-map <leader>jF :CtrlP factories<CR>
-map <leader>jT :CtrlP test<CR>
-nnoremap <silent> <leader>ft :CtrlPBufTag<CR>
-nnoremap <silent> <leader>fm :CtrlPMRU<CR>
+"let g:ctrlp_working_path_mode = 'ra'
+"if exists("g:ctrlp_user_command")
+"  unlet g:ctrlp_user_command
+"endif
+"if executable('ag')
+"  let g:ctrlp_user_command =
+"    \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+"  let g:ctrlp_use_caching = 0
+"else
+"  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+"  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
+"endif
+"let g:ctrlp_by_filename = 1
+"let g:ctrlp_switch_buffer = 0
+"let g:ctrlp_map = '<leader>ff'
+"nnoremap <silent> <leader>ff :CtrlP<CR>
+"nnoremap <silent> <leader>ff :CtrlPMixed<CR>
+"nnoremap <silent> <leader>fb :CtrlPBuffer<cr>
+"nnoremap <silent> <D-P> :ClearCtrlPCache<cr>
+"map <leader>ja :CtrlP app/assets<CR>
+"map <leader>jm :CtrlP app/models<CR>
+"map <leader>jc :CtrlP app/controllers<CR>
+"map <leader>jv :CtrlP app/views<CR>
+"map <leader>jh :CtrlP app/helpers<CR>
+"map <leader>jl :CtrlP lib<CR>
+"map <leader>jp :CtrlP public<CR>
+"map <leader>js :CtrlP spec<CR>
+"map <leader>jf :CtrlP fast_spec<CR>
+"map <leader>jd :CtrlP db<CR>
+"map <leader>jC :CtrlP config<CR>
+"map <leader>jV :CtrlP vendor<CR>
+"map <leader>jF :CtrlP factories<CR>
+"map <leader>jT :CtrlP test<CR>
+"nnoremap <silent> <leader>ft :CtrlPBufTag<CR>
+"nnoremap <silent> <leader>fm :CtrlPMRU<CR>
 " Lokaltog/vim-easymotion
 let g:EasyMotion_keys='asdfjkoweriop'
 nmap ,<ESC> ,,w
 nmap ,<S-ESC> ,,b
+" nvim-telescope/telescope.nvim
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " sjl/gundo.vim
 "nmap ,u :GundoToggle<CR>
 "let g:gundo_right = 1
@@ -633,3 +642,16 @@ imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-P>   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <C-N>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>
+
+" fannheyward/telescope-coc.nvim
+lua << EOF
+require("telescope").setup({
+  extensions = {
+    coc = {
+        theme = 'ivy',
+        prefer_locations = true, -- always use Telescope locations to preview definitions/declarations/implementations etc
+    }
+  },
+})
+require('telescope').load_extension('coc')
+EOF
