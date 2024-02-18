@@ -32,7 +32,6 @@ Bundle 'sheerun/vim-polyglot'
 " project.vundle
 Bundle 'jistr/vim-nerdtree-tabs.git'
 Bundle 'scrooloose/nerdtree.git'
-"Bundle 'ctrlpvim/ctrlp.vim'
 
 " search.vundle
 Bundle 'rking/ag.vim'
@@ -253,42 +252,6 @@ else
 endif
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
-" ctrlpvim/ctrlp.vim
-"let g:ctrlp_working_path_mode = 'ra'
-"if exists("g:ctrlp_user_command")
-"  unlet g:ctrlp_user_command
-"endif
-"if executable('ag')
-"  let g:ctrlp_user_command =
-"    \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
-"  let g:ctrlp_use_caching = 0
-"else
-"  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
-"  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
-"endif
-"let g:ctrlp_by_filename = 1
-"let g:ctrlp_switch_buffer = 0
-"let g:ctrlp_map = '<leader>ff'
-"nnoremap <silent> <leader>ff :CtrlP<CR>
-"nnoremap <silent> <leader>ff :CtrlPMixed<CR>
-"nnoremap <silent> <leader>fb :CtrlPBuffer<cr>
-"nnoremap <silent> <D-P> :ClearCtrlPCache<cr>
-"map <leader>ja :CtrlP app/assets<CR>
-"map <leader>jm :CtrlP app/models<CR>
-"map <leader>jc :CtrlP app/controllers<CR>
-"map <leader>jv :CtrlP app/views<CR>
-"map <leader>jh :CtrlP app/helpers<CR>
-"map <leader>jl :CtrlP lib<CR>
-"map <leader>jp :CtrlP public<CR>
-"map <leader>js :CtrlP spec<CR>
-"map <leader>jf :CtrlP fast_spec<CR>
-"map <leader>jd :CtrlP db<CR>
-"map <leader>jC :CtrlP config<CR>
-"map <leader>jV :CtrlP vendor<CR>
-"map <leader>jF :CtrlP factories<CR>
-"map <leader>jT :CtrlP test<CR>
-"nnoremap <silent> <leader>ft :CtrlPBufTag<CR>
-"nnoremap <silent> <leader>fm :CtrlPMRU<CR>
 " Lokaltog/vim-easymotion
 let g:EasyMotion_keys='asdfjkoweriop'
 nmap ,<ESC> ,,w
@@ -644,6 +607,13 @@ imap <C-N>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>
 
 " fannheyward/telescope-coc.nvim
+" :Telescope coc to get subcommands
+nnoremap <leader>fr <cmd>Telescope coc references<cr>
+nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
+nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
+nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
+nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
+nnoremap <leader>fd <cmd>Telescope coc diagnostics<cr>
 lua << EOF
 require("telescope").setup({
   extensions = {
