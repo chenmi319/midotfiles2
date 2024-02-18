@@ -68,5 +68,5 @@ vim +PluginInstall +qall
 vim +PluginUpdate +qall
 
 # 安装 coc.vim 插件
-# 参考 vimrc 里面的配置, :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff coc-spell-checker
+# 参考 vimrc 里面的配置, :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
 ```
