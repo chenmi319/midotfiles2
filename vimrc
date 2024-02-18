@@ -443,7 +443,7 @@ nnoremap <C-Up> <C-w>+
 nnoremap <C-Down> <C-w>-
 nnoremap <C-Left> <C-w><
 nnoremap <C-Right>  <C-w>>
-" show invisable chars
+" show invisible chars
 highlight nonascii guibg=Red ctermbg=2
 autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
 

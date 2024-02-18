@@ -25,8 +25,6 @@ tryLink(){
 }
 tryLink ~/.midotfiles2/zshrc ~/.zshrc
 tryLink ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
-
-
 ```
 
 
@@ -60,6 +58,7 @@ tryLink ~/.midotfiles2/tmux.conf ~/.tmux.conf
 ```bash
 mkdir -p ~/.config/nvim/init.vim
 tryLink ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
+tryLink ~/.midotfiles2/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # 安装 nvim 插件
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -69,5 +68,5 @@ vim +PluginInstall +qall
 vim +PluginUpdate +qall
 
 # 安装 coc.vim 插件
-# 参考 vimrc 里面的配置, :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs
+# 参考 vimrc 里面的配置, :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff coc-spell-checker
 ```
