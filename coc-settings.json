@@ -1,4 +1,5 @@
 {
+  "coc.preferences.jumpCommand": "tabe",
   "cSpell.userWords": [
     "Exafunction",
     "Lokaltog",
@@ -47,6 +48,7 @@
     "sheerun",
     "skwp",
     "solargraph",
+    "tabe",
     "tcomment",
     "tpope",
     "vimrc",
