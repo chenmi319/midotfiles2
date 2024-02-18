@@ -613,7 +613,7 @@ nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
 nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
 nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
 nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
-nnoremap <leader>fd <cmd>Telescope coc diagnostics<cr>
+nnoremap <leader>fg <cmd>Telescope coc diagnostics<cr>
 lua << EOF
 require("telescope").setup({
   extensions = {
