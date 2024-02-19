@@ -56,6 +56,8 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 
 # vim
 * [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
+* [安装 nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+* 安装 node 16, 设置为 default
 ```bash
 mkdir -p ~/.config/nvim/init.vim
 try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
