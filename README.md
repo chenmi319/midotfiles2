@@ -3,7 +3,7 @@
 # 准备工作
 * 安装 tmux, zsh, git, nvim, curl
 ```bash
-#git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
+# git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
 git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 ```
 
