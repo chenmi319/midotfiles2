@@ -244,7 +244,7 @@ autoload -U +X compinit && compinit -i
 autoload -U +X bashcompinit && bashcompinit -i
 complete -o nospace -F /usr/local/bin/aliyun aliyun
 
-export PATH="$PATH:$HOME/bin"
+export PATH="$HOME/bin:$PATH"
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
