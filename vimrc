@@ -239,11 +239,14 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 "nmap ,u :GundoToggle<CR>
 "let g:gundo_right = 1
 "let g:gundo_width = 60
+" tpope/vim-abolish
+"crs snakecase, crs camelcase
 " tpope/vim-surround.git
 let g:surround_113 = "#{\r}"   " v
 let g:surround_35  = "#{\r}"   " #
 let g:surround_45 = "<% \r %>"    " -
 let g:surround_61 = "<%= \r %>"   " =
+"ci', ca', cs'"
 " luochen1990/rainbow
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 " Bundle 'mxw/vim-jsx'
