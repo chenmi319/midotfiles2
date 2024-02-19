@@ -70,3 +70,34 @@ vim +PluginUpdate +qall
 # 安装 coc.vim 插件
 # 参考 vimrc 里面的配置, :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
 ```
+
+
+# bash bashit(for develop)
+* run in bash:
+```
+git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+ ~/.bash_it/install.sh
+```
+* relogin and run in bash:
+```
+bash-it enable completion bundler capistrano rake ssh tmux conda
+bash-it enable plugin git git-subrepo history nginx rails ruby rvm ssh tmux
+bash-it enable alias git rails tmux vim
+echo "export VISUAL=vim" >> ~/.bashrc
+echo "export EDITOR=\"\$VISUAL\"" >> ~/.bashrc
+echo "alias tmux='tmux -2 -u'" >> ~/.bashrc
+sed -i 's/bobby/sexy/g' ~/.bashrc
+echo "export SEXY_THEME_SHOW_PYTHON=true" >> ~/.bashrc
+echo "export PATH=\"\$PATH:\$HOME/bin\"" >> ~/.bashrc
+```
+* relogin
+
+# bash liquid(for server)
+* run in bash:
+```
+git clone https://github.com/nojhan/liquidprompt.git ~/.liquidprompt
+echo '[[ $- = *i* ]] && source ~/.liquidprompt/liquidprompt' >> ~/.bashrc
+echo "alias tmux='tmux -2 -u'" >> ~/.bashrc
+try_link ~/.midotfiles/liquidpromptrc ~/.liquidpromptrc
+```
+* relogin
