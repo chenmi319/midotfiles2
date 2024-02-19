@@ -57,7 +57,7 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 # vim
 * [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
 * [安装 nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
-* 安装 node 16, 设置为 default
+* 安装 node 16(默认会设置为 default), npm install -g yarn
 ```bash
 mkdir -p ~/.config/nvim/init.vim
 try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
@@ -70,8 +70,11 @@ vim +PluginInstall +qall
 # 升级
 vim +PluginUpdate +qall
 
-# 安装 coc.vim 插件
-# 参考 vimrc 里面的配置, :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
+# 安装 coc.nvim 以及插件
+cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
+# 参考 vimrc 里面的配置
+# vim 里运行 :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
+# vim 里运行 :CocCommand ruff.builtin.installServer
 ```
 
 
