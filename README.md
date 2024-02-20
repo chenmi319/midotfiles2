@@ -1,7 +1,7 @@
 # midotfiles2
 
 # 准备工作
-* 安装 tmux, zsh, git, nvim, curl
+* 安装 git, curl
 * ITerm2 使用 DarkBackground 就可以了，不用 Solarized Dark
 ```bash
 # git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
@@ -58,6 +58,7 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 # vim
 * [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
 * [安装 nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+* 安装 ripgrep
 * 安装 node 16(默认会设置为 default), npm install -g yarn
 ```bash
 mkdir -p ~/.config/nvim/init.vim
@@ -75,7 +76,7 @@ vim +PluginUpdate +qall
 cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 # 参考 vimrc 里面的配置
 # vim 里运行 :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
-# vim 里运行 :CocCommand ruff.builtin.installServer
+# 打开 python 文件后 vim 里需要运行 :CocCommand ruff.builtin.installServer
 ```
 
 
