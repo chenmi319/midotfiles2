@@ -1,3 +1,4 @@
 {
+  "outline.autoPreview": true,
   "coc.preferences.jumpCommand": "tab drop"
 }

@@ -570,6 +570,8 @@ nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 "nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent> to :call CocAction('showOutline')<CR>
+
 " neoclide/coc.nvim end
 
 " copilot
@@ -589,6 +591,7 @@ nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
 nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
 nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
 nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
+nnoremap <silent> tt :Telescope resume<cr>
 lua << EOF
 require("telescope").setup({
   extensions = {
