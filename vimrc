@@ -23,7 +23,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 
 " languages.vundle
-Bundle 'sheerun/vim-polyglot'
+" Bundle 'sheerun/vim-upolyglot'
 " Bundle 'mattn/emmet-vim'
 " Bundle 'mxw/vim-jsx'
 " Bundle 'pangloss/vim-javascript'
