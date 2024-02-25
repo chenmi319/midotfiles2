@@ -75,7 +75,7 @@ vim +PluginUpdate +qall
 # 安装 coc.nvim 以及插件
 cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 # 参考 vimrc 里面的配置
-# vim 里运行 :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff
+# vim 里运行 :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff coc-tsserver coc-markdownlint coc-sql
 # 打开 python 文件后 vim 里需要运行 :CocCommand ruff.builtin.installServer
 ```
 
