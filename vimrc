@@ -178,19 +178,32 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'relativepath', 'modified', 'cocstatus', 'currentfunction' ] ],
+      \             [ 'gitbranch', 'readonly', 'relativepath', 'filesize', 'modified', 'cocstatus', 'currentfunction' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
       \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'FugitiveHead',
+      \   'filesize': 'FileSize',
       \   'cocstatus': 'coc#status',
       \   'currentfunction': 'CocCurrentFunction'
       \ },
       \ }
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
+endfunction
+function! FileSize()
+    let l:size = getfsize(expand('%:p'))
+    if l:size < 0
+        return ''
+    elseif l:size < 1024
+        return l:size . 'B'
+    elseif l:size < 1024*1024
+        return printf('%.1fK', l:size / 1024.0)
+    else
+        return printf('%.1fM', l:size / 1024.0 / 1024.0)
+    endif
 endfunction
 " oshdick/onedark.vim
 colorscheme onedark
