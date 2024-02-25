@@ -175,27 +175,22 @@ let mapleader=","
 " itchyny/lightline.vim
 set laststatus=2
 let g:lightline = {
-  \ 'colorscheme': 'onedark',
-  \ }
-function! MyReadonly()
-  if &filetype == "help"
-    return ""
-  elseif &readonly
-    return "l "
-  else
-    return ""
-  endif
-endfunction
-function! MyFugitive()
-  if exists("*fugitive#head")
-    let _ = fugitive#head()
-    return strlen(_) ? '| '._ : ''
-  endif
-  return ''
-endfunction
-function! MyFilename()
-  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-       \ ('' != expand('%') ? expand('%') : '[NoName]')
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'cocstatus', 'currentfunction', 'readonly', 'relativepath', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead',
+      \   'cocstatus': 'coc#status',
+      \   'currentfunction': 'CocCurrentFunction'
+      \ },
+      \ }
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
 endfunction
 " oshdick/onedark.vim
 colorscheme onedark
