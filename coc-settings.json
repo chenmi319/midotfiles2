@@ -1,4 +1,17 @@
 {
+  "coc.preferences.jumpCommand": "tab drop",
+  "suggest.triggerAfterInsertEnter": true,
+  "suggest.timeout": 500,
+  "suggest.noselect": false,
+  "suggest.minTriggerInputLength": 2,
+  "suggest.detailField":"abbr",
   "outline.autoPreview": true,
-  "coc.preferences.jumpCommand": "tab drop"
+  "outline.expandLevel": 0,
+  "suggest.snippetIndicator": "🌟",
+  "suggest.triggerCompletionWait": 50,
+  "coc.preferences.formatOnType": false,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "codeLens.enable": true,
+  "diagnostic.errorSign": "✘",
+  "diagnostic.virtualText": true,
 }
