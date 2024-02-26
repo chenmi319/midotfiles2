@@ -421,6 +421,7 @@ endif
 nnoremap <leader>r :!"%:p"
 
 " neoclide/coc.nvim begin
+" nmap <leader>rs :CocRestart<CR>
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
 " utf-8 byte sequence
 set encoding=utf-8
