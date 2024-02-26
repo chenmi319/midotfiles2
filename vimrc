@@ -34,8 +34,8 @@ Bundle 'jistr/vim-nerdtree-tabs.git'
 Bundle 'scrooloose/nerdtree.git'
 
 " search.vundle
-Bundle 'rking/ag.vim'
-Bundle 'vim-scripts/IndexedSearch'
+" Bundle 'rking/ag.vim'
+Bundle 'romainl/vim-cool'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'nvim-lua/plenary.nvim'
@@ -210,12 +210,12 @@ colorscheme onedark
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
 " nathanaelkane/vim-indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
 let g:indent_guides_auto_colors=0
-let g:indent_guides_enable_on_vim_startup = 1
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=234
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
 " jistr/vim-nerdtree-tabs.git
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
@@ -273,8 +273,8 @@ autocmd User fugitive
   \ endif
 autocmd BufReadPost fugitive://* set bufhidden=delete
 " junegunn/vim-easy-align
-vmap <Leader>a <Plug>(EasyAlign)
-nmap <Leader>a <Plug>(EasyAlign)
+vmap <Leader>e <Plug>(EasyAlign)
+nmap <Leader>e <Plug>(EasyAlign)
 if !exists('g:easy_align_delimiters')
   let g:easy_align_delimiters = {}
 endif
