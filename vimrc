@@ -77,8 +77,8 @@ Bundle 'Exafunction/codeium.vim'
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-" in vim :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-highlight coc-pairs @yaegassy/coc-ruff coc-tsserver coc-markdownlint coc-sql coc-prettier
-" other common plugin: coc-java coc-perl
+" in vim :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-pairs @yaegassy/coc-ruff coc-tsserver coc-markdownlint coc-sql coc-prettier coc-html
+" other common plugin: coc-java coc-perl coc-clangd
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -586,6 +586,10 @@ nnoremap <silent> to :call CocAction('showOutline')<CR>
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+
+" compatible with easymotion
+autocmd User EasyMotionPromptBegin :let b:coc_diagnostic_disable = 1
+autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 " neoclide/coc.nvim end
 
 " copilot
