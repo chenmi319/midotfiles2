@@ -35,7 +35,7 @@ Bundle 'scrooloose/nerdtree.git'
 
 " search.vundle
 " Bundle 'rking/ag.vim'
-Bundle 'romainl/vim-cool'
+Bundle 'vim-scripts/IndexedSearch'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'nvim-lua/plenary.nvim'
