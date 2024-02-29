@@ -150,9 +150,6 @@ fixssh() {
 
 unsetopt auto_name_dirs
 
-# node
-export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
