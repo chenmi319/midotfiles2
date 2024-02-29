@@ -68,6 +68,8 @@ Bundle 'vim-scripts/lastpos.vim'
 "Bundle 'vim-scripts/sudo.vim'
 Bundle 'goldfeld/ctrlr.vim'
 Bundle 'luochen1990/rainbow'
+Bundle 'mhinz/vim-startify'
+
 
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
 Bundle 'Exafunction/codeium.vim'
