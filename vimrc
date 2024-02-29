@@ -68,6 +68,7 @@ Bundle 'vim-scripts/lastpos.vim'
 "Bundle 'vim-scripts/sudo.vim'
 Bundle 'goldfeld/ctrlr.vim'
 Bundle 'luochen1990/rainbow'
+Bundle 'mhinz/vim-startify'
 
 
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
@@ -266,6 +267,9 @@ let g:surround_61 = "<%= \r %>"   " =
 "ci', ca', cs'"
 " luochen1990/rainbow
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+" mhinz/vim-startify
+let g:startify_change_to_dir = 0
+" let g:startify_change_to_vcs_root = 0
 " Bundle 'mxw/vim-jsx'
 "let g:jsx_ext_required = 0
 "let g:jsx_pragma_required = 1
