@@ -1,7 +1,8 @@
 {
+  "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.jumpCommand": "tab drop",
   "suggest.triggerAfterInsertEnter": true,
-  "suggest.timeout": 500,
+  "suggest.timeout": 5000,
   "suggest.noselect": true,
   "suggest.minTriggerInputLength": 2,
   "suggest.detailField":"abbr",
@@ -14,4 +15,5 @@
   "codeLens.enable": true,
   "diagnostic.errorSign": "✘",
   "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": " ❯❯❯ ",
 }
