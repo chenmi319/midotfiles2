@@ -48,6 +48,8 @@ you should create ~/.gitconfig.user like
 # tmux
 * [安装 tmux](https://github.com/tmux/tmux/wiki/Installing)
 ```bash
+# mac 需要安装 reattach-to-user-namespace
+HOMEBREW_NO_AUTO_UPDATE=1 brew install reattach-to-user-namespace
 # 安装 tpm
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
