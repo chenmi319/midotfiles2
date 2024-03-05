@@ -82,6 +82,20 @@ cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 # 删除: :CocList extensions, 然后 tab
 ```
 
+## TODO ruby 老版本兼容, 还没测试
+```bash
+gem install thor -v 1.2.2
+#gem install unicode-display_width -v 2.3.0
+gem install rubocop-ast -v 1.1.1
+gem install racc -v 1.5.2
+gem install rexml -v 3.1.9.1
+gem install parallel -v 1.19.2
+gem install rubocop -v 0.79.0
+gem install nokogiri -v 1.9.1
+gem install solargraph -v 0.31.3
+```
+
+
 
 # bash bashit(for develop)
 * run in bash:
