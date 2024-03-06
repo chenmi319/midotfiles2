@@ -79,7 +79,7 @@ Bundle 'Exafunction/codeium.vim'
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-" in vim :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-pairs @yaegassy/coc-ruff coc-tsserver coc-markdownlint coc-sql coc-prettier coc-html
+" in vim :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-pairs @yaegassy/coc-ruff coc-tsserver coc-markdownlint coc-sql coc-prettier coc-html coc-lists
 " other common plugin: coc-java coc-perl coc-clangd
 
 " All of your Plugins must be added before the following line
@@ -586,6 +586,8 @@ nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Search files in workspace
+nnoremap <silent><nowait> <space>f  :<C-u>CocList files<cr>
 " Do default action for next item
 "nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item
