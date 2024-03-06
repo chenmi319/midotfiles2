@@ -606,6 +606,7 @@ autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 " let g:copilot_enabled = 1
 " " let g:copilot_tab_fallback = ""
 " " let g:copilot_assume_mapped = 1
+" inoremap <C-e> <Plug>(copilot-next)
 " inoremap <Leader>n <Plug>(copilot-next)
 " inoremap <Leader>p <Plug>(copilot-prev)
 " inoremap <leader>a <Plug>(copilot-accept)
