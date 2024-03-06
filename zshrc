@@ -270,3 +270,6 @@ update_mi_dot_files() {
 }
 
 alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
+
+# for rvm load .ruby-version or something else
+cd .
