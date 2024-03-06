@@ -603,7 +603,7 @@ autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 " neoclide/coc.nvim end
 
 " copilot
-let g:copilot_enabled = 1
+let g:copilot_enabled = 0
 let g:copilot_tab_fallback = ""
 " let g:copilot_assume_mapped = 1
 inoremap <Leader>n <Plug>(copilot-next)
@@ -611,7 +611,7 @@ inoremap <Leader>p <Plug>(copilot-prev)
 inoremap <leader>a <Plug>(copilot-accept)
 
 " Codeium
-let g:codeium_enabled = v:false
+let g:codeium_enabled = v:true
 imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-e>   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>

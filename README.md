@@ -65,6 +65,7 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 ```bash
 mkdir -p ~/.config/nvim/init.vim
 try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
+try_link ~/.config/nvim/init.vim ~/.vimrc
 try_link ~/.midotfiles2/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # 安装 nvim 插件
