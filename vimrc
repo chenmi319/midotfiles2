@@ -70,7 +70,7 @@ Bundle 'goldfeld/ctrlr.vim'
 Bundle 'luochen1990/rainbow'
 Bundle 'mhinz/vim-startify'
 
-
+Bundle "github/copilot.vim"
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
 Bundle 'Exafunction/codeium.vim'
 
@@ -603,10 +603,15 @@ autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 " neoclide/coc.nvim end
 
 " copilot
-"inoremap <Leader>n <Plug>(copilot-next)
-"inoremap <Leader>p <Plug>(copilot-next)
+let g:copilot_enabled = 1
+let g:copilot_tab_fallback = ""
+" let g:copilot_assume_mapped = 1
+inoremap <Leader>n <Plug>(copilot-next)
+inoremap <Leader>p <Plug>(copilot-prev)
+inoremap <leader>a <Plug>(copilot-accept)
 
 " Codeium
+let g:codeium_enabled = v:false
 imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-e>   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>
