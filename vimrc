@@ -617,6 +617,7 @@ autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 let g:codeium_enabled = v:true
 imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-e>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <Leader>n   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>
 
 " fannheyward/telescope-coc.nvim
