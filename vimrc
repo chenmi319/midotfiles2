@@ -265,6 +265,13 @@ let g:surround_35  = "#{\r}"   " #
 let g:surround_45 = "<% \r %>"    " -
 let g:surround_61 = "<%= \r %>"   " =
 "ci', ca', cs'"
+" tpope/vim-unimpaired “ 快速缩进
+nmap < [
+nmap > ]
+omap < [
+omap > ]
+xmap < [
+xmap > ]
 " luochen1990/rainbow
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 " mhinz/vim-startify
