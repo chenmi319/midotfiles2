@@ -130,7 +130,7 @@ set tabstop=2
 set expandtab
 filetype plugin on
 filetype indent on
-set list listchars=tab:>-,trail:-
+set list listchars=tab:>-,trail:-,nbsp:␣
 set wrap
 set linebreak
 set foldmethod=indent
