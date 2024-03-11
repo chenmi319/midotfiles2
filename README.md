@@ -78,22 +78,10 @@ vim +PluginUpdate +qall
 # 安装 coc.nvim 以及插件
 cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 # 参考 vimrc 里面的配置
-# vim 里运行 :CocInstall coc-calc coc-diagnostic coc-docker coc-git coc-pyright coc-json @yaegassy/coc-nginx coc-sh coc-solargraph coc-xml coc-yaml coc-pairs @yaegassy/coc-ruff coc-tsserver coc-markdownlint coc-sql coc-prettier coc-html coc-lists
+# vim 里运行 :CocInstall coc-calc coc-diagnostic coc-git coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
+# vim 里按需运行 :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-markdownlint coc-sql coc-html
 # 打开 python 文件后 vim 里需要运行 :CocCommand ruff.builtin.installServer
 # 删除: :CocList extensions, 然后 tab
-```
-
-## TODO ruby 老版本兼容, 还没测试
-```bash
-gem install thor -v 1.2.2
-#gem install unicode-display_width -v 2.3.0
-gem install rubocop-ast -v 1.1.1
-gem install racc -v 1.5.2
-gem install rexml -v 3.1.9.1
-gem install parallel -v 1.19.2
-gem install rubocop -v 0.79.0
-gem install nokogiri -v 1.9.1
-gem install solargraph -v 0.31.3
 ```
 
 
