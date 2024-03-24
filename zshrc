@@ -273,3 +273,19 @@ alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
 
 # for rvm load .ruby-version or something else
 cd .
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local nvmrc_path="$PWD/.nvmrc"
+
+  if [[ -f "$nvmrc_path" ]]; then
+    nvm use
+  else
+    ;
+    # echo "No .nvmrc file found. Using default nvm version."
+    # nvm use default
+  fi
+}
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
