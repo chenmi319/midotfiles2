@@ -75,7 +75,7 @@ Bundle "github/copilot.vim"
 " Bundle 'Exafunction/codeium.vim'
 
 " https://github.com/neoclide/coc.nvim
-" node 试用 nvm 设置 nvm alias default v16 的最新版本最好
+" 安装 node, 安装 nvm, nvm install 20, 设置 nvm alias default 20, npm install -g yarn
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
