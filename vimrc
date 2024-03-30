@@ -22,19 +22,11 @@ Bundle 'itchyny/lightline.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 
-" languages.vundle
-" Bundle 'sheerun/vim-upolyglot'
-" Bundle 'mattn/emmet-vim'
-" Bundle 'mxw/vim-jsx'
-" Bundle 'pangloss/vim-javascript'
-" Bundle 'robbles/logstash.vim'
-
 " project.vundle
 Bundle 'jistr/vim-nerdtree-tabs.git'
 Bundle 'scrooloose/nerdtree.git'
 
 " search.vundle
-" Bundle 'rking/ag.vim'
 Bundle 'vim-scripts/IndexedSearch'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'Lokaltog/vim-easymotion'
@@ -50,13 +42,12 @@ Bundle 'wellle/targets.vim'
 " vim-improvements.vundle
 Bundle 'AndrewRadev/splitjoin.vim'
 " Bundle 'Raimondi/delimitMate'
-"Bundle 'briandoll/change-inside-surroundings.vim.git'
+" Bundle 'briandoll/change-inside-surroundings.vim.git'
 Bundle 'junegunn/vim-easy-align'
 Bundle 'tomtom/tcomment_vim.git'
 Bundle 'vim-scripts/matchit.zip.git'
 "Bundle 'mg979/vim-visual-multi'
 Bundle 'christoomey/vim-tmux-navigator'
-"Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-abolish'
 "Bundle 'tpope/vim-endwise.git'
 "Bundle 'tpope/vim-ragtag'
@@ -65,10 +56,10 @@ Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-unimpaired'
 "Bundle 'vim-scripts/AnsiEsc.vim.git'
 Bundle 'vim-scripts/lastpos.vim'
-"Bundle 'vim-scripts/sudo.vim'
 Bundle 'goldfeld/ctrlr.vim'
 Bundle 'luochen1990/rainbow'
 Bundle 'mhinz/vim-startify'
+Bundle 'ojroques/vim-oscyank', {'branch': 'main'}
 
 Bundle "github/copilot.vim"
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
@@ -231,14 +222,6 @@ let g:nerdtree_tabs_open_on_new_tab = 1
 map <silent> <leader>tn :NERDTreeTabsToggle<CR>
 " scrooloose/nerdtree.git
 nnoremap <silent> <C-\> :NERDTreeFind<CR>
-" rking/ag.vim
-nmap <leader>ag :Ag ""<Left>
-nmap <leader>af :AgFile ""<Left>
-if split(system("ag --version"), "[ \n\r\t]")[2] =~ '\d\+.\(\(2[5-9]\)\|\([3-9][0-9]\)\)\(.\d\+\)\?'
-  let g:ag_prg="ag --vimgrep"
-else
-  let g:ag_prg="ag --column --nogroup --noheading --ignore tags --ignore .tags"
-endif
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
 " Lokaltog/vim-easymotion
@@ -254,10 +237,6 @@ nnoremap <leader>ffi <cmd>Telescope find_files hidden=true no_ignore=true<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-" sjl/gundo.vim
-"nmap ,u :GundoToggle<CR>
-"let g:gundo_right = 1
-"let g:gundo_width = 60
 " tpope/vim-abolish
 "crs snakecase, crs camelcase
 " tpope/vim-surround.git
@@ -278,9 +257,6 @@ let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowTo
 " mhinz/vim-startify
 let g:startify_change_to_dir = 0
 " let g:startify_change_to_vcs_root = 0
-" Bundle 'mxw/vim-jsx'
-"let g:jsx_ext_required = 0
-"let g:jsx_pragma_required = 1
 " tomtom/tcomment_vim.git
 nmap <silent> gcp <c-_>p
 let g:tcomment_textobject_inlinecomment = ''
@@ -314,8 +290,6 @@ nnoremap C-y :YRShow<CR>
 nnoremap <silent> <leader>tg :GitGutterLineHighlightsToggle<CR>
 let g:gitgutter_eager = 0
 let g:gitgutter_realtime = 0
-" mattn/emmet-vim
-"let g:user_emmet_leader_key='<C-Z>'
 
 " customize configs
 vnoremap <leader>p "0p
@@ -611,6 +585,10 @@ nmap <leader>f  <Plug>(coc-format-selected)
 autocmd User EasyMotionPromptBegin :let b:coc_diagnostic_disable = 1
 autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 " neoclide/coc.nvim end
+
+" ojroques/vim-oscyank
+nmap <leader>y <Plug>OSCYankOperator
+vmap <leader>y <Plug>OSCYankVisual
 
 " copilot
 let g:copilot_enabled = 1
