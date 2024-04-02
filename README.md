@@ -3,6 +3,7 @@
 # 准备工作
 * 安装 git, curl
 * ITerm2 使用 DarkBackground 就可以了，不用 Solarized Dark
+* ITerm2 Preferences -> Selection -> Applications in terminal may access clipboard
 ```bash
 # git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
 git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
