@@ -164,6 +164,7 @@ else
   set clipboard=unnamed
 endif
 let mapleader=","
+map <leader>bd :bd<CR>
 
 " plugin configs
 " itchyny/lightline.vim
