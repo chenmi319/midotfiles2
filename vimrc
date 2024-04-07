@@ -59,7 +59,7 @@ Bundle 'vim-scripts/lastpos.vim'
 Bundle 'goldfeld/ctrlr.vim'
 Bundle 'luochen1990/rainbow'
 Bundle 'mhinz/vim-startify'
-Bundle 'ojroques/vim-oscyank', {'branch': 'main'}
+Bundle 'ojroques/vim-oscyank'
 
 Bundle "github/copilot.vim"
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
@@ -68,7 +68,7 @@ Bundle "github/copilot.vim"
 " https://github.com/neoclide/coc.nvim
 " 安装 node, 安装 nvm, nvm install 20, 设置 nvm alias default 20, npm install -g yarn
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
-Bundle 'neoclide/coc.nvim', {'branch': 'release'}
+Bundle 'neoclide/coc.nvim'
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
 " in vim :CocInstall coc-calc coc-diagnostic coc-git coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
 " in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-markdownlint coc-sql coc-html @yaegassy/coc-tailwindcss3
