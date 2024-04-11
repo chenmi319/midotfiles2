@@ -61,9 +61,9 @@ Bundle 'luochen1990/rainbow'
 Bundle 'mhinz/vim-startify'
 Bundle 'ojroques/vim-oscyank'
 
-Bundle "github/copilot.vim"
+" Bundle "github/copilot.vim"
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
-" Bundle 'Exafunction/codeium.vim'
+Bundle 'Exafunction/codeium.vim'
 
 " https://github.com/neoclide/coc.nvim
 " 安装 node, 安装 nvm, nvm install 20, 设置 nvm alias default 20, npm install -g yarn
@@ -592,20 +592,20 @@ nmap <leader>y <Plug>OSCYankOperator
 vmap <leader>y <Plug>OSCYankVisual
 
 " copilot
-let g:copilot_enabled = 1
-" let g:copilot_tab_fallback = ""
-" let g:copilot_assume_mapped = 1
-inoremap <C-e> <Plug>(copilot-next)
-inoremap <Leader>n <Plug>(copilot-next)
-inoremap <Leader>p <Plug>(copilot-prev)
-inoremap <leader>a <Plug>(copilot-accept)
+" let g:copilot_enabled = 1
+" " let g:copilot_tab_fallback = ""
+" " let g:copilot_assume_mapped = 1
+" inoremap <C-e> <Plug>(copilot-next)
+" inoremap <Leader>n <Plug>(copilot-next)
+" inoremap <Leader>p <Plug>(copilot-prev)
+" inoremap <leader>a <Plug>(copilot-accept)
 
 " Codeium
-" let g:codeium_enabled = v:true
-" imap <script><silent><nowait><expr> <C-g> codeium#Accept()
-" imap <C-e>   <Cmd>call codeium#CycleCompletions(1)<CR>
-" imap <Leader>n   <Cmd>call codeium#CycleCompletions(1)<CR>
-" imap <C-x>   <Cmd>call codeium#Clear()<CR>
+let g:codeium_enabled = v:true
+imap <script><silent><nowait><expr> <C-g> codeium#Accept()
+imap <C-e>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <Leader>n   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <C-x>   <Cmd>call codeium#Clear()<CR>
 
 " fannheyward/telescope-coc.nvim
 " :Telescope coc to get subcommands
