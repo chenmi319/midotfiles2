@@ -289,3 +289,7 @@ load-nvmrc() {
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+if command -v proxy >/dev/null 2>&1; then
+  alias vim='proxy vim'
+fi
