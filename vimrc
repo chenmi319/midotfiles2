@@ -239,7 +239,7 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " tpope/vim-abolish
-"crs snakecase, crs camelcase
+" Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), UPPER_CASE (cru), dash-case (cr-), and dot.case (cr.)
 " tpope/vim-surround.git
 let g:surround_113 = "#{\r}"   " v
 let g:surround_35  = "#{\r}"   " #
