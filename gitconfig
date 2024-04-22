@@ -1,7 +1,7 @@
 # set your user tokens as environment variables, such as ~/.secrets
 # See the README for examples.
 [color]
-  ui = true
+  ui = auto
 [color "branch"]
   current = yellow reverse
   local = yellow
@@ -9,8 +9,12 @@
 [color "diff"]
   meta = yellow bold
   frag = magenta bold
-  old = red
-  new = green
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
 [alias]
   # add
   a = add                           # add
@@ -47,6 +51,7 @@
 
   # log
   l = log --graph --date=short
+  lg = log --graph --pretty=format:'%C(yellow)%h%C(reset) -%C(cyan)%d%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)' --abbrev-commit
   changes = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\" --name-status
   short = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\"
   simple = log --pretty=format:\" * %s\"
