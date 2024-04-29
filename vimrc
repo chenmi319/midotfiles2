@@ -637,7 +637,12 @@ require('telescope').load_extension('coc')
 EOF
 
 " tpope/vim-obsession
-if filereadable("Session.vim")
-    execute 'source Session.vim'
-endif
+" 自动命令，启动 Obsession
 autocmd VimEnter * Obsession
+autocmd VimLeave * Obsession
+
+
+" 检查并加载会话文件
+if filereadable(getcwd() . "/Session.vim")
+    execute 'source ' . getcwd() . '/Session.vim'
+endif
