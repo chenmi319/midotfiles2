@@ -58,7 +58,8 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'vim-scripts/lastpos.vim'
 Bundle 'goldfeld/ctrlr.vim'
 Bundle 'luochen1990/rainbow'
-Bundle 'mhinz/vim-startify'
+" Bundle 'mhinz/vim-startify'
+Bundle 'tpope/vim-obsession'
 Bundle 'ojroques/vim-oscyank'
 
 Bundle "github/copilot.vim"
@@ -634,3 +635,9 @@ require("telescope").setup({
 })
 require('telescope').load_extension('coc')
 EOF
+
+" tpope/vim-obsession
+if filereadable("Session.vim")
+    execute 'source Session.vim'
+endif
+autocmd VimEnter * Obsession
