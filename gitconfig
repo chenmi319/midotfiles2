@@ -12,9 +12,9 @@
   old = red bold
   new = green bold
 [color "status"]
-  added = yellow
-  changed = green
-  untracked = cyan
+  added = green
+  changed = yellow
+  untracked = red
 [alias]
   # add
   a = add                           # add
@@ -134,3 +134,6 @@
 	template = /Users/chenmi/.gitmessage
 [diff "sopsdiffer"]
 	textconv = sops -d
+[user]
+	name = chenmi
+	email = chenmi319@gmail.com
