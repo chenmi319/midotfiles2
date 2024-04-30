@@ -617,6 +617,20 @@ nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
 nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
 nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
+
+" tpope/vim-obsession
+autocmd VimEnter * Obsession
+autocmd VimLeave * Obsession
+
+
+" 检查并加载会话文件
+let session_file = getcwd() . "/Session.vim"
+" echom "会话文件路径：" . session_file
+if session_file !~ "/tmp/Session.vim" && filereadable(session_file)
+    execute 'source ' . session_file
+endif
+
+" fannheyward/telescope-coc.nvim
 lua << EOF
 require("telescope").setup({
   defaults = {
@@ -635,14 +649,3 @@ require("telescope").setup({
 })
 require('telescope').load_extension('coc')
 EOF
-
-" tpope/vim-obsession
-" 自动命令，启动 Obsession
-autocmd VimEnter * Obsession
-autocmd VimLeave * Obsession
-
-
-" 检查并加载会话文件
-if filereadable(getcwd() . "/Session.vim")
-    execute 'source ' . getcwd() . '/Session.vim'
-endif
