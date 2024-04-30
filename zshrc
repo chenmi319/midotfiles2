@@ -293,3 +293,5 @@ load-nvmrc
 if command -v proxy >/dev/null 2>&1; then
   alias vim='proxy vim'
 fi
+
+alias vimns='VIM_NO_SESSION=1 vim'

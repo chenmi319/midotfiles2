@@ -619,18 +619,20 @@ nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
 " tpope/vim-obsession
-" 使用 vim-obsession 插件保存和加载会话
-autocmd VimEnter * Obsession
-autocmd VimLeave * Obsession
-
-" 在保存会话前手动关闭 NERDTree 窗口
-autocmd VimLeave * NERDTreeTabsClose
-
 let session_file = getcwd() . "/Session.vim"
-
-" 检查会话文件是否存在并且不是临时文件
-if session_file !~ "/tmp/Session.vim" && filereadable(session_file)
-    execute 'silent! source ' . session_file
+" 检查 VIM_NO_SESSION 环境变量，如果为空，会话文件不是 /tmp/Session.vim 并且会话文件存在
+if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
+  " 使用 vim-obsession 插件保存和加载会话
+  autocmd VimEnter * Obsession
+  autocmd VimLeave * Obsession
+  " 在保存会话前手动关闭 NERDTree 窗口
+  autocmd VimLeave * NERDTreeTabsClose
+  if filereadable(session_file)
+      execute 'silent! source ' . session_file
+      if empty($VIM_NO_SESSION)
+          execute 'silent! source ' . session_file
+      endif
+  endif
 endif
 
 " fannheyward/telescope-coc.nvim
