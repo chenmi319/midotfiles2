@@ -23,8 +23,9 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 
 " project.vundle
-Bundle 'jistr/vim-nerdtree-tabs.git'
 Bundle 'scrooloose/nerdtree.git'
+Bundle 'ryanoasis/vim-devicons'
+Bundle 'jistr/vim-nerdtree-tabs.git'
 
 " search.vundle
 Bundle 'vim-scripts/IndexedSearch'
@@ -622,11 +623,9 @@ nnoremap <silent> tt :Telescope resume<cr>
 let session_file = getcwd() . "/Session.vim"
 " 检查 VIM_NO_SESSION 环境变量，如果为空，会话文件不是 /tmp/Session.vim 并且会话文件存在
 if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
-  " 使用 vim-obsession 插件保存和加载会话
+  set sessionoptions-=blank
   autocmd VimEnter * Obsession
   autocmd VimLeave * Obsession
-  " 在保存会话前手动关闭 NERDTree 窗口
-  autocmd VimLeave * NERDTreeTabsClose
   if filereadable(session_file)
       execute 'silent! source ' . session_file
       if empty($VIM_NO_SESSION)
