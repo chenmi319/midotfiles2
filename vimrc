@@ -622,7 +622,8 @@ nnoremap <silent> tt :Telescope resume<cr>
 " tpope/vim-obsession
 let session_file = getcwd() . "/Session.vim"
 " 检查 VIM_NO_SESSION 环境变量，如果为空，会话文件不是 /tmp/Session.vim 并且会话文件存在
-if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
+" if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
+if session_file =~ "workspace"
   set sessionoptions-=blank,buffers
   autocmd VimEnter * Obsession
   autocmd VimLeave * Obsession
