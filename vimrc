@@ -627,7 +627,6 @@ if empty($VIM_NO_SESSION) && session_file =~ "workspace"
   set sessionoptions-=blank,buffers
   autocmd VimEnter * Obsession
   autocmd VimLeave * Obsession
-  autocmd WinEnter * Obsession
   if filereadable(session_file)
       execute 'silent! source ' . session_file
   endif
