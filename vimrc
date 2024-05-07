@@ -627,6 +627,11 @@ if empty($VIM_NO_SESSION) && session_file =~ "workspace"
   set sessionoptions-=blank,buffers
   autocmd VimEnter * Obsession
   autocmd VimLeave * Obsession
+  function! SaveSession()
+    Obsession
+  endfunction
+  " 创建定时器，每10分钟自动保存一次会话
+  let s:save_timer = timer_start(600000, 'SaveSession', {'repeat': -1})
   if filereadable(session_file)
       execute 'silent! source ' . session_file
   endif
