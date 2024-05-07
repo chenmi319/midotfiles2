@@ -73,8 +73,8 @@ Bundle "github/copilot.vim"
 Bundle 'neoclide/coc.nvim'
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
 " in vim :CocInstall coc-calc coc-diagnostic coc-git coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
-" in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-markdownlint coc-sql coc-html @yaegassy/coc-tailwindcss3
-" other common plugin: coc-java coc-perl coc-clangd
+" in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-sql coc-html @yaegassy/coc-tailwindcss3
+" other common plugin: coc-java coc-perl coc-clangd coc-markdownlint
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
