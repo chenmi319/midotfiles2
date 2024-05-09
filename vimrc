@@ -626,6 +626,8 @@ if empty($VIM_NO_SESSION) && session_file =~ "workspace"
   set sessionoptions-=blank,buffers
   if filereadable(session_file)
       execute 'silent! source ' . session_file
+  else
+      execute 'mksession! ' . session_file
   endif
 endif
 
