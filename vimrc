@@ -582,9 +582,6 @@ nnoremap <silent><nowait> <space>f  :<C-u>CocList files<cr>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 nnoremap <silent> to :call CocAction('showOutline')<CR>
 
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
 " compatible with easymotion
 autocmd User EasyMotionPromptBegin :let b:coc_diagnostic_disable = 1
 autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
