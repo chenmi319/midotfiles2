@@ -82,7 +82,6 @@ COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  ag
   aliases
   colored-man-pages
   command-not-found
