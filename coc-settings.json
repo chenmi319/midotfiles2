@@ -20,5 +20,8 @@
     "diagnosticSeverityOverrides": {
       "reportInvalidTypeForm": "none"
     }
-  }
+  },
+  "pyright.inlayHints.functionReturnTypes": true,
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.parameterTypes": false,
 }
