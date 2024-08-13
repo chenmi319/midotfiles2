@@ -22,6 +22,6 @@
     }
   },
   "pyright.inlayHints.functionReturnTypes": true,
-  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.variableTypes": true,
   "pyright.inlayHints.parameterTypes": false,
 }
