@@ -37,7 +37,7 @@ Bundle 'fannheyward/telescope-coc.nvim'
 
 " textobjects.vundle
 Bundle 'coderifous/textobj-word-column.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'lukas-reineke/indent-blankline.nvim'
 Bundle 'wellle/targets.vim'
 
 " vim-improvements.vundle
@@ -206,18 +206,6 @@ endfunction
 colorscheme onedark
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
-" nathanaelkane/vim-indent-guides
-" https://www.ditig.com/publications/256-colors-cheat-sheet
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_start_level=2
-let g:indent_guides_guide_size=4
-let g:indent_guides_auto_colors=0
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=0
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=8
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
-" hi IndentGuidesOdd  ctermbg=black
-" hi IndentGuidesEven ctermbg=darkgrey
 " jistr/vim-nerdtree-tabs.git
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
@@ -647,4 +635,20 @@ require("telescope").setup({
   },
 })
 require('telescope').load_extension('coc')
+EOF
+
+" lukas-reineke/indent-blankline.nvim
+lua << EOF
+local highlight = {
+    "CursorColumn",
+    "Whitespace",
+}
+require("ibl").setup {
+    indent = { highlight = highlight, char = "" },
+    whitespace = {
+        highlight = highlight,
+        remove_blankline_trail = false,
+    },
+    scope = { enabled = false },
+}
 EOF
