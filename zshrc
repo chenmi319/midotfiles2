@@ -90,7 +90,6 @@ plugins=(
   history-substring-search
   safe-paste
   tmux
-  vundle
   z
   git
   redis-cli

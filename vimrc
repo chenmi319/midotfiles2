@@ -1,95 +1,74 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
+call plug#begin()
 
 " appearance.vundle
-Bundle 'chrisbra/color_highlight.git'
-Bundle 'joshdick/onedark.vim'
-Bundle 'itchyny/lightline.vim'
+Plug 'chrisbra/color_highlight.git'
+Plug 'joshdick/onedark.vim'
+Plug 'itchyny/lightline.vim'
 
 " git.vundle
-Bundle 'tpope/vim-fugitive'
-Bundle 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " project.vundle
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'ryanoasis/vim-devicons'
-Bundle 'jistr/vim-nerdtree-tabs.git'
+Plug 'scrooloose/nerdtree.git'
+Plug 'ryanoasis/vim-devicons'
+Plug 'jistr/vim-nerdtree-tabs.git'
 
 " search.vundle
-Bundle 'vim-scripts/IndexedSearch'
-Bundle 'nelstrom/vim-visual-star-search'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'nvim-lua/plenary.nvim'
-Bundle 'nvim-telescope/telescope.nvim'
-Bundle 'fannheyward/telescope-coc.nvim'
+Plug 'vim-scripts/IndexedSearch'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'fannheyward/telescope-coc.nvim'
 
 " textobjects.vundle
-Bundle 'coderifous/textobj-word-column.vim'
-Bundle 'lukas-reineke/indent-blankline.nvim'
-Bundle 'wellle/targets.vim'
+Plug 'coderifous/textobj-word-column.vim'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'wellle/targets.vim'
 
 " vim-improvements.vundle
-Bundle 'AndrewRadev/splitjoin.vim'
-" Bundle 'Raimondi/delimitMate'
-" Bundle 'briandoll/change-inside-surroundings.vim.git'
-Bundle 'junegunn/vim-easy-align'
-Bundle 'tomtom/tcomment_vim.git'
-Bundle 'vim-scripts/matchit.zip.git'
-"Bundle 'mg979/vim-visual-multi'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'tpope/vim-abolish'
-"Bundle 'tpope/vim-endwise.git'
-"Bundle 'tpope/vim-ragtag'
-"Bundle 'tpope/vim-repeat.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'tpope/vim-unimpaired'
-"Bundle 'vim-scripts/AnsiEsc.vim.git'
-Bundle 'vim-scripts/lastpos.vim'
-Bundle 'goldfeld/ctrlr.vim'
-Bundle 'luochen1990/rainbow'
-" Bundle 'mhinz/vim-startify'
-Bundle 'tpope/vim-obsession'
-Bundle 'ojroques/vim-oscyank'
+Plug 'AndrewRadev/splitjoin.vim'
+" Plug 'Raimondi/delimitMate'
+" Plug 'briandoll/change-inside-surroundings.vim.git'
+Plug 'junegunn/vim-easy-align'
+Plug 'tomtom/tcomment_vim.git'
+Plug 'vim-scripts/matchit.zip.git'
+"Plug 'mg979/vim-visual-multi'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-abolish'
+"Plug 'tpope/vim-endwise.git'
+"Plug 'tpope/vim-ragtag'
+"Plug 'tpope/vim-repeat.git'
+Plug 'tpope/vim-surround.git'
+Plug 'tpope/vim-unimpaired'
+"Plug 'vim-scripts/AnsiEsc.vim.git'
+Plug 'vim-scripts/lastpos.vim'
+Plug 'goldfeld/ctrlr.vim'
+Plug 'luochen1990/rainbow'
+" Plug 'mhinz/vim-startify'
+Plug 'tpope/vim-obsession'
+Plug 'ojroques/vim-oscyank'
 
-Bundle "github/copilot.vim"
+Plug 'github/copilot.vim'
 " codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
-" Bundle 'Exafunction/codeium.vim'
+" Plug 'Exafunction/codeium.vim'
 
 " https://github.com/neoclide/coc.nvim
 " 安装 node, 安装 nvm, nvm install 20, 设置 nvm alias default 20, npm install -g yarn
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
-Bundle 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
 " in vim :CocInstall coc-calc coc-diagnostic coc-git coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
 " in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-sql coc-html @yaegassy/coc-tailwindcss3
 " other common plugin: coc-java coc-perl coc-clangd coc-markdownlint
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+call plug#end()
+
 
 " basic config
 set t_Co=256

@@ -70,11 +70,13 @@ try_link ~/.config/nvim/init.vim ~/.vimrc
 try_link ~/.midotfiles2/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # 安装 nvim 插件
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginClean +qall
-vim +PluginInstall +qall
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+vim +PlugInstall +qall
 # 升级
-vim +PluginUpdate +qall
+vim +PlugUpdate +qall
+# 清理
+vim +PlugClean +qall
 
 # 安装 coc.nvim 以及插件
 cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
