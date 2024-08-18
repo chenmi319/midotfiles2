@@ -640,6 +640,8 @@ if empty($VIM_NO_SESSION) && session_file =~ "workspace"
   endif
 endif
 
+autocmd VimEnter * RainbowToggleOn
+
 " fannheyward/telescope-coc.nvim
 lua << EOF
 require("telescope").setup({
