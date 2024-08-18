@@ -5,7 +5,7 @@ filetype off                  " required
 call plug#begin()
 
 " appearance.vundle
-Plug 'chrisbra/color_highlight.git'
+Plug 'chrisbra/Colorizer'
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 
@@ -14,9 +14,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " project.vundle
-Plug 'scrooloose/nerdtree.git'
+Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'jistr/vim-nerdtree-tabs.git'
+Plug 'jistr/vim-nerdtree-tabs'
 
 " search.vundle
 Plug 'vim-scripts/IndexedSearch'
@@ -34,19 +34,19 @@ Plug 'wellle/targets.vim'
 " vim-improvements.vundle
 Plug 'AndrewRadev/splitjoin.vim'
 " Plug 'Raimondi/delimitMate'
-" Plug 'briandoll/change-inside-surroundings.vim.git'
+" Plug 'briandoll/change-inside-surroundings.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'tomtom/tcomment_vim.git'
-Plug 'vim-scripts/matchit.zip.git'
+Plug 'tomtom/tcomment_vim'
+Plug 'vim-scripts/matchit.zip'
 "Plug 'mg979/vim-visual-multi'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-abolish'
-"Plug 'tpope/vim-endwise.git'
+"Plug 'tpope/vim-endwise'
 "Plug 'tpope/vim-ragtag'
-"Plug 'tpope/vim-repeat.git'
-Plug 'tpope/vim-surround.git'
+"Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-"Plug 'vim-scripts/AnsiEsc.vim.git'
+"Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'vim-scripts/lastpos.vim'
 Plug 'goldfeld/ctrlr.vim'
 Plug 'luochen1990/rainbow'
