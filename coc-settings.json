@@ -16,11 +16,6 @@
   "suggest.detailField": "abbr",
   "suggest.snippetIndicator": "🌟",
   "suggest.triggerCompletionWait": 50,
-  "python.analysis": {
-    "diagnosticSeverityOverrides": {
-      "reportInvalidTypeForm": "none"
-    }
-  },
   "pyright.inlayHints.functionReturnTypes": true,
   "pyright.inlayHints.variableTypes": true,
   "pyright.inlayHints.parameterTypes": false,
