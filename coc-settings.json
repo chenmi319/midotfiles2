@@ -5,7 +5,7 @@
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "codeLens.enable": true,
   "diagnostic.errorSign": "✘",
-  "diagnostic.virtualText": true,
+  "diagnostic.virtualText": false,
   "diagnostic.virtualTextPrefix": " ❯❯❯ ",
   "outline.autoPreview": true,
   "outline.expandLevel": 0,
