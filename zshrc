@@ -288,8 +288,5 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-if command -v proxy >/dev/null 2>&1; then
-  alias vim='proxy vim'
-fi
-
+alias proxy_run='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
 alias vimns='VIM_NO_SESSION=1 vim'
