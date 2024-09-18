@@ -644,6 +644,7 @@ if empty($VIM_NO_SESSION) && session_file =~ "workspace"
 endif
 
 autocmd VimEnter * RainbowToggleOn
+autocmd TabEnter * RainbowToggleOn
 
 " fannheyward/telescope-coc.nvim
 lua << EOF
