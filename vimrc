@@ -643,8 +643,38 @@ if empty($VIM_NO_SESSION) && session_file =~ "workspace"
   endif
 endif
 
+"luochen1990/rainbow'
 autocmd VimEnter * RainbowToggleOn
 autocmd TabEnter * RainbowToggleOn
+
+function! ToggleCocExtension(extension)
+    " 使用 CocAction toggleExtension 来切换插件状态
+    call CocAction('toggleExtension', a:extension)
+
+    " 获取插件的状态信息
+    let l:status = CocAction('extensionStats')
+
+    " 遍历插件状态列表，查找指定插件
+    let l:found = 0
+    for ext in l:status
+        if has_key(ext, 'id') && ext.id ==# a:extension
+            let l:found = 1
+            if ext.state ==# 'activated'
+                echo a:extension . " is now enabled"
+            else
+                echo a:extension . " is now disabled"
+            endif
+            break
+        endif
+    endfor
+
+    " 如果没有找到插件，输出错误信息
+    if l:found == 0
+        echo "Extension " . a:extension . " not found."
+    endif
+endfunction
+nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
+
 
 " fannheyward/telescope-coc.nvim
 lua << EOF
