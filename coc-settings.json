@@ -19,4 +19,9 @@
   "pyright.inlayHints.functionReturnTypes": true,
   "pyright.inlayHints.variableTypes": true,
   "pyright.inlayHints.parameterTypes": false,
+  "python.formatting.provider": "autopep8",
+  "python.formatting.autopep8Path": "~/bin/autopep8",
+  "python.linting.enabled": true,
+  "python.linting.ruffEnabled": true,
+  "python.linting.ruffPath": "~/bin/ruff",
 }
