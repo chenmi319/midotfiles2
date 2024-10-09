@@ -37,6 +37,7 @@ try_link ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
 ```bash
 try_link ~/.midotfiles2/gitconfig ~/.gitconfig
 try_link ~/.midotfiles2/gitignore ~/.gitignore
+try_link ~/.midotfiles2/gitmessage ~/.gitmessage
 ```
 you should create ~/.gitconfig.user like
 ```
