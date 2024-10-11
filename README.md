@@ -81,8 +81,8 @@ vim +PlugClean +qall
 
 # 安装 autopep8 和 ruff
 conda activate base
-pip install autopep8 ruff ruff-lsp
-ln -s `which autopep8` ~/bin/autopep8
+pip install yapf ruff ruff-lsp
+ln -s `which yapf` ~/bin/yapf
 ln -s `which ruff` ~/bin/ruff
 ln -s `which ruff-lsp` ~/bin/ruff-lsp
 conda deactivate
