@@ -192,7 +192,7 @@ let g:nerdtree_tabs_open_on_new_tab = 1
 map <silent> <leader>tn :NERDTreeTabsToggle<CR>
 " scrooloose/nerdtree.git
 nnoremap <silent> <C-\> :NERDTreeFind<CR>
-let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim']
+let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
 " Lokaltog/vim-easymotion
