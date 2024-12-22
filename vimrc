@@ -14,9 +14,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " project.vundle
-Plug 'preservim/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-Plug 'jistr/vim-nerdtree-tabs'
+" Plug 'preservim/nerdtree'
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'jistr/vim-nerdtree-tabs'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 
 " search.vundle
 Plug 'vim-scripts/IndexedSearch'
@@ -185,14 +187,14 @@ endfunction
 colorscheme onedark
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
-" jistr/vim-nerdtree-tabs.git
-let g:nerdtree_tabs_open_on_gui_startup = 0
-let g:nerdtree_tabs_focus_on_files = 1
-let g:nerdtree_tabs_open_on_new_tab = 1
-map <silent> <leader>tn :NERDTreeTabsToggle<CR>
-" scrooloose/nerdtree.git
-nnoremap <silent> <C-\> :NERDTreeFind<CR>
-let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
+" " jistr/vim-nerdtree-tabs.git
+" let g:nerdtree_tabs_open_on_gui_startup = 0
+" let g:nerdtree_tabs_focus_on_files = 1
+" let g:nerdtree_tabs_open_on_new_tab = 1
+" map <silent> <leader>tn :NERDTreeTabsToggle<CR>
+" " scrooloose/nerdtree.git
+" nnoremap <silent> <C-\> :NERDTreeFind<CR>
+" let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
 " Lokaltog/vim-easymotion
@@ -326,14 +328,14 @@ cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 cnoremap <C-h> <BACKSPACE>
 cnoremap <C-d> <DELETE>
-function! OpenNerdTree()
-  if &modifiable && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-  else
-    NERDTreeToggle
-  endif
-endfunction
-nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
+" function! OpenNerdTree()
+"   if &modifiable && strlen(expand('%')) > 0 && !&diff
+"     NERDTreeFind
+"   else
+"     NERDTreeToggle
+"   endif
+" endfunction
+" nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
 nmap <silent> ,qc :cclose<CR>
 nmap <silent> ,qo :copen<CR>
 nnoremap <C-w>f :sp +e<cfile><CR>
@@ -728,6 +730,65 @@ require("telescope").setup({
   },
 })
 require('telescope').load_extension('coc')
+EOF
+
+" nvim-tree/nvim-tree
+lua << EOF
+vim.keymap.set('n', '<leader>tn', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-\\>', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
+
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+
+-- OR setup with some options
+require("nvim-tree").setup({
+  git = {
+    enable = true, -- 启用 Git 集成
+    ignore = false, -- 显示被 Git 忽略的文件
+  },
+  sort_by = "case_sensitive", -- 文件排序规则，可选
+  view = {
+    width = 30, -- 窗口宽度
+    side = "left", -- 显示在左侧
+  },
+  renderer = {
+    group_empty = true, -- 空文件夹显示成分组
+    highlight_git = true, -- 高亮 Git 状态
+    icons = {
+      show = {
+        git = true, -- 显示 Git 图标
+        folder = true,
+        file = true,
+      },
+    },
+  },
+  filters = {
+    dotfiles = true, -- 隐藏 . 开头的文件
+    custom = { "^__pycache__$", "Session.vim", ".DS_Store" },
+  },
+  actions = {
+    open_file = {
+      resize_window = true, -- 打开文件时调整窗口大小
+    },
+  },
+  diagnostics = {
+    enable = true, -- 启用诊断显示
+    show_on_dirs = true, -- 显示目录中的诊断信息
+    icons = {
+      hint = "", -- 提示图标
+      info = "", -- 信息图标
+      warning = "", -- 警告图标
+      error = "", -- 错误图标
+    },
+  },
+})
 EOF
 
 " lukas-reineke/indent-blankline.nvim
