@@ -14,9 +14,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " project.vundle
-" Plug 'preservim/nerdtree'
-" Plug 'ryanoasis/vim-devicons'
-" Plug 'jistr/vim-nerdtree-tabs'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-tree/nvim-tree.lua'
 
@@ -187,14 +184,6 @@ endfunction
 colorscheme onedark
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
-" " jistr/vim-nerdtree-tabs.git
-" let g:nerdtree_tabs_open_on_gui_startup = 0
-" let g:nerdtree_tabs_focus_on_files = 1
-" let g:nerdtree_tabs_open_on_new_tab = 1
-" map <silent> <leader>tn :NERDTreeTabsToggle<CR>
-" " scrooloose/nerdtree.git
-" nnoremap <silent> <C-\> :NERDTreeFind<CR>
-" let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
 " Lokaltog/vim-easymotion
@@ -328,14 +317,6 @@ cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 cnoremap <C-h> <BACKSPACE>
 cnoremap <C-d> <DELETE>
-" function! OpenNerdTree()
-"   if &modifiable && strlen(expand('%')) > 0 && !&diff
-"     NERDTreeFind
-"   else
-"     NERDTreeToggle
-"   endif
-" endfunction
-" nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
 nmap <silent> ,qc :cclose<CR>
 nmap <silent> ,qo :copen<CR>
 nnoremap <C-w>f :sp +e<cfile><CR>
@@ -788,6 +769,17 @@ require("nvim-tree").setup({
       error = "", -- 错误图标
     },
   },
+  on_attach = function(bufnr)
+    local api = require('nvim-tree.api')
+    local function opts(desc)
+      return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    -- 禁用 Shift + ← ( <S-Left> )
+    vim.keymap.set('n', '<S-Left>', '', opts('Disable Shift + Left'))
+    -- 禁用 Shift + → ( <S-Right> )
+    vim.keymap.set('n', '<S-Right>', '', opts('Disable Shift + Right'))
+  end,
 })
 EOF
 
