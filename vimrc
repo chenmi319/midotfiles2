@@ -783,9 +783,9 @@ require("nvim-tree").setup({
     enable = true, -- 启用诊断显示
     show_on_dirs = true, -- 显示目录中的诊断信息
     icons = {
-      hint = "", -- 提示图标
-      info = "", -- 信息图标
-      warning = "", -- 警告图标
+      -- hint = "", -- 提示图标
+      -- info = "", -- 信息图标
+      -- warning = "", -- 警告图标
       error = "", -- 错误图标
     },
   },
