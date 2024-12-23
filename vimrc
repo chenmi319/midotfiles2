@@ -719,6 +719,7 @@ require("telescope").setup({
     mappings = {
       i = {
         ["<CR>"] = require("telescope.actions").select_tab_drop,
+        ["<C-o>"] = require("telescope.actions").select_default,
       },
     },
   },
