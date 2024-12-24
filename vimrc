@@ -745,11 +745,23 @@ vim.g.loaded_netrwPlugin = 1
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
 
--- empty setup using defaults
-require("nvim-tree").setup()
+local function my_on_attach(bufnr)
+  local api = require "nvim-tree.api"
+
+  local function opts(desc)
+    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+  end
+
+  -- default mappings
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- custom mappings
+  vim.keymap.set('n', 't', api.node.open.tab, opts('Open in New Tab')) -- 绑定 't' 键到 "open in new tab"
+end
 
 -- OR setup with some options
 require("nvim-tree").setup({
+  on_attach = my_on_attach,
   git = {
     enable = true, -- 启用 Git 集成
     ignore = false, -- 显示被 Git 忽略的文件
