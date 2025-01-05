@@ -123,6 +123,6 @@ echo "export PATH=\"\$PATH:\$HOME/bin\"" >> ~/.bashrc
 git clone https://github.com/nojhan/liquidprompt.git ~/.liquidprompt
 echo '[[ $- = *i* ]] && source ~/.liquidprompt/liquidprompt' >> ~/.bashrc
 echo "alias tmux='tmux -2 -u'" >> ~/.bashrc
-try_link ~/.midotfiles/liquidpromptrc ~/.liquidpromptrc
+try_link ~/.midotfiles2/liquidpromptrc ~/.liquidpromptrc
 ```
 * relogin
