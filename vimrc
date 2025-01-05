@@ -138,7 +138,7 @@ set cmdheight=1
 set lazyredraw
 set mouse=nv
 set completeopt=menu,menuone,preview
-set pastetoggle=<F7>
+nnoremap <F7> :set paste!<CR>:set paste?<CR>
 set grepprg=git\ grep
 let g:grep_cmd_opts = '--line-number'
 if has("win16") || has("win32") || has("win64")
