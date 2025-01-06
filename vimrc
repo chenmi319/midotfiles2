@@ -66,7 +66,7 @@ Plug 'github/copilot.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
 " in vim :CocInstall coc-calc coc-diagnostic coc-git coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
-" in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-sql coc-html @yaegassy/coc-tailwindcss3
+" in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-sh coc-docker @yaegassy/coc-nginx coc-sql coc-html @yaegassy/coc-tailwindcss3 coc-solargraph
 " other common plugin: coc-java coc-perl coc-clangd coc-markdownlint
 
 call plug#end()
@@ -138,6 +138,7 @@ set cmdheight=1
 set lazyredraw
 set mouse=nv
 set completeopt=menu,menuone,preview
+" set pastetoggle=<F7>
 nnoremap <F7> :set paste!<CR>:set paste?<CR>
 set grepprg=git\ grep
 let g:grep_cmd_opts = '--line-number'
