@@ -163,7 +163,7 @@ alias redis-cli='docker run -it --rm redis:alpine redis-cli'
 
 #alias kube_dev_ningxia='kubectl --kubeconfig ~/.kube/kube_config_ningxia'
 #alias kube_prod_beijing='kubectl --kubeconfig ~/.kube/kube_config_pro'
-export KUBECONFIG='/Users/chenmi/.kube/chenmi-kube-admin-pro-dev-rw:/Users/chenmi/.kube/chenmi-kube-pro-nx:/Users/chenmi/.kube/chenmi-kube-ali-prod:/Users/chenmi/.kube/chenmi-kube-ali-dev:/Users/chenmi/.kube/chenmi-kube-ali-dev-ask:/Users/chenmi/.kube/chenmi-kube-ali-dev-worker:/Users/chenmi/.kube/eks:/Users/chenmi/.kube/chenmi-kube-ali-prod-worker:/Users/chenmi/.kube/mixbio-dev:/Users/chenmi/.kube/rancher-rke.yaml:/Users/chenmi/.kube/mixbio-rancher.yaml:/Users/chenmi/.kube/mixbio.yaml:/Users/chenmi/.kube/mixbio-rancher.yaml:/Users/chenmi/.kube/mixbio-prod.yaml:/Users/chenmi/.kube/kube_config_azure'
+export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure"
 #alias kube_dev_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=ningxia-dev'
 #alias kube_dev='kubectl --context=ningxia-dev'
 alias kube_prod_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=prod'
