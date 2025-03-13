@@ -650,6 +650,9 @@ inoremap <C-e> <Plug>(copilot-next)
 inoremap <Leader>n <Plug>(copilot-next)
 inoremap <Leader>p <Plug>(copilot-prev)
 inoremap <leader>a <Plug>(copilot-accept)
+let g:copilot_filetypes = {
+    \ '*': v:true,
+    \ }
 
 " Codeium
 " let g:codeium_enabled = v:true
