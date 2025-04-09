@@ -163,7 +163,7 @@ alias redis-cli='docker run -it --rm redis:alpine redis-cli'
 
 #alias kube_dev_ningxia='kubectl --kubeconfig ~/.kube/kube_config_ningxia'
 #alias kube_prod_beijing='kubectl --kubeconfig ~/.kube/kube_config_pro'
-export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure"
+export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure:${HOME}/.kube/chenmi-kube-ali-applyai"
 #alias kube_dev_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=ningxia-dev'
 #alias kube_dev='kubectl --context=ningxia-dev'
 alias kube_prod_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=prod'
@@ -181,6 +181,7 @@ alias kube_mixbio_rancher='kubectl --context=mixbio-rancher-local'
 alias kube_mixbio='kubectl --context=mixbio'
 alias kube_mixbio_prod='kubectl --context=mixbio-prod'
 alias kube_azure='kubectl --context=azure-dev1'
+alias kube_ali_applyai='kubectl --context=ali-applyai'
 
 #alias create_ns_dev='python3 ./main.py nx-dev'
 alias create_ns_prod='python3 ./main.py prod'
@@ -218,6 +219,7 @@ alias helm_prod_nx='helm_2_9_1 --kube-context=prod-nx'
 alias helm_mixbio_dev='helm_2_16_3 --kube-context=mixbio-dev'
 alias helm_mixbio_prod='helm_2_16_3 --kube-context=mixbio-prod'
 alias helm_azure='helm3 --kube-context=azure-dev1'
+alias helm_ali_applyai='helm3 --kube-context=ali-applyai'
 
 #alias velero_dev='velero --kubecontext=ningxia-dev'
 alias velero_prod='velero --kubecontext=prod'
@@ -294,4 +296,6 @@ alias proxy='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 
 alias proxy_run='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
 alias vimns='VIM_NO_SESSION=1'
 
-eval "$(gh copilot alias -- zsh)"
+command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
