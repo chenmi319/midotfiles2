@@ -8,6 +8,7 @@ call plug#begin()
 Plug 'chrisbra/Colorizer'
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 
 " git.vundle
 Plug 'tpope/vim-fugitive'
@@ -17,6 +18,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'jistr/vim-nerdtree-tabs'
+Plug 'nvim-tree/nvim-web-devicons' "或 Plug 'echasnovski/mini.icons'
 " Plug 'nvim-tree/nvim-web-devicons'
 " Plug 'nvim-tree/nvim-tree.lua'
 
