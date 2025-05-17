@@ -299,3 +299,9 @@ alias vimns='VIM_NO_SESSION=1'
 command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=($HOME/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
