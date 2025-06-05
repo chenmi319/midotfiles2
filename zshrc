@@ -305,3 +305,7 @@ fpath=($HOME/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+. "$HOME/.local/bin/env"
+
+alias source_uv='source .venv/bin/activate'
