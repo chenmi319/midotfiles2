@@ -308,4 +308,4 @@ compinit
 
 . "$HOME/.local/bin/env"
 
-alias source_uv='source .venv/bin/activate'
+alias uv_source='source .venv/bin/activate'
