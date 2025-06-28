@@ -306,6 +306,6 @@ autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
-. "$HOME/.local/bin/env"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 alias uvs='source .venv/bin/activate'
