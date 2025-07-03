@@ -63,7 +63,7 @@ Plug 'github/copilot.vim'
 " Plug 'Exafunction/codeium.vim'
 
 " https://github.com/neoclide/coc.nvim
-" 安装 node, 安装 nvm, nvm install 20, 设置 nvm alias default 20, npm install -g yarn
+" 安装 node, 安装 nvm, nvm install 22, 设置 nvm alias default 22, npm install -g yarn
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions

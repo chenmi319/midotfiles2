@@ -63,7 +63,7 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 * [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
 * [安装 nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
 * 安装 ripgrep
-* 安装 node, 安装 nvm, nvm install 20, 设置 nvm alias default 20, npm install -g yarn
+* 安装 node, 安装 nvm, nvm install 22, 设置 nvm alias default 22, npm install -g yarn
 ```bash
 mkdir -p ~/.config/nvim/init.vim
 try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
