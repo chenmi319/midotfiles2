@@ -281,11 +281,11 @@ load-nvmrc() {
   local nvmrc_path="$PWD/.nvmrc"
 
   if [[ -f "$nvmrc_path" ]]; then
-    nvm use
+    nvm use --silent
   else
     ;
     # echo "No .nvmrc file found. Using default nvm version."
-    # nvm use default
+    nvm use --silent default
   fi
 }
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
