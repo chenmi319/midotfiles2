@@ -46,4 +46,9 @@ Session.vim
 # ----------------------------------------------------------------------------------------------
 .sass-cache
 
-.gemini
+.gemini/
+GEMINI.md
+
+.taskmaster/
+
+.github/copilot-instructions.md
