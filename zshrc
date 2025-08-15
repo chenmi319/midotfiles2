@@ -313,3 +313,6 @@ alias uvs='source .venv/bin/activate'
 # Task Master aliases added on 7/20/2025
 alias tm='task-master'
 alias taskmaster='task-master'
+
+# opencode
+export PATH=/Users/chenmi/.opencode/bin:$PATH
