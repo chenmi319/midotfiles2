@@ -4,17 +4,17 @@
 
 call plug#begin()
 
-" appearance.vundle
+" appearance
 Plug 'chrisbra/Colorizer'
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'MeanderingProgrammer/render-markdown.nvim'
 
-" git.vundle
+" git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-" project.vundle
+" project
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'jistr/vim-nerdtree-tabs'
@@ -22,7 +22,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 " Plug 'nvim-tree/nvim-web-devicons'
 " Plug 'nvim-tree/nvim-tree.lua'
 
-" search.vundle
+" search
 Plug 'vim-scripts/IndexedSearch'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'Lokaltog/vim-easymotion'
@@ -30,12 +30,12 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'fannheyward/telescope-coc.nvim'
 
-" textobjects.vundle
+" textobjects
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'wellle/targets.vim'
 
-" vim-improvements.vundle
+" vim-improvements
 Plug 'AndrewRadev/splitjoin.vim'
 " Plug 'Raimondi/delimitMate'
 " Plug 'briandoll/change-inside-surroundings.vim'
