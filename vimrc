@@ -10,6 +10,10 @@ Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'MeanderingProgrammer/render-markdown.nvim'
 
+" treesitter for better syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-context'
+
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -762,28 +766,28 @@ EOF
 " lua << EOF
 " vim.keymap.set('n', '<leader>tn', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 " vim.keymap.set('n', '<C-\\>', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
-" 
+"
 " -- disable netrw at the very start of your init.lua
 " vim.g.loaded_netrw = 1
 " vim.g.loaded_netrwPlugin = 1
-" 
+"
 " -- optionally enable 24-bit colour
 " vim.opt.termguicolors = true
-" 
+"
 " local function my_on_attach(bufnr)
 "   local api = require "nvim-tree.api"
-" 
+"
 "   local function opts(desc)
 "     return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 "   end
-" 
+"
 "   -- default mappings
 "   api.config.mappings.default_on_attach(bufnr)
-" 
+"
 "   -- custom mappings
 "   vim.keymap.set('n', 't', api.node.open.tab, opts('Open in New Tab')) -- 绑定 't' 键到 "open in new tab"
 " end
-" 
+"
 " -- OR setup with some options
 " require("nvim-tree").setup({
 "   on_attach = my_on_attach,
@@ -832,4 +836,21 @@ EOF
 " lukas-reineke/indent-blankline.nvim
 lua << EOF
 require("ibl").setup()
+
+-- Treesitter configuration for better syntax highlighting
+require('nvim-treesitter.configs').setup({
+  ensure_installed = { "python", "lua", "json", "yaml", "bash", "markdown", "javascript", "typescript" },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false
+  },
+  indent = { enable = true },
+})
+
+-- Treesitter context - shows current function/class at top
+require('treesitter-context').setup({
+  enable = true,
+  separator = "-",
+  mode = "cursor"
+})
 EOF
