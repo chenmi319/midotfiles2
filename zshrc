@@ -40,6 +40,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
+zstyle ':omz:update' mode reminder
+zstyle ':omz:update' frequency 14
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -57,8 +59,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -100,6 +102,62 @@ plugins=(
 )
 
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+
+
+### --- zsh completion cache: enable + auto-clean -----------------------------
+
+# 1) 开启补全缓存（放在 compinit 之前）
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path "$HOME/.zcompcache"
+
+# 2) 可调参数（按需改）
+ZCOMP_CACHE_DIR=${ZCOMP_CACHE_DIR:-$HOME/.zcompcache}        # 缓存目录
+ZCOMP_CACHE_TTL_DAYS=${ZCOMP_CACHE_TTL_DAYS:-14}             # 文件保留天数
+ZCOMP_CACHE_CLEAN_INTERVAL_SECS=${ZCOMP_CACHE_CLEAN_INTERVAL_SECS:-86400}  # 清理频率（秒），默认每天一次
+
+# 3) 准备目录
+mkdir -p "$ZCOMP_CACHE_DIR"
+
+# 4) 自动清理函数（带锁，避免并发；限频，避免每次都清理）
+function _zcompcache_clean() {
+  local stamp="$ZCOMP_CACHE_DIR/.last_clean"
+  local lock="$ZCOMP_CACHE_DIR/.clean.lock"
+  local now=$EPOCHSECONDS
+  local last=0
+
+  [[ -f $stamp ]] && read -r last < "$stamp"
+  [[ $last != <-> ]] && last=0
+  (( now - last < ZCOMP_CACHE_CLEAN_INTERVAL_SECS )) && return 0
+
+  # 简易加锁，失败即有其他进程在清理
+  if ( set -o noclobber; : > "$lock" ) 2>/dev/null; then
+    trap 'rm -f "$lock"' EXIT
+    # 删除超期文件
+    command find "$ZCOMP_CACHE_DIR" \
+      -type f ! -name '.last_clean' ! -name '.clean.lock' \
+      -mtime +$((ZCOMP_CACHE_TTL_DAYS)) -print -delete >/dev/null 2>&1
+    # 清空空目录
+    command find "$ZCOMP_CACHE_DIR" -type d -empty -delete >/dev/null 2>&1
+    print -r -- "$now" >| "$stamp"
+  fi
+}
+
+# 5) 初始化补全（在 zstyle 之后）
+autoload -Uz compinit
+compinit
+
+# 6) 后台触发清理，不阻塞启动
+_zcompcache_clean &!
+
+# 7) 手动一键清理命令
+zcompcache-clear() {
+  command find "$ZCOMP_CACHE_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
+  : >| "$ZCOMP_CACHE_DIR/.last_clean"
+  echo "zcompcache cleared."
+}
+### --------------------------------------------------------------------------
+
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -148,22 +206,56 @@ fixssh() {
 
 unsetopt auto_name_dirs
 
-export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+# export LC_CTYPE=en_US.UTF-8  # 仅在需要时
+unset LC_ALL
 
-alias mysql57='docker run -it --rm mysql:5.7 env LANG=C.UTF-8 mysql -A'
-alias mysql57import='docker run -i --rm mysql:5.7 env LANG=C.UTF-8 mysql -A'
-alias psql13='docker run -it --rm postgres:13 psql'
-alias psql11='docker run -it --rm postgres:11 psql'
-alias psql10='docker run -it --rm postgres:10 psql'
-alias redis-cli='docker run -it --rm redis:alpine redis-cli'
+
+# alias mysql57='docker run -it --rm mysql:5.7 env LANG=C.UTF-8 mysql -A'
+# alias mysql57import='docker run -i --rm mysql:5.7 env LANG=C.UTF-8 mysql -A'
+# alias psql13='docker run -it --rm postgres:13 psql'
+# alias psql11='docker run -it --rm postgres:11 psql'
+# alias psql10='docker run -it --rm postgres:10 psql'
+# alias redis-cli='docker run -it --rm redis:alpine redis-cli'
+# ---- docker run helper: interactive -> -it, piped -> -i ----
+_dockrun() {
+  local tty_args=()
+  if [ -t 0 ] && [ -t 1 ]; then
+    tty_args=(-it)
+  else
+    tty_args=(-i)
+  fi
+  docker run --rm "${tty_args[@]}" "$@"
+}
+
+# MySQL 5.7：交互或脚本均可
+mysql57() {
+  _dockrun mysql:5.7 env LANG=C.UTF-8 mysql -A "$@"
+}
+
+# MySQL 5.7：特意用于导入（永远保留 -i，避免 -t 干扰管道/文件输入）
+mysql57import() {
+  docker run --rm -i mysql:5.7 env LANG=C.UTF-8 mysql -A "$@"
+}
+
+# Postgres：不同版本分别一个函数（交互则 -it；脚本/管道则 -i）
+psql13() { _dockrun postgres:13 psql "$@"; }
+psql11() { _dockrun postgres:11 psql "$@"; }
+psql10() { _dockrun postgres:10 psql "$@"; }
+
+# Redis CLI：同理
+redis-cli() { _dockrun redis:alpine redis-cli "$@"; }
+
 
 # fix failing bck-i-search
 #bindkey '^R' history-incremental-search-backward
 
+# export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure:${HOME}/.kube/chenmi-kube-ali-applyai"
+typeset -gaU KUBEFILES
+KUBEFILES=($HOME/.kube/chenmi-* $HOME/.kube/*eks* $HOME/.kube/*rancher*.yaml $HOME/.kube/*mixbio*.yaml)
+export KUBECONFIG="${(j.:.)KUBEFILES}"
 #alias kube_dev_ningxia='kubectl --kubeconfig ~/.kube/kube_config_ningxia'
 #alias kube_prod_beijing='kubectl --kubeconfig ~/.kube/kube_config_pro'
-export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure:${HOME}/.kube/chenmi-kube-ali-applyai"
 #alias kube_dev_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=ningxia-dev'
 #alias kube_dev='kubectl --context=ningxia-dev'
 alias kube_prod_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=prod'
@@ -237,6 +329,16 @@ alias nxprod-kops1-15='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://alo7-kops
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin"
 
+
+# --- History ---
+HISTSIZE=200000
+SAVEHIST=200000
+HISTFILE=~/.zsh_history
+setopt APPEND_HISTORY INC_APPEND_HISTORY_TIME
+setopt HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
+setopt HIST_FIND_NO_DUPS
+
+
 if kubectl version --client >/dev/null 2>&1; then
   source <(kubectl completion zsh)
 fi
@@ -288,12 +390,14 @@ load-nvmrc() {
     nvm use --silent default
   fi
 }
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+# typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-alias proxy='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
-alias proxy_run='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
+# alias proxy='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
+# alias proxy_run='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
+proxy() { export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890; }
+unproxy(){ unset http_proxy https_proxy all_proxy; }
 alias vimns='VIM_NO_SESSION=1'
 
 command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
