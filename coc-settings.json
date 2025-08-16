@@ -15,6 +15,7 @@
   "suggest.minTriggerInputLength": 2,
   "suggest.detailField": "abbr",
   "suggest.snippetIndicator": "🌟",
+  "semanticTokens.enable": false,
   "suggest.triggerCompletionWait": 50,
   "pyright.inlayHints.functionReturnTypes": true,
   "pyright.inlayHints.variableTypes": true,
