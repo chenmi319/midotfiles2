@@ -316,3 +316,10 @@ alias taskmaster='task-master'
 
 # opencode
 export PATH=/Users/chenmi/.opencode/bin:$PATH
+
+# bun completions
+[ -s "/Users/chenmi/.bun/_bun" ] && source "/Users/chenmi/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
