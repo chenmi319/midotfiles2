@@ -204,6 +204,12 @@ fixssh() {
     |sed -n 's/^\(SSH_[^=]*\)=\(.*\)/export \1="\2"/p')
 }
 
+# fix mouse issues in terminal
+fix_mouse() {
+  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?2004l'
+}
+precmd_functions+=(fix_mouse)
+
 unsetopt auto_name_dirs
 
 export LANG=en_US.UTF-8
