@@ -1,5 +1,5 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" set nocompatible              " be iMproved, required
+" filetype off                  " required
 
 
 call plug#begin()
@@ -18,7 +18,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'nvim-tree/nvim-web-devicons' "或 Plug 'echasnovski/mini.icons'
+" Plug 'nvim-tree/nvim-web-devicons' "或 Plug 'echasnovski/mini.icons'
 " Plug 'nvim-tree/nvim-web-devicons'
 " Plug 'nvim-tree/nvim-tree.lua'
 
@@ -75,20 +75,35 @@ call plug#end()
 
 
 " basic config
-set t_Co=256
+" set t_Co=256
+set termguicolors
 set number
 set backspace=indent,eol,start
 set history=1000
 set showcmd
-set showmode
+" set showmode
+set noshowmode
 set gcr=a:blinkon0
 set visualbell
 set autoread
 set hidden
 syntax on
-set noswapfile
-set nobackup
-set nowb
+
+" set noswapfile
+" set nobackup
+" set nowb
+" 持久化 undo，避免误关丢历史
+set undofile
+if isdirectory(expand('~/.vim/undo')) == 0
+  silent! call mkdir(expand('~/.vim/undo'), 'p', 0700)
+endif
+set undodir=~/.vim/undo
+" swap 用单独位置（可选）
+if isdirectory(expand('~/.vim/swap')) == 0
+  silent! call mkdir(expand('~/.vim/swap'), 'p', 0700)
+endif
+set directory=~/.vim/swap//
+
 "if has('persistent_undo')
 "  if !isdirectory(expand('~').'/.vim/backups')
 "    silent !mkdir ~/.vim/backups > /dev/null 2>&1
@@ -137,9 +152,10 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 command W w !sudo tee % > /dev/null
 set cmdheight=1
-set lazyredraw
+" set lazyredraw
 set mouse=nv
-set completeopt=menu,menuone,preview
+" set completeopt=menu,menuone,preview
+set completeopt=menu,menuone
 " set pastetoggle=<F7>
 nnoremap <F7> :set paste!<CR>:set paste?<CR>
 set grepprg=git\ grep
@@ -147,7 +163,8 @@ let g:grep_cmd_opts = '--line-number'
 if has("win16") || has("win32") || has("win64")
   set clipboard=unnamedplus
 else
-  set clipboard=unnamed
+  " set clipboard=unnamed
+  set clipboard=unnamedplus
 endif
 let mapleader=","
 map <leader>bd :bd<CR>
@@ -187,9 +204,10 @@ function! FileSize()
     endif
 endfunction
 " oshdick/onedark.vim
-colorscheme onedark
+" set termguicolors
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
+colorscheme onedark
 " jistr/vim-nerdtree-tabs.git
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
@@ -394,8 +412,9 @@ nnoremap <C-Down> <C-w>-
 nnoremap <C-Left> <C-w><
 nnoremap <C-Right>  <C-w>>
 " show invisible chars
-highlight nonascii guibg=Red ctermbg=2
-autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
+" highlight nonascii guibg=Red ctermbg=2
+" autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
+command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
 
 " Convert slashes to backslashes for Windows.
 if has('win32')
