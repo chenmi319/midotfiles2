@@ -1,3 +1,6 @@
+# Disable Powerlevel10k instant prompt to avoid conflicts with console output
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -189,6 +192,12 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# fix mouse issues in terminal (after p10k initialization)
+fix_mouse() {
+  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?2004l'
+}
+precmd_functions+=(fix_mouse)
+
 # HomeBrew
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
 # HomeBrew END
@@ -203,12 +212,6 @@ fixssh() {
   eval $(tmux show-env    \
     |sed -n 's/^\(SSH_[^=]*\)=\(.*\)/export \1="\2"/p')
 }
-
-# fix mouse issues in terminal
-fix_mouse() {
-  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?2004l'
-}
-precmd_functions+=(fix_mouse)
 
 unsetopt auto_name_dirs
 
@@ -396,7 +399,6 @@ load-nvmrc() {
     nvm use --silent default
   fi
 }
-# typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
