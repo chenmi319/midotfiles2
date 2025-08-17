@@ -435,3 +435,7 @@ export PATH=/Users/chenmi/.opencode/bin:$PATH
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Word character configuration for Ctrl+W behavior
+# Remove underscore from WORDCHARS so it's treated as a word separator like hyphen
+export WORDCHARS='*?[]~=&;!#$%^(){}<>'
