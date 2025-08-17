@@ -82,6 +82,7 @@ call plug#end()
 " set t_Co=256
 set termguicolors
 set number
+set cursorline
 set backspace=indent,eol,start
 set history=1000
 set showcmd
