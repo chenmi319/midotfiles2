@@ -189,45 +189,12 @@ let g:lightline = {
       \ 'component_function': {
       \   'gitbranch': 'FugitiveHead',
       \   'filesize': 'FileSize',
-      \   'cocstatus': 'coc#status',
-      \   'currentfunction': 'CocCurrentFunction'
+      \   'cocstatus': 'coc#status'
+      \ },
+      \ 'component': {
+      \   'currentfunction': '%{get(b:,"coc_current_function","")}'
       \ },
       \ }
-function! CocCurrentFunction()
-    let l:func = get(b:, 'coc_current_function', '')
-    if l:func == ''
-        return ''
-    endif
-
-    " Try to find the class containing current line
-    try
-        let l:symbols = CocAction('documentSymbols')
-        let l:line = line('.')
-
-        for symbol in l:symbols
-            if get(symbol, 'kind', '') ==# 'Class'
-                let l:range = get(symbol, 'range', {})
-                if !empty(l:range)
-                    let l:start = get(l:range, 'start', {})
-                    let l:end = get(l:range, 'end', {})
-
-                    " Get line numbers (handle both formats)
-                    let l:start_line = type(l:start) == type({}) ? get(l:start, 'line', -1) + 1 : l:start
-                    let l:end_line = type(l:end) == type({}) ? get(l:end, 'line', -1) + 1 : l:end
-
-                    if l:line >= l:start_line && l:line <= l:end_line
-                        let l:class_name = get(symbol, 'text', '')
-                        return l:class_name . '.' . l:func
-                    endif
-                endif
-            endif
-        endfor
-
-        return l:func
-    catch
-        return l:func
-    endtry
-endfunction
 function! FileSize()
     let l:size = getfsize(expand('%:p'))
     if l:size < 0
