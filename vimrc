@@ -661,6 +661,9 @@ let g:pyright_inlayVariableHints_state = v:true
 nnoremap <silent> tv :call TogglePyrightInlayVariableHints()<CR>
 nnoremap <silent> tp :call TogglePyrightInlayParameterHints()<CR>
 
+" treesitter-context toggle
+nnoremap <silent> tc :TSContext toggle<CR>
+
 " neoclide/coc.nvim end
 
 " ojroques/vim-oscyank
