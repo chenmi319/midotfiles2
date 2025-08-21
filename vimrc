@@ -423,14 +423,19 @@ command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi 
 " Convert slashes to backslashes for Windows.
 if has('win32')
   nmap ,cs :let @*=substitute(expand("%"), "/", "\\", "g")<CR>
+  xnoremap ,cs :<C-u>let @* = substitute(expand("%"), "/", "\\", "g") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
   nmap ,cl :let @*=substitute(expand("%:p"), "/", "\\", "g")<CR>
 
   " This will copy the path in 8.3 short format, for DOS and Windows 9x
   nmap ,c8 :let @*=substitute(expand("%:p:8"), "/", "\\", "g")<CR>
 else
   nmap ,cs :let @*=expand("%")<CR>
+  xnoremap ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
   nmap ,cl :let @*=expand("%:p")<CR>
 endif
+
+" 可视模式下 ,cs 复制：相对路径:起始-结束行号 + 选中内容
+xnoremap ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 
 nnoremap <leader>r :!"%:p"
 
