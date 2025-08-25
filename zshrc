@@ -198,13 +198,6 @@ fix_mouse() {
 }
 precmd_functions+=(fix_mouse)
 
-# # Fix terminal compatibility for older iTerm versions
-# if [[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" ]]; then
-#   export TERM=xterm-256color
-#   # Force UTF-8 for older iTerm
-#   export LC_CTYPE=en_US.UTF-8
-# fi
-
 # HomeBrew
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
 # HomeBrew END
