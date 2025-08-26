@@ -216,7 +216,7 @@ fixssh() {
 unsetopt auto_name_dirs
 
 export LANG=en_US.UTF-8
-# export LC_CTYPE=en_US.UTF-8  # 仅在需要时
+export LC_CTYPE=zh_CN.UTF-8  # 仅在需要时
 unset LC_ALL
 
 
@@ -432,9 +432,9 @@ alias taskmaster='task-master'
 export PATH=/Users/chenmi/.opencode/bin:$PATH
 
 # opencode with Chinese locale
-occ() {
-  VIM_NO_SESSION=1 LANG=zh_CN.UTF-8 opencode "$@"
-}
+# occ() {
+#   LANG=zh_CN.UTF-8 opencode "$@"
+# }
 
 # bun completions
 [ -s "/Users/chenmi/.bun/_bun" ] && source "/Users/chenmi/.bun/_bun"
