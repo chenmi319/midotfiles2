@@ -393,12 +393,14 @@ autoload -U add-zsh-hook
 load-nvmrc() {
   local nvmrc_path="$PWD/.nvmrc"
 
-  if [[ -f "$nvmrc_path" ]]; then
-    nvm use --silent
+  if command -v nvm >/dev/null 2>&1; then
+    if [[ -f "$nvmrc_path" ]]; then
+      nvm use --silent
+    else
+      nvm use --silent default
+    fi
   else
-    ;
-    # echo "No .nvmrc file found. Using default nvm version."
-    nvm use --silent default
+    # echo "nvm not found, skipping nvmrc loading."
   fi
 }
 add-zsh-hook chpwd load-nvmrc
