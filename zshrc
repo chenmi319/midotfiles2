@@ -425,10 +425,7 @@ compinit
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 alias uvs='source .venv/bin/activate'
-
-# Task Master aliases added on 7/20/2025
-alias tm='task-master'
-alias taskmaster='task-master'
+alias uvsb="source $HOME/uv_venv/base/bin/activate"
 
 # opencode
 export PATH=/Users/chenmi/.opencode/bin:$PATH
