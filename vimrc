@@ -686,6 +686,7 @@ inoremap <leader>a <Plug>(copilot-accept)
 let g:copilot_filetypes = {
     \ '*': v:true,
     \ }
+let g:copilot_tab_fallback = ""
 
 " Codeium
 " let g:codeium_enabled = v:true
