@@ -7,7 +7,7 @@
 ```bash
 # git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
 # git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
-git clone https://gh-proxy.com/https://github.com/chenmi319/midotfiles2.git
+git clone https://gh-proxy.com/https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 ```
 
 # zsh
