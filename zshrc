@@ -398,12 +398,25 @@ load-nvmrc() {
     else
       nvm use --silent default
     fi
-  else
-    # echo "nvm not found, skipping nvmrc loading."
   fi
 }
+
+load-uv-venv() {
+  if command -v uv >/dev/null 2>&1; then
+    if [[ -f "$PWD/.venv/bin/activate" ]]; then
+      if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
+        source "$PWD/.venv/bin/activate"
+      fi
+    elif [[ -n "$VIRTUAL_ENV" ]] && [[ "$VIRTUAL_ENV" == *//.venv ]]; then
+      deactivate 2>/dev/null
+    fi
+  fi
+}
+
 add-zsh-hook chpwd load-nvmrc
+add-zsh-hook chpwd load-uv-venv
 load-nvmrc
+load-uv-venv
 
 # alias proxy='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
 # alias proxy_run='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
