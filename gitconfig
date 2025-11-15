@@ -117,6 +117,40 @@
   autocrlf = false
   editor = vim
   excludesfile = ~/.gitignore
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  # --- Functionality ---
+  navigate = true      # use n and N to move between diff sections
+  side-by-side = true  # Enable side-by-side view
+  line-numbers = true  # Show line numbers
+
+  # --- High-Contrast Dark Theme ---
+  dark = true # Important: ensures delta knows the terminal background is dark
+
+  # Style for deleted lines (red background)
+  # Format: "foreground background attributes"
+  # We use a slightly brighter background color than the default.
+  minus-style = "normal #551e21"
+
+  # Style for added lines (green background)
+  # Using a desaturated green for better readability.
+  plus-style = "normal #174d2b"
+
+  # This is the KEY for clarity: highlight the exact word changes.
+  # We make the background much brighter and the text bold for emphasis.
+  minus-emph-style = "bold red #8b2c2f"
+  plus-emph-style = "bold green #297745"
+
+  # Use a good built-in theme for code syntax highlighting
+  syntax-theme = "Solarized (dark)"
+
+  # Style for file headers and hunk headers to make them stand out
+  file-style = "bold yellow ul"
+  hunk-header-style = "bold cyan"
+[merge]
+  conflictStyle = zdiff3
 [advice]
   statusHints = false
 [diff]
