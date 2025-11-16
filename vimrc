@@ -706,9 +706,17 @@ nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
 " tpope/vim-obsession
-let session_file = getcwd() . "/Session.vim"
+if has('nvim')
+  let s:session_dir = stdpath('state')
+else
+  let s:session_dir = exists('$XDG_STATE_HOME') ? $XDG_STATE_HOME . '/vim' : expand('~/.local/state/vim')
+endif
+if !isdirectory(s:session_dir)
+  call mkdir(s:session_dir, 'p')
+endif
+let session_file = s:session_dir . '/session-' . fnamemodify(getcwd(), ':t') . '.vim'
 " if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
-if empty($VIM_NO_SESSION) && session_file =~ "workspace"
+if empty($VIM_NO_SESSION) && getcwd() =~ "workspace"
   set sessionoptions-=blank,buffers
   if filereadable(session_file)
       execute 'silent! source ' . session_file
