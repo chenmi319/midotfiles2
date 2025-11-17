@@ -716,7 +716,11 @@ if !isdirectory(s:session_dir)
 endif
 let session_file = s:session_dir . '/session-' . fnamemodify(getcwd(), ':t') . '.vim'
 " if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
-if empty($VIM_NO_SESSION) && getcwd() =~ "workspace"
+" git 提交/合并说明时不加载 session，避免干扰 COMMIT_EDITMSG 等临时 buffer
+if empty($VIM_NO_SESSION)
+      \ && getcwd() =~ "workspace"
+      \ && (argc() == 0 || argv(0) !~ 'COMMIT_EDITMSG\|MERGE_MSG\|TAG_EDITMSG')
+      \ && &filetype !=# 'gitcommit'
   set sessionoptions-=blank,buffers
   if filereadable(session_file)
       execute 'silent! source ' . session_file
