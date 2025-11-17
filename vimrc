@@ -714,7 +714,9 @@ endif
 if !isdirectory(s:session_dir)
   call mkdir(s:session_dir, 'p')
 endif
-let session_file = s:session_dir . '/session-' . fnamemodify(getcwd(), ':t') . '.vim'
+" include full cwd to avoid collisions between nested paths
+let s:session_name = substitute(fnamemodify(getcwd(), ':p'), '[:/\\]', '_', 'g')
+let session_file = s:session_dir . '/session-' . s:session_name . '.vim'
 let s:startup_files = []
 if argc() > 0
   for s:idx in range(0, argc() - 1)
