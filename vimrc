@@ -715,6 +715,12 @@ if !isdirectory(s:session_dir)
   call mkdir(s:session_dir, 'p')
 endif
 let session_file = s:session_dir . '/session-' . fnamemodify(getcwd(), ':t') . '.vim'
+let s:startup_files = []
+if argc() > 0
+  for s:idx in range(0, argc() - 1)
+    call add(s:startup_files, fnamemodify(argv(s:idx), ':p'))
+  endfor
+endif
 " if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
 " git 提交/合并说明时不加载 session，避免干扰 COMMIT_EDITMSG 等临时 buffer
 if empty($VIM_NO_SESSION)
@@ -727,6 +733,14 @@ if empty($VIM_NO_SESSION)
   else
       execute 'mksession! ' . session_file
   endif
+  " Re-open files passed on the command line after session restore
+  " 启动时如果传入文件，恢复 session 后跳到已打开的 tab，未打开则新建 tab 打开
+  for s:file in s:startup_files
+    if !empty(s:file)
+      " tab drop: 已有则跳转，无则新 tab 打开
+      execute 'tab drop ' . fnameescape(s:file)
+    endif
+  endfor
 endif
 
 "luochen1990/rainbow'
