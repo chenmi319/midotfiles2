@@ -21,7 +21,7 @@ Plug 'airblade/vim-gitgutter'
 " project
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'jistr/vim-nerdtree-tabs'
+Plug 'willyspinner/vim-nerdtree-tabs'
 " Plug 'nvim-tree/nvim-web-devicons' "或 Plug 'echasnovski/mini.icons'
 " Plug 'nvim-tree/nvim-web-devicons'
 " Plug 'nvim-tree/nvim-tree.lua'
