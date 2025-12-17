@@ -45,7 +45,8 @@ Plug 'AndrewRadev/splitjoin.vim'
 " Plug 'briandoll/change-inside-surroundings.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'tomtom/tcomment_vim'
-Plug 'vim-scripts/matchit.zip'
+" Plug 'vim-scripts/matchit.zip'  " Replaced by vim-matchup
+Plug 'andymass/vim-matchup'
 "Plug 'mg979/vim-visual-multi'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-abolish'
@@ -59,7 +60,8 @@ Plug 'vim-scripts/lastpos.vim'
 Plug 'goldfeld/ctrlr.vim'
 Plug 'luochen1990/rainbow'
 " Plug 'mhinz/vim-startify'
-Plug 'tpope/vim-obsession'
+" Plug 'tpope/vim-obsession'  " Replaced by auto-session
+Plug 'rmagatti/auto-session'
 Plug 'ojroques/vim-oscyank'
 
 Plug 'github/copilot.vim'
@@ -93,6 +95,12 @@ set visualbell
 set autoread
 set hidden
 syntax on
+
+" Session options - what to save/restore in sessions
+set sessionoptions-=options  " Don't save global options (prevents plugin conflicts)
+set sessionoptions-=folds    " Don't save folds
+set sessionoptions-=blank    " Don't save empty windows
+set sessionoptions+=tabpages,winsize,curdir
 
 " set noswapfile
 " set nobackup
@@ -705,45 +713,59 @@ nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
 nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
-" tpope/vim-obsession
-if has('nvim')
-  let s:session_dir = stdpath('state')
-else
-  let s:session_dir = exists('$XDG_STATE_HOME') ? $XDG_STATE_HOME . '/vim' : expand('~/.local/state/vim')
-endif
-if !isdirectory(s:session_dir)
-  call mkdir(s:session_dir, 'p')
-endif
-" include full cwd to avoid collisions between nested paths
-let s:session_name = substitute(fnamemodify(getcwd(), ':p'), '[:/\\]', '_', 'g')
-let session_file = s:session_dir . '/session-' . s:session_name . '.vim'
-let s:startup_files = []
-if argc() > 0
-  for s:idx in range(0, argc() - 1)
-    call add(s:startup_files, fnamemodify(argv(s:idx), ':p'))
-  endfor
-endif
-" if empty($VIM_NO_SESSION) && session_file !~ "/tmp/Session.vim"
-" git 提交/合并说明时不加载 session，避免干扰 COMMIT_EDITMSG 等临时 buffer
-if empty($VIM_NO_SESSION)
-      \ && getcwd() =~ "workspace"
-      \ && (argc() == 0 || argv(0) !~ 'COMMIT_EDITMSG\|MERGE_MSG\|TAG_EDITMSG')
-      \ && &filetype !=# 'gitcommit'
-  set sessionoptions-=blank,buffers
-  if filereadable(session_file)
-      execute 'silent! source ' . session_file
-  else
-      execute 'mksession! ' . session_file
-  endif
-  " Re-open files passed on the command line after session restore
-  " 启动时如果传入文件，恢复 session 后跳到已打开的 tab，未打开则新建 tab 打开
-  for s:file in s:startup_files
-    if !empty(s:file)
-      " tab drop: 已有则跳转，无则新 tab 打开
-      execute 'tab drop ' . fnameescape(s:file)
-    endif
-  endfor
-endif
+" auto-session configuration
+lua << EOF
+local has_auto_session, auto_session = pcall(require, 'auto-session')
+if has_auto_session then
+  auto_session.setup({
+    -- Only enable for workspace directories
+    auto_session_enable_last_session = false,
+    auto_session_root_dir = vim.fn.stdpath('state') .. '/sessions/',
+    auto_session_enabled = true,
+    auto_save_enabled = true,
+    auto_restore_enabled = true,
+
+    -- Suppress session create/restore messages
+    auto_session_suppress_dirs = { '~/', '~/Downloads', '/tmp', '/'},
+
+    -- Better session options
+    session_lens = {
+      load_on_setup = false,
+    },
+
+    -- Don't restore in these conditions
+    bypass_session_save_file_types = { 'gitcommit', 'gitrebase' },
+
+    -- This is the KEY: post_restore_cmds ensures plugins are properly initialized
+    post_restore_cmds = {
+      -- Re-trigger filetype detection for all buffers after restore
+      function()
+        vim.defer_fn(function()
+          for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_loaded(bufnr) then
+              vim.api.nvim_buf_call(bufnr, function()
+                vim.cmd('silent! doautocmd BufRead')
+              end)
+            end
+          end
+        end, 50)
+      end
+    },
+
+    -- Conditionally enable based on directory
+    auto_session_use_git_branch = false,
+    cwd_change_handling = {
+      restore_upcoming_session = false,
+    },
+  })
+
+  -- Only enable auto-session in workspace directories
+  local cwd = vim.fn.getcwd()
+  if not string.match(cwd, "workspace") or vim.fn.getenv("VIM_NO_SESSION") ~= vim.NIL then
+    vim.g.auto_session_enabled = false
+  end
+end
+EOF
 
 "luochen1990/rainbow'
 autocmd VimEnter * RainbowToggleOn
@@ -886,7 +908,16 @@ require('nvim-treesitter.config').setup({
     additional_vim_regex_highlighting = false
   },
   indent = { enable = true },
+  matchup = {
+    enable = true,  -- Enable vim-matchup integration with treesitter
+  },
 })
+
+-- vim-matchup configuration
+vim.g.matchup_matchparen_offscreen = { method = "popup" }
+vim.g.matchup_matchparen_deferred = 1  -- Improve performance
+vim.g.matchup_matchparen_deferred_show_delay = 50
+vim.g.matchup_matchparen_deferred_hide_delay = 700
 
 -- Treesitter context - shows current function/class at top
 require('treesitter-context').setup({
