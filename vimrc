@@ -875,7 +875,7 @@ lua << EOF
 require("ibl").setup()
 
 -- Treesitter configuration for better syntax highlighting
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter.config').setup({
   ensure_installed = { "python", "lua", "json", "yaml", "bash", "markdown", "javascript", "typescript", "tsx", "html" },
   sync_install = false,
   auto_install = true,
@@ -887,26 +887,6 @@ require('nvim-treesitter.configs').setup({
   },
   indent = { enable = true },
 })
-
--- Fix macOS treesitter highlighting issue - lightweight approach
-vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
-  pattern = {"*.py", "*.lua", "*.js", "*.ts", "*.tsx", "*.html", "*.json", "*.yaml", "*.yml", "*.sh", "*.bash", "*.md"},
-  callback = function()
-    if vim.fn.has('mac') == 1 then
-      vim.defer_fn(function()
-        local buf = vim.api.nvim_get_current_buf()
-        local ft = vim.bo[buf].filetype
-        if ft == 'python' or ft == 'lua' or ft == 'javascript' or ft == 'typescript' or
-           ft == 'typescriptreact' or ft == 'html' or ft == 'json' or ft == 'yaml' or
-           ft == 'bash' or ft == 'sh' or ft == 'markdown' then
-          -- Force re-enable treesitter highlighting without reinstalling
-          vim.cmd('TSBufEnable highlight')
-        end
-      end, 50)
-    end
-  end,
-})
-
 
 -- Treesitter context - shows current function/class at top
 require('treesitter-context').setup({
