@@ -1,6 +1,9 @@
 " set nocompatible              " be iMproved, required
 " filetype off                  " required
 
+" Python indent fix: default is shiftwidth()*2 which causes 8-space indent after {
+" See: https://github.com/vim/vim/blob/master/runtime/autoload/python.vim
+let g:python_indent = { 'open_paren': 'shiftwidth()' }
 
 call plug#begin()
 
