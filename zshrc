@@ -442,9 +442,12 @@ alias uvsb="source $HOME/uv_venv/base/bin/activate"
 # opencode
 export PATH=/Users/chenmi/.opencode/bin:$PATH
 
-# opencode with Chinese locale
+oc() {
+  opencode "$@"
+}
+
 occ() {
-  LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@"
+  opencode "$@" --continue
 }
 
 # bun completions
