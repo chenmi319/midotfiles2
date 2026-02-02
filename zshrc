@@ -424,7 +424,8 @@ proxy() { export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7
 unproxy(){ unset http_proxy https_proxy all_proxy; }
 alias vimns='VIM_NO_SESSION=1'
 
-command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
+# Disabled: conflicts with npm-installed GitHub Copilot CLI
+# command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
