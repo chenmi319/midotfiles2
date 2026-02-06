@@ -444,11 +444,11 @@ alias uvsb="source $HOME/uv_venv/base/bin/activate"
 export PATH=/Users/chenmi/.opencode/bin:$PATH
 
 oc() {
-  opencode "$@"
+  LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@"
 }
 
 occ() {
-  opencode "$@" --continue
+  LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@" --continue
 }
 
 # bun completions
