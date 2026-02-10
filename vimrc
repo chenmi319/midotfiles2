@@ -685,6 +685,7 @@ nnoremap <silent> tc :TSContext toggle<CR>
 " ojroques/vim-oscyank
 nmap <leader>y <Plug>OSCYankOperator
 vmap <leader>y <Plug>OSCYankVisual
+nnoremap <leader>Y :%y+<CR>
 
 " copilot
 let g:copilot_enabled = 1
