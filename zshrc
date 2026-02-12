@@ -461,3 +461,5 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Word character configuration for Ctrl+W behavior
 # Remove underscore from WORDCHARS so it's treated as a word separator like hyphen
 export WORDCHARS='*?[]~=&;!#$%^(){}<>'
+
+eval "$(goenv init -)"
