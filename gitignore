@@ -63,3 +63,5 @@ opencodetmp/
 
 .beans.yml
 .beans/
+
+opencode.jsonc
