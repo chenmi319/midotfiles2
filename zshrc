@@ -462,4 +462,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Remove underscore from WORDCHARS so it's treated as a word separator like hyphen
 export WORDCHARS='*?[]~=&;!#$%^(){}<>'
 
-eval "$(goenv init -)"
+command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
