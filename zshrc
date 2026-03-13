@@ -261,7 +261,7 @@ redis-cli() { _dockrun redis:alpine redis-cli "$@"; }
 # export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure:${HOME}/.kube/chenmi-kube-ali-applyai"
 typeset -gaU KUBEFILES
 setopt NULL_GLOB
-KUBEFILES=($HOME/.kube/chenmi-* $HOME/.kube/*eks* $HOME/.kube/*rancher*.yaml $HOME/.kube/*mixbio*.yaml)
+KUBEFILES=($HOME/.kube/chenmi-* $HOME/.kube/*eks* $HOME/.kube/*rancher*.yaml $HOME/.kube/*mixbio*.yaml $HOME/.kube/*mycluster)
 unsetopt NULL_GLOB
 export KUBECONFIG="${(j.:.)KUBEFILES}"
 #alias kube_dev_ningxia='kubectl --kubeconfig ~/.kube/kube_config_ningxia'
@@ -284,6 +284,8 @@ alias kube_mixbio='kubectl --context=mixbio'
 alias kube_mixbio_prod='kubectl --context=mixbio-prod'
 alias kube_azure='kubectl --context=azure-dev1'
 alias kube_ali_applyai='kubectl --context=ali-applyai'
+# add `127.0.0.1 host.docker.internal` in /etc/hosts
+alias kube_mycluster='kubectl --context=k3d-mycluster'
 
 #alias create_ns_dev='python3 ./main.py nx-dev'
 alias create_ns_prod='python3 ./main.py prod'
@@ -322,6 +324,7 @@ alias helm_mixbio_dev='helm_2_16_3 --kube-context=mixbio-dev'
 alias helm_mixbio_prod='helm_2_16_3 --kube-context=mixbio-prod'
 alias helm_azure='helm3 --kube-context=azure-dev1'
 alias helm_ali_applyai='helm3 --kube-context=ali-applyai'
+alias helm_mycluster='helm3 --kube-context=k3d-mycluster'
 
 #alias velero_dev='velero --kubecontext=ningxia-dev'
 alias velero_prod='velero --kubecontext=prod'
