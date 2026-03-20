@@ -66,3 +66,6 @@ opencodetmp/
 
 opencode.jsonc
 .tmp
+
+# Planning files
+.planning/
