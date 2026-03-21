@@ -22,6 +22,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " project
+Plug 'hedyhli/outline.nvim'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'willyspinner/vim-nerdtree-tabs'
@@ -614,7 +615,7 @@ nnoremap <silent><nowait> <space>f  :<C-u>CocList files<cr>
 "nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-nnoremap <silent> to :call CocAction('showOutline')<CR>
+nnoremap <silent> to :Outline<CR>
 
 " compatible with easymotion
 autocmd User EasyMotionPromptBegin :let b:coc_diagnostic_disable = 1
@@ -929,4 +930,24 @@ require('treesitter-context').setup({
   separator = "-",
   mode = "cursor"
 })
+
+-- outline.nvim - symbol outline sidebar (replaces coc showOutline)
+local has_outline, outline = pcall(require, 'outline')
+if has_outline then
+  outline.setup({
+    outline_window = {
+      position = 'right',
+      width = 25,
+      auto_close = false,
+      show_numbers = false,
+      show_relative_numbers = false,
+    },
+    symbol_folding = {
+      autofold_depth = false,  -- don't auto-fold, show all levels
+    },
+    providers = {
+      priority = { 'coc', 'markdown', 'norg', 'man' },
+    },
+  })
+end
 EOF
