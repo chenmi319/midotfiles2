@@ -19,16 +19,13 @@ Plug 'nvim-treesitter/nvim-treesitter-context'
 
 " git
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 
 " project
 Plug 'hedyhli/outline.nvim'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'willyspinner/vim-nerdtree-tabs'
-" Plug 'nvim-tree/nvim-web-devicons' "或 Plug 'echasnovski/mini.icons'
-" Plug 'nvim-tree/nvim-web-devicons'
-" Plug 'nvim-tree/nvim-tree.lua'
 
 " search
 Plug 'vim-scripts/IndexedSearch'
@@ -76,7 +73,7 @@ Plug 'github/copilot.vim'
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-" in vim :CocInstall coc-calc coc-diagnostic coc-git coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
+" in vim :CocInstall coc-calc coc-diagnostic coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
 " in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-sh coc-docker @yaegassy/coc-nginx coc-sql coc-html @yaegassy/coc-tailwindcss3 coc-solargraph
 " other common plugin: coc-java coc-perl coc-clangd coc-markdownlint
 
@@ -294,8 +291,7 @@ nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-" airblade/vim-gitgutter
-nnoremap <silent> <leader>tg :GitGutterLineHighlightsToggle<CR>
+" lewis6991/gitsigns.nvim (lua config at bottom)
 
 " customize configs
 vnoremap <leader>p "0p
@@ -675,59 +671,7 @@ nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
 nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
-" auto-session configuration
-lua << EOF
-local has_auto_session, auto_session = pcall(require, 'auto-session')
-if has_auto_session then
-  auto_session.setup({
-    -- Only enable for workspace directories
-    auto_session_enable_last_session = false,
-    auto_session_root_dir = vim.fn.stdpath('state') .. '/sessions/',
-    auto_session_enabled = true,
-    auto_save_enabled = true,
-    auto_restore_enabled = true,
-
-    -- Suppress session create/restore messages
-    auto_session_suppress_dirs = { '~/', '~/Downloads', '/tmp', '/'},
-
-    -- Better session options
-    session_lens = {
-      load_on_setup = false,
-    },
-
-    -- Don't restore in these conditions
-    bypass_session_save_file_types = { 'gitcommit', 'gitrebase' },
-
-    -- This is the KEY: post_restore_cmds ensures plugins are properly initialized
-    post_restore_cmds = {
-      -- Re-trigger filetype detection for all buffers after restore
-      function()
-        vim.defer_fn(function()
-          for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-            if vim.api.nvim_buf_is_loaded(bufnr) then
-              vim.api.nvim_buf_call(bufnr, function()
-                vim.cmd('silent! doautocmd BufRead')
-              end)
-            end
-          end
-        end, 50)
-      end
-    },
-
-    -- Conditionally enable based on directory
-    auto_session_use_git_branch = false,
-    cwd_change_handling = {
-      restore_upcoming_session = false,
-    },
-  })
-
-  -- Only enable auto-session in workspace directories
-  local cwd = vim.fn.getcwd()
-  if not string.match(cwd, "workspace") or vim.fn.getenv("VIM_NO_SESSION") ~= vim.NIL then
-    vim.g.auto_session_enabled = false
-  end
-end
-EOF
+" auto-session configuration (lua config at bottom)
 
 "luochen1990/rainbow'
 autocmd VimEnter * RainbowToggleOn
@@ -762,8 +706,95 @@ endfunction
 nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 
 
-" fannheyward/telescope-coc.nvim
+" fannheyward/telescope-coc.nvim (lua config at bottom)
+
+" lukas-reineke/indent-blankline.nvim (lua config at bottom)
+" nvim-treesitter, treesitter-context, vim-matchup, outline.nvim (lua config at bottom)
+
+" ============================================================================
+" Lua plugin configurations (consolidated)
+" ============================================================================
 lua << EOF
+
+-- lewis6991/gitsigns.nvim
+require('gitsigns').setup({
+  on_attach = function(bufnr)
+    local gs = require('gitsigns')
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- ]c / [c: 跳到下/上一个修改块 (hunk)，diff 模式下保持原生行为
+    map('n', ']c', function()
+      if vim.wo.diff then vim.cmd.normal({']c', bang = true})
+      else gs.nav_hunk('next') end
+    end)
+    map('n', '[c', function()
+      if vim.wo.diff then vim.cmd.normal({'[c', bang = true})
+      else gs.nav_hunk('prev') end
+    end)
+
+    -- ,hp: 弹窗预览当前 hunk 的 diff
+    map('n', '<leader>hp', gs.preview_hunk)
+    -- ,hb: 显示当前行完整 blame 信息
+    map('n', '<leader>hb', function() gs.blame_line({ full = true }) end)
+    -- ,hd: 分屏 diff 当前文件（与 index 对比）
+    map('n', '<leader>hd', gs.diffthis)
+    -- ,hD: 分屏 diff 当前文件（与上一个 commit 对比）
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+
+    -- ,tg: toggle 修改行高亮
+    map('n', '<leader>tg', gs.toggle_linehl)
+    -- ,tb: toggle 行尾 inline blame
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+
+    -- ih: text object 选中当前 hunk，如 vih 选中、yih 复制、dih 删除
+    map({'o', 'x'}, 'ih', gs.select_hunk)
+  end
+})
+
+-- auto-session
+local has_auto_session, auto_session = pcall(require, 'auto-session')
+if has_auto_session then
+  auto_session.setup({
+    auto_session_enable_last_session = false,
+    auto_session_root_dir = vim.fn.stdpath('state') .. '/sessions/',
+    auto_session_enabled = true,
+    auto_save_enabled = true,
+    auto_restore_enabled = true,
+    auto_session_suppress_dirs = { '~/', '~/Downloads', '/tmp', '/'},
+    session_lens = {
+      load_on_setup = false,
+    },
+    bypass_session_save_file_types = { 'gitcommit', 'gitrebase' },
+    post_restore_cmds = {
+      function()
+        vim.defer_fn(function()
+          for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_loaded(bufnr) then
+              vim.api.nvim_buf_call(bufnr, function()
+                vim.cmd('silent! doautocmd BufRead')
+              end)
+            end
+          end
+        end, 50)
+      end
+    },
+    auto_session_use_git_branch = false,
+    cwd_change_handling = {
+      restore_upcoming_session = false,
+    },
+  })
+
+  local cwd = vim.fn.getcwd()
+  if not string.match(cwd, "workspace") or vim.fn.getenv("VIM_NO_SESSION") ~= vim.NIL then
+    vim.g.auto_session_enabled = false
+  end
+end
+
+-- fannheyward/telescope-coc.nvim
 require("telescope").setup({
   defaults = {
     mappings = {
@@ -776,89 +807,16 @@ require("telescope").setup({
   extensions = {
     coc = {
         theme = 'ivy',
-        prefer_locations = true, -- always use Telescope locations to preview definitions/declarations/implementations etc
+        prefer_locations = true,
     }
   },
 })
 require('telescope').load_extension('coc')
-EOF
 
-" " nvim-tree/nvim-tree
-" lua << EOF
-" vim.keymap.set('n', '<leader>tn', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-" vim.keymap.set('n', '<C-\\>', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
-"
-" -- disable netrw at the very start of your init.lua
-" vim.g.loaded_netrw = 1
-" vim.g.loaded_netrwPlugin = 1
-"
-" -- optionally enable 24-bit colour
-" vim.opt.termguicolors = true
-"
-" local function my_on_attach(bufnr)
-"   local api = require "nvim-tree.api"
-"
-"   local function opts(desc)
-"     return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-"   end
-"
-"   -- default mappings
-"   api.config.mappings.default_on_attach(bufnr)
-"
-"   -- custom mappings
-"   vim.keymap.set('n', 't', api.node.open.tab, opts('Open in New Tab')) -- 绑定 't' 键到 "open in new tab"
-" end
-"
-" -- OR setup with some options
-" require("nvim-tree").setup({
-"   on_attach = my_on_attach,
-"   git = {
-"     enable = true, -- 启用 Git 集成
-"     ignore = false, -- 显示被 Git 忽略的文件
-"   },
-"   sort_by = "case_sensitive", -- 文件排序规则，可选
-"   view = {
-"     width = 30, -- 窗口宽度
-"     side = "left", -- 显示在左侧
-"   },
-"   renderer = {
-"     group_empty = true, -- 空文件夹显示成分组
-"     highlight_git = true, -- 高亮 Git 状态
-"     icons = {
-"       show = {
-"         git = true, -- 显示 Git 图标
-"         folder = true,
-"         file = true,
-"       },
-"     },
-"   },
-"   filters = {
-"     dotfiles = true, -- 隐藏 . 开头的文件
-"     custom = { "^__pycache__$", "Session.vim", ".DS_Store" },
-"   },
-"   actions = {
-"     open_file = {
-"       resize_window = true, -- 打开文件时调整窗口大小
-"     },
-"   },
-"   diagnostics = {
-"     enable = true, -- 启用诊断显示
-"     show_on_dirs = true, -- 显示目录中的诊断信息
-"     icons = {
-"       -- hint = "", -- 提示图标
-"       -- info = "", -- 信息图标
-"       -- warning = "", -- 警告图标
-"       error = "", -- 错误图标
-"     },
-"   },
-" })
-" EOF
-
-" lukas-reineke/indent-blankline.nvim
-lua << EOF
+-- lukas-reineke/indent-blankline.nvim
 require("ibl").setup()
 
--- Treesitter configuration for better syntax highlighting
+-- nvim-treesitter
 require('nvim-treesitter.config').setup({
   ensure_installed = { "python", "lua", "json", "yaml", "bash", "markdown", "javascript", "typescript", "tsx", "html" },
   sync_install = false,
@@ -871,24 +829,24 @@ require('nvim-treesitter.config').setup({
   },
   indent = { enable = true },
   matchup = {
-    enable = true,  -- Enable vim-matchup integration with treesitter
+    enable = true,
   },
 })
 
--- vim-matchup configuration
+-- vim-matchup
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
-vim.g.matchup_matchparen_deferred = 1  -- Improve performance
+vim.g.matchup_matchparen_deferred = 1
 vim.g.matchup_matchparen_deferred_show_delay = 50
 vim.g.matchup_matchparen_deferred_hide_delay = 700
 
--- Treesitter context - shows current function/class at top
+-- nvim-treesitter-context
 require('treesitter-context').setup({
   enable = true,
   separator = "-",
   mode = "cursor"
 })
 
--- outline.nvim - symbol outline sidebar (replaces coc showOutline)
+-- hedyhli/outline.nvim
 local has_outline, outline = pcall(require, 'outline')
 if has_outline then
   outline.setup({
@@ -900,11 +858,12 @@ if has_outline then
       show_relative_numbers = false,
     },
     symbol_folding = {
-      autofold_depth = false,  -- don't auto-fold, show all levels
+      autofold_depth = false,
     },
     providers = {
       priority = { 'coc', 'markdown', 'norg', 'man' },
     },
   })
 end
+
 EOF
