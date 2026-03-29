@@ -214,7 +214,7 @@ nmap ,<S-ESC> ,,b
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fF <cmd>Telescope find_files hidden=true<cr>
-nnoremap <leader>fa <cmd>Telescope find_files hidden=true no_ignore=true<cr>
+nnoremap <leader>fA <cmd>Telescope find_files hidden=true no_ignore=true<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
@@ -316,7 +316,8 @@ nnoremap <C-w>gf :tabe<cfile><CR>
 map <silent> ,gz <C-w>o
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
-" copy path to clipboard (,c prefix: f=from-home, r=relative, n=name, s=short, l=long)
+" copy path to clipboard (,c prefix: f=from-home, r=relative, n=name, s=short/relative, l=long/absolute)
+" NOTE: ,cr 和 ,cs 在 normal 模式下功能相同（都是相对路径），保留冗余方便记忆
 nnoremap <silent> ,cf :let @* = expand("%:~")<CR>
 nnoremap <silent> ,cr :let @* = expand("%")<CR>
 nnoremap <silent> ,cn :let @* = expand("%:t")<CR>
