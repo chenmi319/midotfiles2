@@ -80,13 +80,7 @@ vim +PlugUpdate +qall
 # 清理
 vim +PlugClean +qall
 
-# 安装 autopep8 和 ruff
-conda activate base
-pip install yapf ruff ruff-lsp
-ln -s `which yapf` ~/bin/yapf
-ln -s `which ruff` ~/bin/ruff
-ln -s `which ruff-lsp` ~/bin/ruff-lsp
-conda deactivate
+# ruff (Python linter + formatter): 由 coc-ruff 调用，在项目 dev dependency 中安装即可
 
 # 安装 coc.nvim 以及插件
 cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
