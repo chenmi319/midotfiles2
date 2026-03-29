@@ -63,7 +63,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'vim-scripts/lastpos.vim'
 Plug 'goldfeld/ctrlr.vim'
 Plug 'luochen1990/rainbow'
-" Plug 'mhinz/vim-startify'
 " Plug 'tpope/vim-obsession'  " Replaced by auto-session
 Plug 'rmagatti/auto-session'
 Plug 'ojroques/vim-oscyank'
@@ -106,9 +105,6 @@ set sessionoptions-=folds    " Don't save folds
 set sessionoptions-=blank    " Don't save empty windows
 set sessionoptions+=tabpages,winsize,curdir
 
-" set noswapfile
-" set nobackup
-" set nowb
 " 持久化 undo，避免误关丢历史
 set undofile
 if isdirectory(expand('~/.vim/undo')) == 0
@@ -121,14 +117,6 @@ if isdirectory(expand('~/.vim/swap')) == 0
 endif
 set directory=~/.vim/swap//
 
-"if has('persistent_undo')
-"  if !isdirectory(expand('~').'/.vim/backups')
-"    silent !mkdir ~/.vim/backups > /dev/null 2>&1
-"  endif
-"  set undodir=~/.vim/backups
-"  set undofile
-"endif
-set undofile
 set autoindent
 set smartindent
 set smarttab
@@ -177,12 +165,8 @@ set completeopt=menu,menuone
 nnoremap <F7> :set paste!<CR>:set paste?<CR>
 set grepprg=git\ grep
 let g:grep_cmd_opts = '--line-number'
-if has("win16") || has("win32") || has("win64")
-  set clipboard=unnamedplus
-else
-  " set clipboard=unnamed
-  set clipboard=unnamedplus
-endif
+" NOTE: 仅支持 Linux/macOS，Windows 需自行配置 clipboard
+set clipboard=unnamedplus
 let mapleader=","
 map <leader>bd :bd<CR>
 
@@ -220,7 +204,6 @@ function! FileSize()
     endif
 endfunction
 " oshdick/onedark.vim
-set termguicolors
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
 colorscheme onedark
@@ -230,7 +213,6 @@ let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_open_on_new_tab = 1
 map <silent> <leader>tn :NERDTreeTabsToggle<CR>
 " scrooloose/nerdtree.git
-nnoremap <silent> <C-\> :NERDTreeFind<CR>
 let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
@@ -287,9 +269,6 @@ let g:rainbow_conf = {
 \    'nerdtree': 0,
 \  }
 \}
-" mhinz/vim-startify
-let g:startify_change_to_dir = 0
-" let g:startify_change_to_vcs_root = 0
 " tomtom/tcomment_vim.git
 nmap <silent> gcp <c-_>p
 let g:tcomment_textobject_inlinecomment = ''
@@ -315,14 +294,8 @@ nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-" skwp/YankRing.vim
-let g:yankring_history_file = '.yankring-history'
-nnoremap ,yr :YRShow<CR>
-nnoremap C-y :YRShow<CR>
 " airblade/vim-gitgutter
 nnoremap <silent> <leader>tg :GitGutterLineHighlightsToggle<CR>
-let g:gitgutter_eager = 0
-let g:gitgutter_realtime = 0
 
 " customize configs
 vnoremap <leader>p "0p
@@ -349,9 +322,8 @@ vmap ,} c{ <C-R>" }<ESC>
 vmap ,{ c{<C-R>"}<ESC>
 map ,` ysiw`
 nnoremap ,. '.
-imap <C-a> <esc>wa
 inoremap <C-a> <C-O><S-i>
-inoremap <C-e> <End>
+inoremap <C-e> <End>  " NOTE: 被 copilot <C-e> 映射覆盖
 inoremap <C-b> <LEFT>
 inoremap <C-f> <RIGHT>
 inoremap <C-h> <BACKSPACE>
@@ -380,9 +352,15 @@ nnoremap <C-w>gf :tabe<cfile><CR>
 map <silent> ,gz <C-w>o
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
+" copy path to clipboard (,c prefix: f=from-home, r=relative, n=name, s=short, l=long)
 nnoremap <silent> ,cf :let @* = expand("%:~")<CR>
 nnoremap <silent> ,cr :let @* = expand("%")<CR>
 nnoremap <silent> ,cn :let @* = expand("%:t")<CR>
+nnoremap <silent> ,cs :let @* = expand("%")<CR>
+nnoremap <silent> ,cl :let @* = expand("%:p")<CR>
+" visual: 复制路径:行号范围 + 选中内容 (s=short/相对, l=long/绝对)
+xnoremap <silent> ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
+xnoremap <silent> ,cl :<C-u>let @* = expand("%:p") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 nmap <silent> // :nohlsearch<CR>
 nnoremap ' `
 nnoremap ` '
@@ -402,7 +380,6 @@ nnoremap <silent> <leader>5 5gt
 nnoremap <silent> <leader>6 6gt
 nnoremap <silent> <leader>7 7gt
 nnoremap <silent> <leader>8 8gt
-nnoremap <silent> <leader>9 9gt
 nnoremap <silent> <leader>9 9gt
 nnoremap <silent> <leader>0 :tablast<CR>
 vnoremap < <gv
@@ -432,30 +409,10 @@ nnoremap <C-Right>  <C-w>>
 " autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
 command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
 
-" Convert slashes to backslashes for Windows.
-if has('win32')
-  nmap ,cs :let @*=substitute(expand("%"), "/", "\\", "g")<CR>
-  xnoremap ,cs :<C-u>let @* = substitute(expand("%"), "/", "\\", "g") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
-  nmap ,cl :let @*=substitute(expand("%:p"), "/", "\\", "g")<CR>
-
-  " This will copy the path in 8.3 short format, for DOS and Windows 9x
-  nmap ,c8 :let @*=substitute(expand("%:p:8"), "/", "\\", "g")<CR>
-else
-  nmap ,cs :let @*=expand("%")<CR>
-  xnoremap ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
-  nmap ,cl :let @*=expand("%:p")<CR>
-endif
-
-" 可视模式下 ,cs 复制：相对路径:起始-结束行号 + 选中内容
-xnoremap ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
-
 nnoremap <leader>r :!"%:p"
 
 " neoclide/coc.nvim begin
 nmap <leader>rs :CocRestart<CR>
-" May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
-" utf-8 byte sequence
-set encoding=utf-8
 " Some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
