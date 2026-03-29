@@ -59,14 +59,12 @@ Plug 'tpope/vim-unimpaired'
 "Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'vim-scripts/lastpos.vim'
 Plug 'goldfeld/ctrlr.vim'
-Plug 'luochen1990/rainbow'
+Plug 'HiPhish/rainbow-delimiters.nvim'
 " Plug 'tpope/vim-obsession'  " Replaced by auto-session
 Plug 'rmagatti/auto-session'
 Plug 'ojroques/vim-oscyank'
 
 Plug 'github/copilot.vim'
-" codeium, if auth ssl error, find ~/.vim/bundle/codeium.vim/autoload/codeium/command.vim and edit ```curl``` to ```curl -k```
-" Plug 'Exafunction/codeium.vim'
 
 " https://github.com/neoclide/coc.nvim
 " 安装 node, 安装 nvm, nvm install 22, 设置 nvm alias default 22, npm install -g yarn
@@ -81,14 +79,12 @@ call plug#end()
 
 
 " basic config
-" set t_Co=256
 set termguicolors
 set number
 set cursorline
 set backspace=indent,eol,start
 set history=1000
 set showcmd
-" set showmode
 set noshowmode
 set gcr=a:blinkon0
 set visualbell
@@ -154,11 +150,8 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 command W w !sudo tee % > /dev/null
 set cmdheight=1
-" set lazyredraw
 set mouse=nv
-" set completeopt=menu,menuone,preview
 set completeopt=menu,menuone
-" set pastetoggle=<F7>
 nnoremap <F7> :set paste!<CR>:set paste?<CR>
 set grepprg=git\ grep
 let g:grep_cmd_opts = '--line-number'
@@ -200,7 +193,7 @@ function! FileSize()
         return printf('%.1fM', l:size / 1024.0 / 1024.0)
     endif
 endfunction
-" oshdick/onedark.vim
+" joshdick/onedark.vim
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
 colorscheme onedark
@@ -241,31 +234,7 @@ omap < [
 omap > ]
 xmap < [
 xmap > ]
-" luochen1990/rainbow
-let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
-let g:rainbow_conf = {
-\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-\  'operators': '_,_',
-\  'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-\  'separately': {
-\    '*': {},
-\    'tex': {
-\      'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\    },
-\    'lisp': {
-\      'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-\    },
-\    'vim': {
-\      'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-\    },
-\    'html': {
-\      'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-\    },
-\    'css': 0,
-\    'nerdtree': 0,
-\  }
-\}
+" HiPhish/rainbow-delimiters.nvim (lua config at bottom)
 " tomtom/tcomment_vim.git
 nmap <silent> gcp <c-_>p
 let g:tcomment_textobject_inlinecomment = ''
@@ -389,23 +358,12 @@ nmap <silent> <leader>< ciw<Esc>:let @"=substitute(strtrans(@"), '_\([a-z]\)\C',
 map <leader>ww :w<CR>
 map <leader>xx :x<CR>
 map <leader>qq :qa<CR>
-nmap <leader>rd :redraw!<CR>
 nnoremap <F8> :set wrap! wrap?<CR>
 imap <F8> <C-O><F8>
-nnoremap <silent> <C-x> :cn<CR>
-nnoremap <silent> <C-z> :cp<CR>
-cmap w!! w !sudo tee % >/dev/null
-" no use, just for lookup...
-nnoremap <C-Up> <C-w>+
-nnoremap <C-Down> <C-w>-
-nnoremap <C-Left> <C-w><
-nnoremap <C-Right>  <C-w>>
 " show invisible chars
 " highlight nonascii guibg=Red ctermbg=2
 " autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
 command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
-
-nnoremap <leader>r :!"%:p"
 
 " neoclide/coc.nvim begin
 nmap <leader>rs :CocRestart<CR>
@@ -544,10 +502,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" statusline: 由 lightline 管理（cocstatus + currentfunction 已配置在 lightline component 中）
 
 " Mappings for CoCList
 " Show all diagnostics
@@ -654,13 +609,6 @@ let g:copilot_filetypes = {
     \ }
 let g:copilot_tab_fallback = ""
 
-" Codeium
-" let g:codeium_enabled = v:true
-" imap <script><silent><nowait><expr> <C-g> codeium#Accept()
-" imap <C-e>   <Cmd>call codeium#CycleCompletions(1)<CR>
-" imap <Leader>n   <Cmd>call codeium#CycleCompletions(1)<CR>
-" imap <C-x>   <Cmd>call codeium#Clear()<CR>
-
 " fannheyward/telescope-coc.nvim
 " :Telescope coc to get subcommands
 nnoremap <leader>fr <cmd>Telescope coc references<cr>
@@ -673,9 +621,7 @@ nnoremap <silent> tt :Telescope resume<cr>
 
 " auto-session configuration (lua config at bottom)
 
-"luochen1990/rainbow'
-autocmd VimEnter * RainbowToggleOn
-autocmd TabEnter * RainbowToggleOn
+
 
 function! ToggleCocExtension(extension)
     " 使用 CocAction toggleExtension 来切换插件状态
@@ -832,6 +778,26 @@ require('nvim-treesitter.config').setup({
     enable = true,
   },
 })
+
+-- HiPhish/rainbow-delimiters.nvim
+vim.g.rainbow_delimiters = {
+  strategy = {
+    [''] = 'rainbow-delimiters.strategy.global',
+    vim = 'rainbow-delimiters.strategy.local',
+  },
+  query = {
+    [''] = 'rainbow-delimiters',
+  },
+  highlight = {
+    'RainbowDelimiterRed',
+    'RainbowDelimiterYellow',
+    'RainbowDelimiterBlue',
+    'RainbowDelimiterOrange',
+    'RainbowDelimiterGreen',
+    'RainbowDelimiterViolet',
+    'RainbowDelimiterCyan',
+  },
+}
 
 -- vim-matchup
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
