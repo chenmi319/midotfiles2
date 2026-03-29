@@ -25,7 +25,7 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'hedyhli/outline.nvim'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'willyspinner/vim-nerdtree-tabs'
+Plug 'mattmartini/vim-nerdtree-tabs'
 
 " search
 Plug 'vim-scripts/IndexedSearch'
