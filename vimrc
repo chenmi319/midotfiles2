@@ -691,8 +691,8 @@ require('gitsigns').setup({
     -- ,hD: 分屏 diff 当前文件（与上一个 commit 对比）
     map('n', '<leader>hD', function() gs.diffthis('~') end)
 
-    -- ,tg: toggle 修改行高亮
-    map('n', '<leader>tg', gs.toggle_linehl)
+    -- ,th: toggle 修改行高亮 (highlight)
+    map('n', '<leader>th', gs.toggle_linehl)
     -- ,tb: toggle 行尾 inline blame
     map('n', '<leader>tb', gs.toggle_current_line_blame)
 
