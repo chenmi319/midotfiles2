@@ -1,9 +1,17 @@
+" ============================================================================
+" Pre-plugin Settings
+" ============================================================================
+
 " set nocompatible              " be iMproved, required
 " filetype off                  " required
 
 " Python indent fix: default is shiftwidth()*2 which causes 8-space indent after {
 " See: https://github.com/vim/vim/blob/master/runtime/autoload/python.vim
 let g:python_indent = { 'open_paren': 'shiftwidth()' }
+
+" ============================================================================
+" Plugins (vim-plug)
+" ============================================================================
 
 call plug#begin()
 
@@ -68,8 +76,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
+" ============================================================================
+" General Settings
+" ============================================================================
 
-" basic config
 set termguicolors
 set number
 set cursorline
@@ -151,7 +161,10 @@ set clipboard=unnamedplus
 let mapleader=","
 map <leader>bd :bd<CR>
 
-" plugin configs
+" ============================================================================
+" Plugin Configurations (VimL)
+" ============================================================================
+
 " itchyny/lightline.vim
 set laststatus=2
 let g:lightline = {
@@ -184,23 +197,29 @@ function! FileSize()
         return printf('%.1fM', l:size / 1024.0 / 1024.0)
     endif
 endfunction
+
 " joshdick/onedark.vim
 let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
 colorscheme onedark
+
 " jistr/vim-nerdtree-tabs.git
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_open_on_new_tab = 1
 map <silent> <leader>tn :NERDTreeTabsToggle<CR>
+
 " scrooloose/nerdtree.git
 let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
+
 " chrisbra/color_highlight.git
 let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
+
 " Lokaltog/vim-easymotion
 let g:EasyMotion_keys='asdfjkoweriop'
 nmap ,<ESC> ,,w
 nmap ,<S-ESC> ,,b
+
 " nvim-telescope/telescope.nvim
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -209,31 +228,47 @@ nnoremap <leader>fA <cmd>Telescope find_files hidden=true no_ignore=true<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" fannheyward/telescope-coc.nvim (:Telescope coc for subcommands)
+nnoremap <leader>fr <cmd>Telescope coc references<cr>
+nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
+nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
+nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
+nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
+nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
+nnoremap <silent> tt :Telescope resume<cr>
+
 " tpope/vim-abolish
 " Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), UPPER_CASE (cru), dash-case (cr-), and dot.case (cr.)
+
 " tpope/vim-surround.git
 let g:surround_113 = "#{\r}"   " v
 let g:surround_35  = "#{\r}"   " #
 let g:surround_45 = "<% \r %>"    " -
 let g:surround_61 = "<%= \r %>"   " =
 "ci', ca', cs'"
-" tpope/vim-unimpaired “ 快速缩进
+
+" tpope/vim-unimpaired " 快速缩进
 nmap < [
 nmap > ]
 omap < [
 omap > ]
 xmap < [
 xmap > ]
+
 " HiPhish/rainbow-delimiters.nvim (lua config at bottom)
+
 " tomtom/tcomment_vim.git
 nmap <silent> gcp <c-_>p
 let g:tcomment_textobject_inlinecomment = ''
+
 " tpope/vim-fugitive
 autocmd User fugitive
   \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
   \   nnoremap <buffer> .. :edit %:h<CR> |
   \ endif
 autocmd BufReadPost fugitive://* set bufhidden=delete
+
 " junegunn/vim-easy-align
 vmap <Leader>e <Plug>(EasyAlign)
 nmap <Leader>e <Plug>(EasyAlign)
@@ -241,22 +276,50 @@ if !exists('g:easy_align_delimiters')
   let g:easy_align_delimiters = {}
 endif
 let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
+
 " AndrewRadev/splitjoin.vim
 nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
+
 " christoomey/vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+
 " lewis6991/gitsigns.nvim (lua config at bottom)
 
-" customize configs
+" nvim-treesitter/nvim-treesitter-context (lua config at bottom)
+nnoremap <silent> tc :TSContext toggle<CR>
+
+" ojroques/vim-oscyank
+nmap <leader>y <Plug>OSCYankOperator
+vmap <leader>y <Plug>OSCYankVisual
+nnoremap <leader>Y :%y+<CR>
+
+" github/copilot.vim
+let g:copilot_enabled = 1
+inoremap <C-e> <Plug>(copilot-next)
+inoremap <Leader>n <Plug>(copilot-next)
+inoremap <Leader>p <Plug>(copilot-prev)
+inoremap <leader>a <Plug>(copilot-accept)
+let g:copilot_filetypes = {
+    \ '*': v:true,
+    \ }
+let g:copilot_tab_fallback = ""
+
+" ============================================================================
+" Custom Keybindings
+" ============================================================================
+
+" --- paste / register / cursor defaults
 vnoremap <leader>p "0p
 vnoremap <leader>P "0P
 nnoremap 0 ^
 nnoremap ^ 0
+
+" --- surround shortcuts (leader + bracket/quote wraps)
 map ,# ysiw#
 vmap ,# c#{<C-R>"}<ESC>
 map ," ysiw"
@@ -277,6 +340,8 @@ vmap ,} c{ <C-R>" }<ESC>
 vmap ,{ c{<C-R>"}<ESC>
 map ,` ysiw`
 nnoremap ,. '.
+
+" --- emacs-style keys (insert + command-line mode)
 inoremap <C-a> <C-O><S-i>
 inoremap <C-e> <End>  " NOTE: 被 copilot <C-e> 映射覆盖
 inoremap <C-b> <LEFT>
@@ -292,6 +357,8 @@ cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 cnoremap <C-h> <BACKSPACE>
 cnoremap <C-d> <DELETE>
+
+" --- NERDTree / window management
 function! OpenNerdTree()
   if &modifiable && strlen(expand('%')) > 0 && !&diff
     NERDTreeFind
@@ -307,7 +374,8 @@ nnoremap <C-w>gf :tabe<cfile><CR>
 map <silent> ,gz <C-w>o
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
-" copy path to clipboard (,c prefix: f=from-home, r=relative, n=name, s=short/relative, l=long/absolute)
+
+" --- path copy (,c prefix: f=from-home, r=relative, n=name, s=short/relative, l=long/absolute)
 " NOTE: ,cr 和 ,cs 在 normal 模式下功能相同（都是相对路径），保留冗余方便记忆
 nnoremap <silent> ,cf :let @* = expand("%:~")<CR>
 nnoremap <silent> ,cr :let @* = expand("%")<CR>
@@ -317,9 +385,13 @@ nnoremap <silent> ,cl :let @* = expand("%:p")<CR>
 " visual: 复制路径:行号范围 + 选中内容 (s=short/相对, l=long/绝对)
 xnoremap <silent> ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 xnoremap <silent> ,cl :<C-u>let @* = expand("%:p") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
+
+" --- search / marks
 nmap <silent> // :nohlsearch<CR>
 nnoremap ' `
 nnoremap ` '
+
+" --- tab management
 nnoremap <C-t>c :tabnew<CR>
 nnoremap <silent> H :tabprevious<CR>
 nnoremap <silent> L :tabnext<CR>
@@ -338,6 +410,8 @@ nnoremap <silent> <leader>7 7gt
 nnoremap <silent> <leader>8 8gt
 nnoremap <silent> <leader>9 9gt
 nnoremap <silent> <leader>0 :tablast<CR>
+
+" --- visual / navigation / misc
 vnoremap < <gv
 vnoremap > >gv
 nnoremap j gj
@@ -356,7 +430,10 @@ imap <F8> <C-O><F8>
 " autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
 command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
 
-" neoclide/coc.nvim begin
+" ============================================================================
+" CoC (neoclide/coc.nvim)
+" ============================================================================
+
 nmap <leader>rs :CocRestart<CR>
 " Some servers have issues with backup files, see #649
 set nobackup
@@ -552,39 +629,10 @@ function! ToggleCocExtension(extension)
 endfunction
 nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 
-" neoclide/coc.nvim end
-
-" nvim-treesitter/nvim-treesitter-context
-nnoremap <silent> tc :TSContext toggle<CR>
-
-" ojroques/vim-oscyank
-nmap <leader>y <Plug>OSCYankOperator
-vmap <leader>y <Plug>OSCYankVisual
-nnoremap <leader>Y :%y+<CR>
-
-" github/copilot.vim
-let g:copilot_enabled = 1
-inoremap <C-e> <Plug>(copilot-next)
-inoremap <Leader>n <Plug>(copilot-next)
-inoremap <Leader>p <Plug>(copilot-prev)
-inoremap <leader>a <Plug>(copilot-accept)
-let g:copilot_filetypes = {
-    \ '*': v:true,
-    \ }
-let g:copilot_tab_fallback = ""
-
-" fannheyward/telescope-coc.nvim (:Telescope coc for subcommands)
-nnoremap <leader>fr <cmd>Telescope coc references<cr>
-nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
-nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
-nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
-nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
-nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
-nnoremap <silent> tt :Telescope resume<cr>
-
 " ============================================================================
-" Lua plugin configurations (consolidated)
+" Lua Plugin Configurations
 " ============================================================================
+
 lua << EOF
 
 -- lewis6991/gitsigns.nvim
@@ -632,7 +680,7 @@ if has_auto_session then
   auto_session.setup({
     root_dir = vim.fn.stdpath('state') .. '/sessions/',
     suppressed_dirs = { '~/', '~/Downloads', '/tmp', '/' },
-    allowed_dirs = { '~/workspace/**' },
+    allowed_dirs = { '~/workspace/*' },
     bypass_save_filetypes = { 'gitcommit', 'gitrebase' },
     session_lens = {
       load_on_setup = false,
