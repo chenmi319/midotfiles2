@@ -31,7 +31,7 @@ Plug 'lewis6991/gitsigns.nvim'
 
 " navigation
 Plug 'preservim/nerdtree'
-Plug 'mattmartini/vim-nerdtree-tabs'
+Plug 'chenmi319/vim-nerdtree-tabs'
 Plug 'hedyhli/outline.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
