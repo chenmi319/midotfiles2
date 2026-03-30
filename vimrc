@@ -14,12 +14,14 @@ let g:python_indent = { 'open_paren': 'shiftwidth()' }
 call plug#begin()
 
 " appearance
-Plug 'chrisbra/Colorizer'
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
-Plug 'MeanderingProgrammer/render-markdown.nvim'
+Plug 'chrisbra/Colorizer'
+Plug 'ryanoasis/vim-devicons'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'HiPhish/rainbow-delimiters.nvim'
 
-" treesitter for better syntax highlighting
+" treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-context'
 
@@ -27,39 +29,36 @@ Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 
-" project
-Plug 'hedyhli/outline.nvim'
+" navigation
 Plug 'preservim/nerdtree'
-Plug 'ryanoasis/vim-devicons'
 Plug 'mattmartini/vim-nerdtree-tabs'
-
-" search
-Plug 'vim-scripts/IndexedSearch'
-Plug 'nelstrom/vim-visual-star-search'
-Plug 'Lokaltog/vim-easymotion'
+Plug 'hedyhli/outline.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'fannheyward/telescope-coc.nvim'
+Plug 'Lokaltog/vim-easymotion'
 
-" textobjects
-Plug 'coderifous/textobj-word-column.vim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'wellle/targets.vim'
+" search
+Plug 'nelstrom/vim-visual-star-search'
 
-" vim-improvements
+" editing
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-unimpaired'
+Plug 'tomtom/tcomment_vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'tomtom/tcomment_vim'
 Plug 'andymass/vim-matchup'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'vim-scripts/lastpos.vim'
-Plug 'goldfeld/ctrlr.vim'
-Plug 'HiPhish/rainbow-delimiters.nvim'
+Plug 'wellle/targets.vim'
+Plug 'coderifous/textobj-word-column.vim'
+
+" session / integration
 Plug 'rmagatti/auto-session'
-Plug 'ojroques/vim-oscyank'
+Plug 'christoomey/vim-tmux-navigator'
+
+
+" filetype
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 
 " ai
 Plug 'github/copilot.vim'
@@ -277,11 +276,6 @@ nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 " nvim-treesitter/nvim-treesitter-context (lua config at bottom)
 nnoremap <silent> tc :TSContext toggle<CR>
 
-" ojroques/vim-oscyank
-nmap <leader>y <Plug>OSCYankOperator
-vmap <leader>y <Plug>OSCYankVisual
-nnoremap <leader>Y :%y+<CR>
-
 " github/copilot.vim
 let g:copilot_enabled = 1
 inoremap <C-e> <Plug>(copilot-next)
@@ -297,9 +291,10 @@ let g:copilot_tab_fallback = ""
 " Custom Keybindings
 " ============================================================================
 
-" --- paste / register / cursor defaults
+" --- paste / register / clipboard
 vnoremap <leader>p "0p
 vnoremap <leader>P "0P
+nnoremap <leader>Y :%y+<CR>
 nnoremap 0 ^
 nnoremap ^ 0
 
@@ -618,6 +613,17 @@ nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 " ============================================================================
 
 lua << EOF
+
+-- restore cursor position when reopening a file (replaces lastpos.vim)
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(0)
+      and not vim.bo.filetype:match('commit') then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
 
 -- lewis6991/gitsigns.nvim
 require('gitsigns').setup({
