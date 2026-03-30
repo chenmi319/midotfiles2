@@ -42,25 +42,16 @@ Plug 'wellle/targets.vim'
 
 " vim-improvements
 Plug 'AndrewRadev/splitjoin.vim'
-" Plug 'Raimondi/delimitMate'
-" Plug 'briandoll/change-inside-surroundings.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'tomtom/tcomment_vim'
-" Plug 'vim-scripts/matchit.zip'  " Replaced by vim-matchup
 Plug 'andymass/vim-matchup'
-"Plug 'mg979/vim-visual-multi'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-abolish'
-"Plug 'tpope/vim-endwise'
-"Plug 'tpope/vim-ragtag'
-"Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-"Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'vim-scripts/lastpos.vim'
 Plug 'goldfeld/ctrlr.vim'
 Plug 'HiPhish/rainbow-delimiters.nvim'
-" Plug 'tpope/vim-obsession'  " Replaced by auto-session
 Plug 'rmagatti/auto-session'
 Plug 'ojroques/vim-oscyank'
 
@@ -529,77 +520,50 @@ nnoremap <silent> to :Outline<CR>
 autocmd User EasyMotionPromptBegin :let b:coc_diagnostic_disable = 1
 autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
 
-" toggle pyright inlay hints
-function! TogglePyrightInlayVariableHints()
-    " Check if we are in a Python file
-    if &filetype == 'python'
-        " We will force toggle by tracking the state using a global variable
-        if !exists('g:pyright_inlayVariableHints_state')
-            let g:pyright_inlayVariableHints_state = v:false
-        endif
-
-        " Toggle the state
-        let g:pyright_inlayVariableHints_state = !g:pyright_inlayVariableHints_state
-
-        " Set the new value explicitly based on the toggled state
-        let new_value = g:pyright_inlayVariableHints_state
-
-        " Update the setting dynamically
-        call CocAction('updateConfig', 'pyright.inlayHints.variableTypes', new_value)
-
-        " Notify the user
-        echo 'pyright.inlayHints.variableTypes set to ' . (new_value ? 'enabled' : 'disabled')
-    else
-        echo 'Not a Python file. Toggle aborted.'
+" toggle pyright inlay hints (tv=variable types, tp=parameter types)
+function! TogglePyrightInlayHints(kind, config_key)
+    if &filetype != 'python'
+        echo 'Not a Python file.' | return
     endif
+    let state_var = 'g:pyright_inlay' . a:kind . 'Hints_state'
+    if !exists(state_var) | let {state_var} = v:false | endif
+    let {state_var} = !{state_var}
+    call CocAction('updateConfig', 'pyright.inlayHints.' . a:config_key, {state_var})
+    echo 'pyright.inlayHints.' . a:config_key . ': ' . ({state_var} ? 'on' : 'off')
 endfunction
 
-" toggle pyright inlay hints
-function! TogglePyrightInlayParameterHints()
-    " Check if we are in a Python file
-    if &filetype == 'python'
-        " We will force toggle by tracking the state using a global variable
-        if !exists('g:pyright_inlayParameterHints_state')
-            let g:pyright_inlayParameterHints_state = v:false
-        endif
-
-        " Toggle the state
-        let g:pyright_inlayParameterHints_state = !g:pyright_inlayParameterHints_state
-
-        " Set the new value explicitly based on the toggled state
-        let new_value = g:pyright_inlayParameterHints_state
-
-        " Update the setting dynamically
-        call CocAction('updateConfig', 'pyright.inlayHints.parameterTypes', new_value)
-
-        " Notify the user
-        echo 'pyright.inlayHints.parameterTypes set to ' . (new_value ? 'enabled' : 'disabled')
-    else
-        echo 'Not a Python file. Toggle aborted.'
-    endif
-endfunction
-
-" Create a command to toggle it
-command! TogglePyrightInlayVariableHints call TogglePyrightInlayVariableHints()
-command! TogglePyrightInlayParameterHints call TogglePyrightInlayParameterHints()
 let g:pyright_inlayVariableHints_state = v:true
-nnoremap <silent> tv :call TogglePyrightInlayVariableHints()<CR>
-nnoremap <silent> tp :call TogglePyrightInlayParameterHints()<CR>
+nnoremap <silent> tv :call TogglePyrightInlayHints('Variable', 'variableTypes')<CR>
+nnoremap <silent> tp :call TogglePyrightInlayHints('Parameter', 'parameterTypes')<CR>
+" toggle all inlay hints for current buffer (th, coc.nvim built-in, any filetype)
+nnoremap <silent> th :CocCommand document.toggleInlayHint<CR>
 
-" treesitter-context toggle
-nnoremap <silent> tc :TSContext toggle<CR>
+" toggle coc extension (tr=coc-ruff)
+function! ToggleCocExtension(extension)
+    call CocAction('toggleExtension', a:extension)
+    let l:status = CocAction('extensionStats')
+    for ext in l:status
+        if has_key(ext, 'id') && ext.id ==# a:extension
+            echo a:extension . (ext.state ==# 'activated' ? ' enabled' : ' disabled')
+            return
+        endif
+    endfor
+    echo 'Extension ' . a:extension . ' not found.'
+endfunction
+nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 
 " neoclide/coc.nvim end
+
+" nvim-treesitter/nvim-treesitter-context
+nnoremap <silent> tc :TSContext toggle<CR>
 
 " ojroques/vim-oscyank
 nmap <leader>y <Plug>OSCYankOperator
 vmap <leader>y <Plug>OSCYankVisual
 nnoremap <leader>Y :%y+<CR>
 
-" copilot
+" github/copilot.vim
 let g:copilot_enabled = 1
-" let g:copilot_tab_fallback = ""
-" let g:copilot_assume_mapped = 1
 inoremap <C-e> <Plug>(copilot-next)
 inoremap <Leader>n <Plug>(copilot-next)
 inoremap <Leader>p <Plug>(copilot-prev)
@@ -609,8 +573,7 @@ let g:copilot_filetypes = {
     \ }
 let g:copilot_tab_fallback = ""
 
-" fannheyward/telescope-coc.nvim
-" :Telescope coc to get subcommands
+" fannheyward/telescope-coc.nvim (:Telescope coc for subcommands)
 nnoremap <leader>fr <cmd>Telescope coc references<cr>
 nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
 nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
@@ -618,44 +581,6 @@ nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
 nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
 nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
-
-" auto-session configuration (lua config at bottom)
-
-
-
-function! ToggleCocExtension(extension)
-    " 使用 CocAction toggleExtension 来切换插件状态
-    call CocAction('toggleExtension', a:extension)
-
-    " 获取插件的状态信息
-    let l:status = CocAction('extensionStats')
-
-    " 遍历插件状态列表，查找指定插件
-    let l:found = 0
-    for ext in l:status
-        if has_key(ext, 'id') && ext.id ==# a:extension
-            let l:found = 1
-            if ext.state ==# 'activated'
-                echo a:extension . " is now enabled"
-            else
-                echo a:extension . " is now disabled"
-            endif
-            break
-        endif
-    endfor
-
-    " 如果没有找到插件，输出错误信息
-    if l:found == 0
-        echo "Extension " . a:extension . " not found."
-    endif
-endfunction
-nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
-
-
-" fannheyward/telescope-coc.nvim (lua config at bottom)
-
-" lukas-reineke/indent-blankline.nvim (lua config at bottom)
-" nvim-treesitter, treesitter-context, vim-matchup, outline.nvim (lua config at bottom)
 
 " ============================================================================
 " Lua plugin configurations (consolidated)
@@ -705,37 +630,17 @@ require('gitsigns').setup({
 local has_auto_session, auto_session = pcall(require, 'auto-session')
 if has_auto_session then
   auto_session.setup({
-    auto_session_enable_last_session = false,
-    auto_session_root_dir = vim.fn.stdpath('state') .. '/sessions/',
-    auto_session_enabled = true,
-    auto_save_enabled = true,
-    auto_restore_enabled = true,
-    auto_session_suppress_dirs = { '~/', '~/Downloads', '/tmp', '/'},
+    root_dir = vim.fn.stdpath('state') .. '/sessions/',
+    suppressed_dirs = { '~/', '~/Downloads', '/tmp', '/' },
+    allowed_dirs = { '~/workspace/**' },
+    bypass_save_filetypes = { 'gitcommit', 'gitrebase' },
     session_lens = {
       load_on_setup = false,
     },
-    bypass_session_save_file_types = { 'gitcommit', 'gitrebase' },
-    post_restore_cmds = {
-      function()
-        vim.defer_fn(function()
-          for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-            if vim.api.nvim_buf_is_loaded(bufnr) then
-              vim.api.nvim_buf_call(bufnr, function()
-                vim.cmd('silent! doautocmd BufRead')
-              end)
-            end
-          end
-        end, 50)
-      end
-    },
-    auto_session_use_git_branch = false,
-    cwd_change_handling = {
-      restore_upcoming_session = false,
-    },
   })
 
-  local cwd = vim.fn.getcwd()
-  if not string.match(cwd, "workspace") or vim.fn.getenv("VIM_NO_SESSION") ~= vim.NIL then
+  -- VIM_NO_SESSION 环境变量强制禁用
+  if vim.fn.getenv("VIM_NO_SESSION") ~= vim.NIL then
     vim.g.auto_session_enabled = false
   end
 end
