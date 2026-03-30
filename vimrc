@@ -779,25 +779,7 @@ require('nvim-treesitter.config').setup({
   },
 })
 
--- HiPhish/rainbow-delimiters.nvim
-vim.g.rainbow_delimiters = {
-  strategy = {
-    [''] = 'rainbow-delimiters.strategy.global',
-    vim = 'rainbow-delimiters.strategy.local',
-  },
-  query = {
-    [''] = 'rainbow-delimiters',
-  },
-  highlight = {
-    'RainbowDelimiterRed',
-    'RainbowDelimiterYellow',
-    'RainbowDelimiterBlue',
-    'RainbowDelimiterOrange',
-    'RainbowDelimiterGreen',
-    'RainbowDelimiterViolet',
-    'RainbowDelimiterCyan',
-  },
-}
+-- HiPhish/rainbow-delimiters.nvim: zero-config, all defaults are fine
 
 -- vim-matchup
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
