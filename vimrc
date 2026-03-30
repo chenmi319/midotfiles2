@@ -2,10 +2,8 @@
 " Pre-plugin Settings
 " ============================================================================
 
-" set nocompatible              " be iMproved, required
-" filetype off                  " required
-
 " Python indent fix: default is shiftwidth()*2 which causes 8-space indent after {
+" NOTE: treesitter indent 启用时优先用 treesitter，此为 fallback
 " See: https://github.com/vim/vim/blob/master/runtime/autoload/python.vim
 let g:python_indent = { 'open_paren': 'shiftwidth()' }
 
@@ -63,8 +61,10 @@ Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'rmagatti/auto-session'
 Plug 'ojroques/vim-oscyank'
 
+" ai
 Plug 'github/copilot.vim'
 
+" lsp / completion
 " https://github.com/neoclide/coc.nvim
 " 安装 node, 安装 nvm, nvm install 22, 设置 nvm alias default 22, npm install -g yarn
 " cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
@@ -83,15 +83,8 @@ call plug#end()
 set termguicolors
 set number
 set cursorline
-set backspace=indent,eol,start
-set history=1000
-set showcmd
 set noshowmode
 set gcr=a:blinkon0
-set visualbell
-set autoread
-set hidden
-syntax on
 
 " Session options - what to save/restore in sessions
 set sessionoptions-=options  " Don't save global options (prevents plugin conflicts)
@@ -111,15 +104,11 @@ if isdirectory(expand('~/.vim/swap')) == 0
 endif
 set directory=~/.vim/swap//
 
-set autoindent
 set smartindent
-set smarttab
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set expandtab
-filetype plugin on
-filetype indent on
 set list listchars=tab:>-,trail:-,nbsp:␣
 set wrap
 set linebreak
@@ -127,7 +116,6 @@ set foldmethod=indent
 set foldnestmax=3
 set nofoldenable
 set wildmode=list:longest
-set wildmenu
 set wildignore=*.o,*.obj,*~
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -141,15 +129,11 @@ set wildignore+=*.png,*.jpg,*.gif
 set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
-set incsearch
-set hlsearch
 set ignorecase
 set smartcase
 scriptencoding utf-8
-set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-command W w !sudo tee % > /dev/null
 set cmdheight=1
 set mouse=nv
 set completeopt=menu,menuone
