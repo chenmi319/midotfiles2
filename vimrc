@@ -15,9 +15,10 @@ call plug#begin()
 
 " appearance
 Plug 'joshdick/onedark.vim'
-Plug 'itchyny/lightline.vim'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'catgoose/nvim-colorizer.lua'
-Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'                   " NOTE: only for NERDTree; remove when migrating to nvim-tree
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'HiPhish/rainbow-delimiters.nvim'
 
@@ -148,39 +149,6 @@ map <leader>bd :bd<CR>
 " ============================================================================
 " Plugin Configurations (VimL)
 " ============================================================================
-
-" itchyny/lightline.vim
-set laststatus=2
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'relativepath', 'filesize', 'modified', 'cocstatus', 'currentfunction' ] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead',
-      \   'filesize': 'FileSize',
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ 'component': {
-      \   'currentfunction': '%{get(b:,"coc_current_function","")}'
-      \ },
-      \ }
-function! FileSize()
-    let l:size = getfsize(expand('%:p'))
-    if l:size < 0
-        return ''
-    elseif l:size < 1024
-        return l:size . 'B'
-    elseif l:size < 1024*1024
-        return printf('%.1fK', l:size / 1024.0)
-    else
-        return printf('%.1fM', l:size / 1024.0 / 1024.0)
-    endif
-endfunction
 
 " joshdick/onedark.vim
 let g:onedark_hide_endofbuffer=1
@@ -545,8 +513,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
-" statusline: 由 lightline 管理（cocstatus + currentfunction 已配置在 lightline component 中）
-
 " Mappings for CoCList
 " Show all diagnostics
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -609,6 +575,56 @@ nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 " ============================================================================
 
 lua << EOF
+
+-- nvim-tree/nvim-web-devicons
+require('nvim-web-devicons').setup()
+
+-- nvim-lualine/lualine.nvim (replaces lightline.vim)
+local function diff_source()
+  local gitsigns = vim.b.gitsigns_status_dict
+  if gitsigns then
+    return { added = gitsigns.added, modified = gitsigns.changed, removed = gitsigns.removed }
+  end
+end
+
+require('lualine').setup({
+  options = {
+    theme = 'auto',
+    globalstatus = true,    -- single statusline across all splits (Nvim 0.7+)
+  },
+  sections = {
+    lualine_a = { 'mode' },
+    lualine_b = {
+      { 'FugitiveHead', icon = '' },
+      { 'diff', source = diff_source },
+      { 'diagnostics', sources = { 'coc' } },
+    },
+    lualine_c = {
+      { 'filename', path = 1, symbols = { readonly = '[RO]', modified = '[+]' } },
+      'filesize',
+      'g:coc_status',
+      'b:coc_current_function',
+    },
+    lualine_x = { 'fileformat', 'encoding', 'filetype' },
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' },
+  },
+  inactive_sections = {
+    lualine_c = { { 'filename', path = 1 } },
+  },
+  tabline = {
+    lualine_a = {
+      { 'tabs', mode = 2, path = 1, tab_max_length = 16, max_length = vim.o.columns },
+    },
+  },
+  extensions = { 'nerdtree', 'fugitive', 'quickfix' },
+})
+
+-- refresh lualine when coc status changes
+vim.api.nvim_create_autocmd('User', {
+  pattern = { 'CocStatusChange', 'CocDiagnosticChange' },
+  callback = function() require('lualine').refresh() end,
+})
 
 -- restore cursor position when reopening a file (replaces lastpos.vim)
 vim.api.nvim_create_autocmd('BufReadPost', {
