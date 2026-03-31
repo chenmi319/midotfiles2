@@ -42,10 +42,11 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'nelstrom/vim-visual-star-search'
 
 " editing
+" NOTE: tcomment_vim removed — Nvim 0.10+ built-in: gc{motion}, gcc, gcip (≈gcp)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-unimpaired'
-Plug 'tomtom/tcomment_vim'
+
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'andymass/vim-matchup'
@@ -240,10 +241,6 @@ xmap < [
 xmap > ]
 
 " HiPhish/rainbow-delimiters.nvim (lua config at bottom)
-
-" tomtom/tcomment_vim.git
-nmap <silent> gcp <c-_>p
-let g:tcomment_textobject_inlinecomment = ''
 
 " tpope/vim-fugitive
 autocmd User fugitive
