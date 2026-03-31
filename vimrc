@@ -51,7 +51,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'andymass/vim-matchup'
 Plug 'wellle/targets.vim'
-Plug 'coderifous/textobj-word-column.vim'
+" NOTE: textobj-word-column.vim removed — abandoned; ic/ac conflicts with built-in comment text object
 
 " session / integration
 Plug 'rmagatti/auto-session'
