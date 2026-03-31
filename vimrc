@@ -28,6 +28,7 @@ Plug 'HiPhish/rainbow-delimiters.nvim'
 "   Ubuntu: sudo apt install tree-sitter-cli  (24.04+, check version >= 0.26.1)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-context'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'  " mini.ai treesitter text objects 所需的查询文件
 
 " git
 Plug 'tpope/vim-fugitive'
@@ -53,7 +54,7 @@ Plug 'tpope/vim-abolish'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'andymass/vim-matchup'
-Plug 'wellle/targets.vim'
+Plug 'echasnovski/mini.ai'
 " NOTE: textobj-word-column.vim 已移除 — 已废弃；ic/ac 与内置注释 text object 冲突
 
 " session / integration
@@ -583,6 +584,20 @@ require('nvim-web-devicons').setup()
 
 -- kylechui/nvim-surround（替代 vim-surround）
 require('nvim-surround').setup()
+
+-- echasnovski/mini.ai（替代 targets.vim）
+-- 内置 text objects: a( a[ a{ a< a" a' a` aq(任意引号) ab(任意括号) af(函数调用) aa(参数) at(标签)
+-- 增强: 光标不在目标内时自动 seek forward (search_method = 'cover_or_next')
+-- treesitter text objects: F=函数定义 o=条件/循环 c=类
+local ts = require('mini.ai').gen_spec.treesitter
+require('mini.ai').setup({
+  n_lines = 100,
+  custom_textobjects = {
+    F = ts({ a = '@function.outer', i = '@function.inner' }),
+    o = ts({ a = { '@conditional.outer', '@loop.outer' }, i = { '@conditional.inner', '@loop.inner' } }),
+    c = ts({ a = '@class.outer', i = '@class.inner' }),
+  },
+})
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
 -- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
