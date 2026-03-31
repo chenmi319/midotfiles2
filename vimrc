@@ -300,11 +300,15 @@ cnoremap <C-h> <BACKSPACE>
 cnoremap <C-d> <DELETE>
 
 " --- NERDTree / window management
+" <C-\>: smart toggle — open across all tabs & locate file, or toggle all
+"   Uses NERDTreeTabs commands to stay in sync across tabs (like <leader>tn)
 function! OpenNerdTree()
   if &modifiable && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
+    let l:file = expand('%:p')
+    NERDTreeTabsOpen
+    exe 'NERDTreeFind ' . fnameescape(l:file)
   else
-    NERDTreeToggle
+    NERDTreeTabsToggle
   endif
 endfunction
 nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
