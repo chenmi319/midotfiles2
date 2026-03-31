@@ -567,6 +567,18 @@ nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 
 lua << EOF
 
+-- restore cursor position when reopening a file (replaces lastpos.vim)
+-- NOTE: must be registered early, before plugin setup, so it catches startup buffers
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(0)
+      and not vim.bo.filetype:match('commit') then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
 -- navarasu/onedark.nvim
 require('onedark').setup({
   style = 'dark',
@@ -624,17 +636,6 @@ require('lualine').setup({
 vim.api.nvim_create_autocmd('User', {
   pattern = { 'CocStatusChange', 'CocDiagnosticChange' },
   callback = function() require('lualine').refresh() end,
-})
-
--- restore cursor position when reopening a file (replaces lastpos.vim)
-vim.api.nvim_create_autocmd('BufReadPost', {
-  callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(0)
-      and not vim.bo.filetype:match('commit') then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
 })
 
 -- visual mode * and # search (replaces vim-visual-star-search)
@@ -726,18 +727,20 @@ local has_auto_session, auto_session = pcall(require, 'auto-session')
 if has_auto_session then
   auto_session.setup({
     root_dir = vim.fn.stdpath('state') .. '/sessions/',
-    suppressed_dirs = { '~/', '~/Downloads', '/tmp', '/' },
-    allowed_dirs = { '~/workspace/*' },
-    bypass_save_filetypes = { 'gitcommit', 'gitrebase' },
+    -- 黑名单模式：不设 allowed_dirs，大部分目录自动保存 session
+    suppressed_dirs = {
+      '/', '~/', '~/Desktop', '~/Downloads', '~/Documents',
+      '/tmp', '/private/tmp', '/private/var',
+    },
+    bypass_save_filetypes = {
+      'gitcommit', 'gitrebase',   -- git 操作
+      'help', 'man', 'qf',       -- 只读 / 临时 buffer
+      'TelescopePrompt', 'NvimTree', 'nerdtree',  -- 插件 UI
+    },
     session_lens = {
       load_on_setup = false,
     },
   })
-
-  -- VIM_NO_SESSION 环境变量强制禁用
-  if vim.fn.getenv("VIM_NO_SESSION") ~= vim.NIL then
-    vim.g.auto_session_enabled = false
-  end
 end
 
 -- fannheyward/telescope-coc.nvim
