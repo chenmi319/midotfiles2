@@ -39,7 +39,7 @@ Plug 'fannheyward/telescope-coc.nvim'
 Plug 'Lokaltog/vim-easymotion'
 
 " search
-Plug 'nelstrom/vim-visual-star-search'
+" NOTE: vim-visual-star-search removed — replaced by inline Lua (see lua << EOF block)
 
 " editing
 " NOTE: tcomment_vim removed — Nvim 0.10+ built-in: gc{motion}, gcc, gcip (≈gcp)
@@ -621,6 +621,20 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     end
   end,
 })
+
+-- visual mode * and # search (replaces vim-visual-star-search)
+vim.keymap.set('x', '*', function()
+  vim.cmd('normal! "vy')
+  local search = vim.fn.escape(vim.fn.getreg('v'), '/\\')
+  vim.fn.setreg('/', '\\V' .. search)
+  vim.cmd('normal! n')
+end)
+vim.keymap.set('x', '#', function()
+  vim.cmd('normal! "vy')
+  local search = vim.fn.escape(vim.fn.getreg('v'), '?\\')
+  vim.fn.setreg('/', '\\V' .. search)
+  vim.cmd('normal! N')
+end)
 
 -- lewis6991/gitsigns.nvim
 require('gitsigns').setup({
