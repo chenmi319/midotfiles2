@@ -37,7 +37,7 @@ Plug 'hedyhli/outline.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'fannheyward/telescope-coc.nvim'
-Plug 'Lokaltog/vim-easymotion'
+Plug 'folke/flash.nvim'
 
 " search
 " NOTE: vim-visual-star-search removed — replaced by inline Lua (see lua << EOF block)
@@ -166,10 +166,7 @@ let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 
 " catgoose/nvim-colorizer.lua — config in lua << EOF block
 
-" Lokaltog/vim-easymotion
-let g:EasyMotion_keys='asdfjkoweriop'
-nmap ,<ESC> ,,w
-nmap ,<S-ESC> ,,b
+" folke/flash.nvim — config in lua << EOF block
 
 " nvim-telescope/telescope.nvim
 " Find files using Telescope command-line sugar.
@@ -534,10 +531,6 @@ nnoremap <silent><nowait> <space>f  :<C-u>CocList files<cr>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 nnoremap <silent> to :Outline<CR>
 
-" compatible with easymotion
-autocmd User EasyMotionPromptBegin :let b:coc_diagnostic_disable = 1
-autocmd User EasyMotionPromptEnd :let b:coc_diagnostic_disable = 0
-
 " toggle pyright inlay hints (tv=variable types, tp=parameter types)
 function! TogglePyrightInlayHints(kind, config_key)
     if &filetype != 'python'
@@ -662,6 +655,25 @@ require('colorizer').setup({
     },
   },
 })
+
+-- folke/flash.nvim
+-- replaces vim-easymotion; labels reuse original EasyMotion_keys
+require('flash').setup({
+  labels = 'asdfjkoweriop',
+  modes = {
+    char = {
+      jump_labels = true,       -- f/t/F/T show jump labels at all matches
+    },
+  },
+})
+-- s: type chars to search + label jump (replaces ,,f{char}, ,,w, ,,b)
+vim.keymap.set({ 'n', 'x', 'o' }, 's', function() require('flash').jump() end, { desc = 'Flash' })
+-- S: select treesitter node; ;/, to expand/shrink
+vim.keymap.set({ 'n', 'x', 'o' }, 'S', function() require('flash').treesitter() end, { desc = 'Flash Treesitter' })
+-- r: remote yank/delete — e.g. yr then pick target, do iw, yanked text lands at cursor
+vim.keymap.set('o', 'r', function() require('flash').remote() end, { desc = 'Remote Flash' })
+-- <C-s>: toggle flash labels while using / or ? search
+vim.keymap.set({ 'c' }, '<C-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' })
 
 -- lewis6991/gitsigns.nvim
 require('gitsigns').setup({
