@@ -2,9 +2,9 @@
 " Pre-plugin Settings
 " ============================================================================
 
-" Python indent fix: default is shiftwidth()*2 which causes 8-space indent after {
+" Python 缩进修复：默认 shiftwidth()*2 导致 { 后缩进 8 格
 " NOTE: treesitter indent 启用时优先用 treesitter，此为 fallback
-" See: https://github.com/vim/vim/blob/master/runtime/autoload/python.vim
+" 参考: https://github.com/vim/vim/blob/master/runtime/autoload/python.vim
 let g:python_indent = { 'open_paren': 'shiftwidth()' }
 
 " ============================================================================
@@ -18,12 +18,12 @@ Plug 'navarasu/onedark.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'catgoose/nvim-colorizer.lua'
-Plug 'ryanoasis/vim-devicons'                   " NOTE: only for NERDTree; remove when migrating to nvim-tree
+Plug 'ryanoasis/vim-devicons'                   " NOTE: 仅供 NERDTree 使用；迁移 nvim-tree 时删除
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'HiPhish/rainbow-delimiters.nvim'
 
 " treesitter
-" NOTE: main branch requires tree-sitter-cli (>= 0.26.1) for :TSInstall/:TSUpdate
+" NOTE: main 分支需要 tree-sitter-cli (>= 0.26.1) 才能 :TSInstall/:TSUpdate
 "   macOS: brew install tree-sitter-cli
 "   Ubuntu: sudo apt install tree-sitter-cli  (24.04+, check version >= 0.26.1)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -43,19 +43,18 @@ Plug 'fannheyward/telescope-coc.nvim'
 Plug 'folke/flash.nvim'
 
 " search
-" NOTE: vim-visual-star-search removed — replaced by inline Lua (see lua << EOF block)
+" NOTE: vim-visual-star-search 已移除 — 由内联 Lua 替代（见 lua << EOF 块）
 
 " editing
-" NOTE: tcomment_vim removed — Nvim 0.10+ built-in: gc{motion}, gcc, gcip (≈gcp)
+" NOTE: tcomment_vim 已移除 — Nvim 0.10+ 内置: gc{motion}, gcc, gcip (≈gcp)
 Plug 'kylechui/nvim-surround'
 Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-unimpaired'
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'andymass/vim-matchup'
 Plug 'wellle/targets.vim'
-" NOTE: textobj-word-column.vim removed — abandoned; ic/ac conflicts with built-in comment text object
+" NOTE: textobj-word-column.vim 已移除 — 已废弃；ic/ac 与内置注释 text object 冲突
 
 " session / integration
 Plug 'rmagatti/auto-session'
@@ -90,10 +89,10 @@ set cursorline
 set noshowmode
 set gcr=a:blinkon0
 
-" Session options - what to save/restore in sessions
-set sessionoptions-=options  " Don't save global options (prevents plugin conflicts)
-set sessionoptions-=folds    " Don't save folds
-set sessionoptions-=blank    " Don't save empty windows
+" 会话选项 - 控制 session 保存/恢复的内容
+set sessionoptions-=options  " 不保存全局选项（防止插件冲突）
+set sessionoptions-=folds    " 不保存折叠状态
+set sessionoptions-=blank    " 不保存空窗口
 set sessionoptions+=tabpages,winsize,curdir
 
 " 持久化 undo，避免误关丢历史
@@ -153,7 +152,7 @@ map <leader>bd :bd<CR>
 " Plugin Configurations (VimL)
 " ============================================================================
 
-" navarasu/onedark.nvim — config in lua << EOF block
+" navarasu/onedark.nvim — 配置见 lua << EOF 块
 colorscheme onedark
 
 " jistr/vim-nerdtree-tabs.git
@@ -165,12 +164,12 @@ map <silent> <leader>tn :NERDTreeTabsToggle<CR>
 " scrooloose/nerdtree.git
 let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 
-" catgoose/nvim-colorizer.lua — config in lua << EOF block
+" catgoose/nvim-colorizer.lua — 配置见 lua << EOF 块
 
-" folke/flash.nvim — config in lua << EOF block
+" folke/flash.nvim — 配置见 lua << EOF 块
 
 " nvim-telescope/telescope.nvim
-" Find files using Telescope command-line sugar.
+" 用 Telescope 搜索文件、内容、buffer 等
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fF <cmd>Telescope find_files hidden=true<cr>
 nnoremap <leader>fA <cmd>Telescope find_files hidden=true no_ignore=true<cr>
@@ -178,7 +177,7 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" fannheyward/telescope-coc.nvim (:Telescope coc for subcommands)
+" fannheyward/telescope-coc.nvim（完整子命令列表 :Telescope coc）
 nnoremap <leader>fr <cmd>Telescope coc references<cr>
 nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
 nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
@@ -188,22 +187,17 @@ nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
 " tpope/vim-abolish
-" Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), UPPER_CASE (cru), dash-case (cr-), and dot.case (cr.)
+" 按 crs 转 snake_case, crm MixedCase, crc camelCase, cru UPPER_CASE, cr- dash-case, cr. dot.case
 
-" kylechui/nvim-surround — config in lua << EOF block
-" usage: ys{motion}{char} add, ds{char} delete, cs{old}{new} change
-"   ysiw) → (word)  ysiw( → ( word )  ds" → remove quotes  cs'" → ' → "
-"   ysiw f → function_name(word)  dst → remove HTML tag
+" kylechui/nvim-surround — 配置见 lua << EOF 块
+" 用法: ys{motion}{char} 添加, ds{char} 删除, cs{旧}{新} 替换
+"   ysiw) → (word)  ysiw( → ( word )  ds" → 删除引号  cs'" → ' 换成 "
+"   ysiwf → function_name(word)  dst → 删除 HTML 标签
 
-" tpope/vim-unimpaired " 快速缩进
-nmap < [
-nmap > ]
-omap < [
-omap > ]
-xmap < [
-xmap > ]
+" NOTE: vim-unimpaired 已移除 — Nvim 0.11+ 内置: [b ]b [q ]q [l ]l [a ]a [f ]f [n ]n [d ]d
+" [e/]e（交换行）和 [<Space>/]<Space>（插入空行）由内联 Lua 替代
 
-" HiPhish/rainbow-delimiters.nvim (lua config at bottom)
+" HiPhish/rainbow-delimiters.nvim（Lua 配置在底部）
 
 " tpope/vim-fugitive
 autocmd User fugitive
@@ -258,7 +252,7 @@ nnoremap <leader>Y :%y+<CR>
 nnoremap 0 ^
 nnoremap ^ 0
 
-" --- surround shortcuts (leader + bracket/quote wraps)
+" --- surround 快捷键（leader + 括号/引号包裹）
 map ," ysiw"
 vmap ," c"<C-R>""<ESC>
 map ,' ysiw'
@@ -278,7 +272,7 @@ vmap ,{ c{<C-R>"}<ESC>
 map ,` ysiw`
 nnoremap ,. '.
 
-" --- emacs-style keys (insert + command-line mode)
+" --- emacs 风格快捷键（插入模式 + 命令行模式）
 inoremap <C-a> <C-O><S-i>
 inoremap <C-e> <End>  " NOTE: 被 copilot <C-e> 映射覆盖
 inoremap <C-b> <LEFT>
@@ -295,9 +289,9 @@ cnoremap <C-f> <RIGHT>
 cnoremap <C-h> <BACKSPACE>
 cnoremap <C-d> <DELETE>
 
-" --- NERDTree / window management
-" <C-\>: smart toggle — open across all tabs & locate file, or toggle all
-"   Uses NERDTreeTabs commands to stay in sync across tabs (like <leader>tn)
+" --- NERDTree / 窗口管理
+" <C-\>: 智能切换 — 在所有 tab 中打开 NERDTree 并定位文件，或全局切换
+"   使用 NERDTreeTabs 命令保持跨 tab 同步（与 <leader>tn 一致）
 function! OpenNerdTree()
   if &modifiable && strlen(expand('%')) > 0 && !&diff
     let l:file = expand('%:p')
@@ -316,7 +310,7 @@ map <silent> ,gz <C-w>o
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
 
-" --- path copy (,c prefix: f=from-home, r=relative, n=name, s=short/relative, l=long/absolute)
+" --- 路径复制（,c 前缀: f=从~开始, r=相对, n=文件名, s=短/相对, l=长/绝对）
 " NOTE: ,cr 和 ,cs 在 normal 模式下功能相同（都是相对路径），保留冗余方便记忆
 nnoremap <silent> ,cf :let @* = expand("%:~")<CR>
 nnoremap <silent> ,cr :let @* = expand("%")<CR>
@@ -327,12 +321,12 @@ nnoremap <silent> ,cl :let @* = expand("%:p")<CR>
 xnoremap <silent> ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 xnoremap <silent> ,cl :<C-u>let @* = expand("%:p") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 
-" --- search / marks
+" --- 搜索 / 标记
 nmap <silent> // :nohlsearch<CR>
 nnoremap ' `
 nnoremap ` '
 
-" --- tab management
+" --- tab 管理
 nnoremap <C-t>c :tabnew<CR>
 nnoremap <silent> H :tabprevious<CR>
 nnoremap <silent> L :tabnext<CR>
@@ -352,7 +346,7 @@ nnoremap <silent> <leader>8 8gt
 nnoremap <silent> <leader>9 9gt
 nnoremap <silent> <leader>0 :tablast<CR>
 
-" --- visual / navigation / misc
+" --- 可视模式 / 导航 / 杂项
 vnoremap < <gv
 vnoremap > >gv
 nnoremap j gj
@@ -366,7 +360,7 @@ map <leader>xx :x<CR>
 map <leader>qq :qa<CR>
 nnoremap <F8> :set wrap! wrap?<CR>
 imap <F8> <C-O><F8>
-" show invisible chars
+" 显示不可见字符
 " highlight nonascii guibg=Red ctermbg=2
 " autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
 command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
@@ -376,31 +370,26 @@ command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi 
 " ============================================================================
 
 nmap <leader>rs :CocRestart<CR>
-" Some servers have issues with backup files, see #649
+" 某些 LSP 不兼容 backup 文件，见 coc.nvim #649
 set nobackup
 set nowritebackup
 
-" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
-" delays and poor user experience
+" updatetime 过长会导致延迟（默认 4000ms），影响体验
 set updatetime=300
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved
+" 始终显示 signcolumn，避免诊断信息出现时文本抖动
 set signcolumn=yes
 
-" Use tab for trigger completion with characters ahead and navigate
-" NOTE: There's always complete item selected by default, you may want to enable
-" no select by `"suggest.noselect": true` in your configuration file
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config
+" Tab 触发补全并导航补全列表
+" NOTE: 用 ':verbose imap <tab>' 检查 tab 是否被其他插件占用
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice
+" 回车确认补全项
+" <C-g>u 断开 undo 链
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
@@ -409,25 +398,25 @@ function! CheckBackspace() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion
+" <C-Space> 手动触发补全
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+" [g / ]g 诊断导航
+" 完整诊断列表 :CocDiagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation
+" 代码跳转
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
+" K 显示文档悬浮窗
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
@@ -438,46 +427,45 @@ function! ShowDocumentation()
   endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor
+" 光标停留时高亮当前符号及其引用
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Symbol renaming
+" 重命名符号
 nmap <leader>rn <Plug>(coc-rename)
 
-" Formatting selected code
+" 格式化选中代码
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
-  " Setup formatexpr specified filetype(s)
+  " 设置指定文件类型的 formatexpr
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
+  " 跳转到占位符时更新签名帮助
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Applying code actions to the selected code block
-" Example: `<leader>aap` for current paragraph
+" 对选中代码执行 code action
+" 示例: <leader>aap 对当前段落执行
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap keys for applying code actions at the cursor position
+" 光标位置的 code action
 nmap <leader>ac  <Plug>(coc-codeaction-cursor)
-" Remap keys for apply code actions affect whole buffer
+" 整个 buffer 的 code action
 nmap <leader>as  <Plug>(coc-codeaction-source)
-" Apply the most preferred quickfix action to fix diagnostic on the current line
+" 自动修复当前行的诊断
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Remap keys for applying refactor code actions
+" 重构
 nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
 xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
-" Run the Code Lens action on the current line
+" Code Lens（已禁用）
 " nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server
+" 函数/类 text object（需要 LSP 支持 textDocument.documentSymbol）
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
@@ -487,7 +475,7 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" Remap <C-f> and <C-b> to scroll float windows/popups
+" <C-f>/<C-b> 滚动浮动窗口/弹出菜单
 if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
@@ -497,42 +485,41 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" Use CTRL-S for selections ranges
-" Requires 'textDocument/selectionRange' support of language server
+" <C-s> 选择范围（需要 LSP 支持 textDocument/selectionRange）
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" Add `:Format` command to format current buffer
+" :Format 格式化当前 buffer
 command! -nargs=0 Format :call CocActionAsync('format')
 
-" Add `:Fold` command to fold current buffer
+" :Fold 折叠当前 buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Add `:OR` command for organize imports of the current buffer
+" :OR 整理当前 buffer 的 import
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
-" Mappings for CoCList
-" Show all diagnostics
+" CocList 快捷键
+" 所有诊断
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
+" 管理扩展
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
+" 命令列表
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
+" 当前文件的符号大纲
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
+" 搜索工作区符号
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Search files in workspace
+" 搜索工作区文件
 nnoremap <silent><nowait> <space>f  :<C-u>CocList files<cr>
-" Do default action for next item
+" 下一项操作（已禁用）
 "nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item
+" 上一项操作（已禁用）
 "nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
+" 恢复上次 CocList
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 nnoremap <silent> to :Outline<CR>
 
-" toggle pyright inlay hints (tv=variable types, tp=parameter types)
+" 切换 pyright inlay hints（tv=变量类型, tp=参数类型）
 function! TogglePyrightInlayHints(kind, config_key)
     if &filetype != 'python'
         echo 'Not a Python file.' | return
@@ -547,10 +534,10 @@ endfunction
 let g:pyright_inlayVariableHints_state = v:true
 nnoremap <silent> tv :call TogglePyrightInlayHints('Variable', 'variableTypes')<CR>
 nnoremap <silent> tp :call TogglePyrightInlayHints('Parameter', 'parameterTypes')<CR>
-" toggle all inlay hints for current buffer (th, coc.nvim built-in, any filetype)
+" 切换当前 buffer 所有 inlay hints（th, coc.nvim 内置，适用所有文件类型）
 nnoremap <silent> th :CocCommand document.toggleInlayHint<CR>
 
-" toggle coc extension (tr=coc-ruff)
+" 切换 coc 扩展（tr=coc-ruff）
 function! ToggleCocExtension(extension)
     call CocAction('toggleExtension', a:extension)
     let l:status = CocAction('extensionStats')
@@ -570,8 +557,8 @@ nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 
 lua << EOF
 
--- restore cursor position when reopening a file (replaces lastpos.vim)
--- NOTE: must be registered early, before plugin setup, so it catches startup buffers
+-- 重新打开文件时恢复光标位置（替代 lastpos.vim）
+-- NOTE: 必须在插件 setup 之前注册，确保能捕获启动时的 buffer
 vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
@@ -586,7 +573,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 require('onedark').setup({
   style = 'dark',
   highlights = {
-    IblScope = { fg = '$grey', fmt = 'nocombine' },  -- scope line: subtle grey instead of purple
+    IblScope = { fg = '$grey', fmt = 'nocombine' },  -- scope 线: 用灰色替代默认紫色
   },
 })
 require('onedark').load()
@@ -594,10 +581,28 @@ require('onedark').load()
 -- nvim-tree/nvim-web-devicons
 require('nvim-web-devicons').setup()
 
--- kylechui/nvim-surround (replaces vim-surround)
+-- kylechui/nvim-surround（替代 vim-surround）
 require('nvim-surround').setup()
 
--- nvim-lualine/lualine.nvim (replaces lightline.vim)
+-- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
+-- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
+vim.keymap.set('n', '[e', function()
+  if vim.v.count == 0 then vim.cmd('move .-2') else vim.cmd('move .-' .. (vim.v.count + 1)) end
+  vim.cmd('normal! ==')
+end, { desc = 'Move line up' })
+vim.keymap.set('n', ']e', function()
+  if vim.v.count == 0 then vim.cmd('move .+1') else vim.cmd('move .+' .. vim.v.count) end
+  vim.cmd('normal! ==')
+end, { desc = 'Move line down' })
+-- [<Space> / ]<Space>: 在上方/下方插入空行（支持 count，如 3[<Space> 插入 3 行）
+vim.keymap.set('n', '[<Space>', function()
+  for _ = 1, math.max(vim.v.count, 1) do vim.fn.append(vim.fn.line('.') - 1, '') end
+end, { desc = 'Blank line above' })
+vim.keymap.set('n', ']<Space>', function()
+  for _ = 1, math.max(vim.v.count, 1) do vim.fn.append(vim.fn.line('.'), '') end
+end, { desc = 'Blank line below' })
+
+-- nvim-lualine/lualine.nvim（替代 lightline.vim）
 local function diff_source()
   local gitsigns = vim.b.gitsigns_status_dict
   if gitsigns then
@@ -608,7 +613,7 @@ end
 require('lualine').setup({
   options = {
     theme = 'auto',
-    globalstatus = true,    -- single statusline across all splits (Nvim 0.7+)
+    globalstatus = true,    -- 所有分屏共用一个状态栏（Nvim 0.7+）
   },
   sections = {
     lualine_a = { 'mode' },
@@ -638,13 +643,13 @@ require('lualine').setup({
   extensions = { 'nerdtree', 'fugitive', 'quickfix' },
 })
 
--- refresh lualine when coc status changes
+-- coc 状态变化时刷新 lualine
 vim.api.nvim_create_autocmd('User', {
   pattern = { 'CocStatusChange', 'CocDiagnosticChange' },
   callback = function() require('lualine').refresh() end,
 })
 
--- visual mode * and # search (replaces vim-visual-star-search)
+-- 可视模式 * 和 # 搜索选中文本（替代 vim-visual-star-search）
 vim.keymap.set('x', '*', function()
   vim.cmd('normal! "vy')
   local search = vim.fn.escape(vim.fn.getreg('v'), '/\\')
@@ -671,22 +676,22 @@ require('colorizer').setup({
 })
 
 -- folke/flash.nvim
--- replaces vim-easymotion; labels reuse original EasyMotion_keys
+-- 替代 vim-easymotion；labels 复用原 EasyMotion_keys
 require('flash').setup({
   labels = 'asdfjkoweriop',
   modes = {
     char = {
-      jump_labels = true,       -- f/t/F/T show jump labels at all matches
+      jump_labels = true,       -- f/t/F/T 在所有匹配处显示跳转标签
     },
   },
 })
--- s: type chars to search + label jump (replaces ,,f{char}, ,,w, ,,b)
+-- s: 输入字符搜索 + 标签跳转（替代 ,,f{char}, ,,w, ,,b）
 vim.keymap.set({ 'n', 'x', 'o' }, 's', function() require('flash').jump() end, { desc = 'Flash' })
--- S: select treesitter node; ;/, to expand/shrink
+-- S: 选择 treesitter 节点；;/, 扩大/缩小选区
 vim.keymap.set({ 'n', 'x', 'o' }, 'S', function() require('flash').treesitter() end, { desc = 'Flash Treesitter' })
--- r: remote yank/delete — e.g. yr then pick target, do iw, yanked text lands at cursor
+-- r: 远程操作 — 如 yr 然后选目标，执行 iw，文本会被复制到光标处
 vim.keymap.set('o', 'r', function() require('flash').remote() end, { desc = 'Remote Flash' })
--- <C-s>: toggle flash labels while using / or ? search
+-- <C-s>: 在 / 或 ? 搜索时切换 flash 标签
 vim.keymap.set({ 'c' }, '<C-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' })
 
 -- lewis6991/gitsigns.nvim
@@ -772,11 +777,11 @@ require('telescope').load_extension('coc')
 require("ibl").setup()
 
 -- nvim-treesitter (main branch API)
--- install parsers (no-op if already installed; async)
+-- 安装 parser（已安装则跳过；异步执行）
 require('nvim-treesitter').install({ 'python', 'lua', 'json', 'yaml', 'bash', 'markdown', 'javascript', 'typescript', 'tsx', 'html' })
 
--- enable treesitter highlight + indent for installed languages
--- NOTE: lua/markdown are auto-enabled by Neovim 0.12 ftplugin; listed here for completeness
+-- 为已安装语言启用 treesitter 高亮 + 缩进
+-- NOTE: lua/markdown 由 Neovim 0.12 ftplugin 自动启用；这里列出是为了完整性
 local ts_filetypes = { 'python', 'lua', 'json', 'yaml', 'sh', 'markdown', 'javascript', 'typescript', 'typescriptreact', 'html' }
 vim.api.nvim_create_autocmd('FileType', {
   pattern = ts_filetypes,
@@ -786,9 +791,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- HiPhish/rainbow-delimiters.nvim: zero-config, all defaults are fine
+-- HiPhish/rainbow-delimiters.nvim: 零配置，默认设置即可
 
--- vim-matchup (treesitter integration)
+-- vim-matchup（treesitter 集成）
 vim.g.matchup_treesitter_enabled = 1
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
 vim.g.matchup_matchparen_deferred = 1
