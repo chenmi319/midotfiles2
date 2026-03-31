@@ -16,7 +16,7 @@ call plug#begin()
 " appearance
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
-Plug 'chrisbra/Colorizer'
+Plug 'catgoose/nvim-colorizer.lua'
 Plug 'ryanoasis/vim-devicons'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'HiPhish/rainbow-delimiters.nvim'
@@ -196,8 +196,7 @@ map <silent> <leader>tn :NERDTreeTabsToggle<CR>
 " scrooloose/nerdtree.git
 let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 
-" chrisbra/color_highlight.git
-let g:colorizer_auto_filetype='css,sass,less,html,htm,haml,erb'
+" catgoose/nvim-colorizer.lua — config in lua << EOF block
 
 " Lokaltog/vim-easymotion
 let g:EasyMotion_keys='asdfjkoweriop'
@@ -635,6 +634,18 @@ vim.keymap.set('x', '#', function()
   vim.fn.setreg('/', '\\V' .. search)
   vim.cmd('normal! N')
 end)
+
+-- catgoose/nvim-colorizer.lua
+require('colorizer').setup({
+  filetypes = { '*' },
+  options = {
+    parsers = {
+      css = false,
+      names = { enable = false },
+      hex = { default = true },
+    },
+  },
+})
 
 -- lewis6991/gitsigns.nvim
 require('gitsigns').setup({
