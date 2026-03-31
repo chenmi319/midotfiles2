@@ -14,7 +14,7 @@ let g:python_indent = { 'open_paren': 'shiftwidth()' }
 call plug#begin()
 
 " appearance
-Plug 'joshdick/onedark.vim'
+Plug 'navarasu/onedark.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'catgoose/nvim-colorizer.lua'
@@ -150,9 +150,7 @@ map <leader>bd :bd<CR>
 " Plugin Configurations (VimL)
 " ============================================================================
 
-" joshdick/onedark.vim
-let g:onedark_hide_endofbuffer=1
-let g:onedark_terminal_italics=1
+" navarasu/onedark.nvim — config in lua << EOF block
 colorscheme onedark
 
 " jistr/vim-nerdtree-tabs.git
@@ -568,6 +566,15 @@ nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
 " ============================================================================
 
 lua << EOF
+
+-- navarasu/onedark.nvim
+require('onedark').setup({
+  style = 'dark',
+  highlights = {
+    IblScope = { fg = '$grey', fmt = 'nocombine' },  -- scope line: subtle grey instead of purple
+  },
+})
+require('onedark').load()
 
 -- nvim-tree/nvim-web-devicons
 require('nvim-web-devicons').setup()
