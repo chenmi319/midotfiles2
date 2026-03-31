@@ -47,7 +47,7 @@ Plug 'folke/flash.nvim'
 
 " editing
 " NOTE: tcomment_vim removed — Nvim 0.10+ built-in: gc{motion}, gcc, gcip (≈gcp)
-Plug 'tpope/vim-surround'
+Plug 'kylechui/nvim-surround'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-unimpaired'
 
@@ -190,12 +190,10 @@ nnoremap <silent> tt :Telescope resume<cr>
 " tpope/vim-abolish
 " Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), UPPER_CASE (cru), dash-case (cr-), and dot.case (cr.)
 
-" tpope/vim-surround.git
-let g:surround_113 = "#{\r}"   " v
-let g:surround_35  = "#{\r}"   " #
-let g:surround_45 = "<% \r %>"    " -
-let g:surround_61 = "<%= \r %>"   " =
-"ci', ca', cs'"
+" kylechui/nvim-surround — config in lua << EOF block
+" usage: ys{motion}{char} add, ds{char} delete, cs{old}{new} change
+"   ysiw) → (word)  ysiw( → ( word )  ds" → remove quotes  cs'" → ' → "
+"   ysiw f → function_name(word)  dst → remove HTML tag
 
 " tpope/vim-unimpaired " 快速缩进
 nmap < [
@@ -261,8 +259,6 @@ nnoremap 0 ^
 nnoremap ^ 0
 
 " --- surround shortcuts (leader + bracket/quote wraps)
-map ,# ysiw#
-vmap ,# c#{<C-R>"}<ESC>
 map ," ysiw"
 vmap ," c"<C-R>""<ESC>
 map ,' ysiw'
@@ -597,6 +593,9 @@ require('onedark').load()
 
 -- nvim-tree/nvim-web-devicons
 require('nvim-web-devicons').setup()
+
+-- kylechui/nvim-surround (replaces vim-surround)
+require('nvim-surround').setup()
 
 -- nvim-lualine/lualine.nvim (replaces lightline.vim)
 local function diff_source()
