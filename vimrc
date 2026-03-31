@@ -52,7 +52,7 @@ Plug 'kylechui/nvim-surround'
 Plug 'tpope/vim-abolish'
 
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'junegunn/vim-easy-align'
+Plug 'echasnovski/mini.align'
 Plug 'andymass/vim-matchup'
 Plug 'echasnovski/mini.ai'
 " NOTE: textobj-word-column.vim 已移除 — 已废弃；ic/ac 与内置注释 text object 冲突
@@ -207,13 +207,7 @@ autocmd User fugitive
   \ endif
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-" junegunn/vim-easy-align
-vmap <Leader>e <Plug>(EasyAlign)
-nmap <Leader>e <Plug>(EasyAlign)
-if !exists('g:easy_align_delimiters')
-  let g:easy_align_delimiters = {}
-endif
-let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
+" echasnovski/mini.align — 配置在 lua << EOF 块
 
 " AndrewRadev/splitjoin.vim
 nmap sj :SplitjoinSplit<cr>
@@ -596,6 +590,20 @@ require('mini.ai').setup({
     F = ts({ a = '@function.outer', i = '@function.inner' }),
     o = ts({ a = { '@conditional.outer', '@loop.outer' }, i = { '@conditional.inner', '@loop.inner' } }),
     c = ts({ a = '@class.outer', i = '@class.inner' }),
+  },
+})
+
+-- echasnovski/mini.align（替代 vim-easy-align）
+-- 选中多行后 ga 进入对齐模式，输入分隔符即可：
+--   V选中 → ga → =    按 = 对齐赋值语句
+--   V选中 → ga → :    按 : 对齐 YAML/字典
+--   V选中 → ga → #    按 # 对齐行尾注释
+--   V选中 → gA → =    带实时预览的对齐（推荐）
+-- 修饰键（在输入分隔符前按）: s=正则 j=切换方向 t=trim空白 i=忽略字符串/注释
+require('mini.align').setup({
+  mappings = {
+    start = 'ga',
+    start_with_preview = 'gA',
   },
 })
 
