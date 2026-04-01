@@ -650,7 +650,7 @@ require('lualine').setup({
   },
   tabline = {
     lualine_a = {
-      { 'tabs', mode = 2, path = 0, tab_max_length = 40, max_length = vim.o.columns,
+      { 'tabs', mode = 2, path = 0, max_length = vim.o.columns,
         fmt = function(name, context)
           -- 收集所有 tab 的文件名，找出重名的
           local dupes = {}
@@ -668,7 +668,7 @@ require('lualine').setup({
           if dupes[tail] and dupes[tail] > 1 then
             -- 重名：追加父目录以区分
             local parent = vim.fn.fnamemodify(bufname, ':p:h:t')
-            return parent .. '/' .. tail
+            tail = parent .. '/' .. tail
           end
           return tail
         end,
