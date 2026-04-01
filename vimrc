@@ -84,11 +84,10 @@ call plug#end()
 " General Settings
 " ============================================================================
 
-set termguicolors
 set number
 set cursorline
 set noshowmode
-set gcr=a:blinkon0
+set guicursor=a:blinkon0
 
 " 会话选项 - 控制 session 保存/恢复的内容
 set sessionoptions-=options  " 不保存全局选项（防止插件冲突）
@@ -96,19 +95,9 @@ set sessionoptions-=folds    " 不保存折叠状态
 set sessionoptions-=blank    " 不保存空窗口
 set sessionoptions+=tabpages,winsize,curdir
 
-" 持久化 undo，避免误关丢历史
+" 持久化 undo（目录由 Neovim XDG 默认管理）
 set undofile
-if isdirectory(expand('~/.vim/undo')) == 0
-  silent! call mkdir(expand('~/.vim/undo'), 'p', 0700)
-endif
-set undodir=~/.vim/undo
-" swap 用单独位置（可选）
-if isdirectory(expand('~/.vim/swap')) == 0
-  silent! call mkdir(expand('~/.vim/swap'), 'p', 0700)
-endif
-set directory=~/.vim/swap//
 
-set smartindent
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
@@ -116,10 +105,11 @@ set expandtab
 set list listchars=tab:>-,trail:-,nbsp:␣
 set wrap
 set linebreak
-set foldmethod=indent
+set foldmethod=expr
+set foldexpr=v:lua.vim.treesitter.foldexpr()
+set foldtext=v:lua.vim.treesitter.foldtext()
 set foldnestmax=3
 set nofoldenable
-set wildmode=list:longest
 set wildignore=*.o,*.obj,*~
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -132,24 +122,17 @@ set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 set scrolloff=8
 set sidescrolloff=15
-set sidescroll=1
 set ignorecase
 set smartcase
-scriptencoding utf-8
-set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-set cmdheight=1
 set updatetime=300
 set signcolumn=yes
-set mouse=nv
-set completeopt=menu,menuone
-nnoremap <F7> :set paste!<CR>:set paste?<CR>
-set grepprg=git\ grep
-let g:grep_cmd_opts = '--line-number'
+set grepprg=rg\ --vimgrep\ --smart-case
+set grepformat=%f:%l:%c:%m
 " NOTE: 仅支持 Linux/macOS，Windows 需自行配置 clipboard
 set clipboard=unnamedplus
 let mapleader=","
-map <leader>bd :bd<CR>
+nnoremap <leader>bd :bd<CR>
 
 " ============================================================================
 " Plugin Configurations (VimL)
