@@ -66,7 +66,7 @@ Plug 'mrjones2014/smart-splits.nvim'
 Plug 'MeanderingProgrammer/render-markdown.nvim'
 
 " ai
-Plug 'github/copilot.vim'
+Plug 'zbirenbaum/copilot.lua'
 
 " lsp / completion
 " https://github.com/neoclide/coc.nvim
@@ -220,16 +220,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " nvim-treesitter/nvim-treesitter-context (lua config at bottom)
 nnoremap <silent> tc :TSContext toggle<CR>
 
-" github/copilot.vim
-let g:copilot_enabled = 1
-inoremap <C-e> <Plug>(copilot-next)
-inoremap <Leader>n <Plug>(copilot-next)
-inoremap <Leader>p <Plug>(copilot-prev)
-inoremap <leader>a <Plug>(copilot-accept)
-let g:copilot_filetypes = {
-    \ '*': v:true,
-    \ }
-let g:copilot_tab_fallback = ""
+" zbirenbaum/copilot.lua（替代 copilot.vim）— 配置在 lua << EOF 块
 
 " ============================================================================
 " Custom Keybindings
@@ -264,7 +255,7 @@ nnoremap ,. '.
 
 " --- emacs 风格快捷键（插入模式 + 命令行模式）
 inoremap <C-a> <C-O><S-i>
-inoremap <C-e> <End>  " NOTE: 被 copilot <C-e> 映射覆盖
+inoremap <C-e> <End>  " NOTE: 被 copilot.lua 的 <C-e> keymap 覆盖（next suggestion）
 inoremap <C-b> <LEFT>
 inoremap <C-f> <RIGHT>
 inoremap <C-h> <BACKSPACE>
@@ -613,6 +604,23 @@ vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
 vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
 vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
 vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+
+-- zbirenbaum/copilot.lua（替代 copilot.vim）
+-- accept: <leader>a  next: <C-e>  prev: <leader>p  dismiss: <C-]>
+require('copilot').setup({
+  suggestion = {
+    auto_trigger = true,
+    keymap = {
+      accept  = '<leader>a',
+      next    = '<C-e>',
+      prev    = '<leader>p',
+      dismiss = '<C-]>',
+      accept_word = false,
+      accept_line = false,
+    },
+  },
+  filetypes = { ['*'] = true },
+})
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
 -- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
