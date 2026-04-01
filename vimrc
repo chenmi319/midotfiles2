@@ -59,7 +59,7 @@ Plug 'echasnovski/mini.ai'
 
 " session / integration
 Plug 'rmagatti/auto-session'
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'mrjones2014/smart-splits.nvim'
 
 
 " filetype
@@ -212,12 +212,8 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Wansmer/treesj（替代 splitjoin.vim）— 配置在 lua << EOF 块
 " sj 展开为多行, sk 合并为单行
 
-" christoomey/vim-tmux-navigator
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+" mrjones2014/smart-splits.nvim（替代 vim-tmux-navigator）— 配置在 lua << EOF 块
+" C-h/j/k/l 在 vim splits 和 tmux panes 间无缝导航
 
 " lewis6991/gitsigns.nvim (lua config at bottom)
 
@@ -609,6 +605,14 @@ local treesj = require('treesj')
 treesj.setup({ use_default_keymaps = false })
 vim.keymap.set('n', 'sj', treesj.split, { desc = 'Split to multi-line' })
 vim.keymap.set('n', 'sk', treesj.join, { desc = 'Join to single line' })
+
+-- mrjones2014/smart-splits.nvim（替代 vim-tmux-navigator）
+-- tmux 自动检测，通过 @pane-is-vim 变量实现快速 pane 切换
+require('smart-splits').setup()
+vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
 -- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
