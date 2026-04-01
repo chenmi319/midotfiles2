@@ -61,15 +61,12 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 
 
 # vim
-* [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
-* [安装 nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+* [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md) (>= 0.11)
 * 安装 ripgrep
-* 安装 node, 安装 nvm, nvm install 22, 设置 nvm alias default 22, npm install -g yarn
 ```bash
-mkdir -p ~/.config/nvim/init.vim
+mkdir -p ~/.config/nvim
 try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
 try_link ~/.config/nvim/init.vim ~/.vimrc
-try_link ~/.midotfiles2/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # 安装 nvim 插件
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -80,14 +77,10 @@ vim +PlugUpdate +qall
 # 清理
 vim +PlugClean +qall
 
-# ruff (Python linter + formatter): 由 coc-ruff 调用，在项目 dev dependency 中安装即可
-
-# 安装 coc.nvim 以及插件
-cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
-# 参考 vimrc 里面的配置
-# vim 里运行 :CocInstall coc-calc coc-diagnostic coc-json coc-xml coc-yaml coc-pairs coc-lists
-# vim 里按需运行 :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-solargraph coc-sh coc-docker @yaegassy/coc-nginx coc-markdownlint coc-sql coc-html @yaegassy/coc-tailwindcss3 coc-prettier coc-css
-# 删除: :CocList extensions, 然后 tab
+# LSP servers 由 mason.nvim 自动安装（:MasonInstall pyright ruff typescript-language-server 等）
+# 外部 formatter（conform.nvim 调用）:
+#   ruff:     pip install ruff  或 brew install ruff
+#   prettier: npm install -g prettier
 ```
 
 

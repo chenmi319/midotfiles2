@@ -40,7 +40,7 @@ Plug 'chenmi319/vim-nerdtree-tabs'
 Plug 'hedyhli/outline.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'fannheyward/telescope-coc.nvim'
+Plug 'folke/trouble.nvim'
 Plug 'folke/flash.nvim'
 
 " search
@@ -69,14 +69,14 @@ Plug 'MeanderingProgrammer/render-markdown.nvim'
 Plug 'zbirenbaum/copilot.lua'
 
 " lsp / completion
-" https://github.com/neoclide/coc.nvim
-" 安装 node, 安装 nvm, nvm install 22, 设置 nvm alias default 22, npm install -g yarn
-" cd ~/.vim/bundle/coc.nvim; yarn install --frozen-lockfile
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-" in vim :CocInstall coc-calc coc-diagnostic coc-json coc-xml coc-yaml coc-pairs coc-prettier coc-lists
-" in vim ondemand :CocInstall coc-pyright @yaegassy/coc-ruff coc-tsserver coc-sh coc-docker @yaegassy/coc-nginx coc-sql coc-html @yaegassy/coc-tailwindcss3 coc-solargraph
-" other common plugin: coc-java coc-perl coc-clangd coc-markdownlint
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'mason-org/mason-lspconfig.nvim'
+Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
+Plug 'rafamadriz/friendly-snippets'
+Plug 'fang2hou/blink-copilot'
+Plug 'stevearc/conform.nvim'
+Plug 'windwp/nvim-autopairs'
 
 call plug#end()
 
@@ -139,6 +139,8 @@ scriptencoding utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set cmdheight=1
+set updatetime=300
+set signcolumn=yes
 set mouse=nv
 set completeopt=menu,menuone
 nnoremap <F7> :set paste!<CR>:set paste?<CR>
@@ -178,13 +180,12 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" fannheyward/telescope-coc.nvim（完整子命令列表 :Telescope coc）
-nnoremap <leader>fr <cmd>Telescope coc references<cr>
-nnoremap <leader>fd <cmd>Telescope coc definitions<cr>
-nnoremap <leader>fc <cmd>Telescope coc declarations<cr>
-nnoremap <leader>fi <cmd>Telescope coc implementations<cr>
-nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
-nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
+" telescope LSP 集成（替代 telescope-coc.nvim）
+nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>fi <cmd>Telescope lsp_implementations<cr>
+nnoremap <leader>ft <cmd>Telescope lsp_type_definitions<cr>
+nnoremap <leader>fa <cmd>Telescope diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
 " gregorias/coerce.nvim（替代 vim-abolish 的 cr* coercion）— 配置在 lua << EOF 块
@@ -255,7 +256,7 @@ nnoremap ,. '.
 
 " --- emacs 风格快捷键（插入模式 + 命令行模式）
 inoremap <C-a> <C-O><S-i>
-inoremap <C-e> <End>  " NOTE: 被 copilot.lua 的 <C-e> keymap 覆盖（next suggestion）
+inoremap <C-e> <End>  " NOTE: blink.cmp 补全菜单打开时 C-e 用于关闭菜单，关闭后回退到此映射
 inoremap <C-b> <LEFT>
 inoremap <C-f> <RIGHT>
 inoremap <C-h> <BACKSPACE>
@@ -347,190 +348,15 @@ imap <F8> <C-O><F8>
 command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
 
 " ============================================================================
-" CoC (neoclide/coc.nvim)
+" LSP / Diagnostics / Formatting（VimScript 键位，Lua 配置在底部）
 " ============================================================================
 
-nmap <leader>rs :CocRestart<CR>
-" 某些 LSP 不兼容 backup 文件，见 coc.nvim #649
-set nobackup
-set nowritebackup
-
-" updatetime 过长会导致延迟（默认 4000ms），影响体验
-set updatetime=300
-
-" 始终显示 signcolumn，避免诊断信息出现时文本抖动
-set signcolumn=yes
-
-" Tab 触发补全并导航补全列表
-" NOTE: 用 ':verbose imap <tab>' 检查 tab 是否被其他插件占用
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-" 回车确认补全项
-" <C-g>u 断开 undo 链
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" <C-Space> 手动触发补全
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" [g / ]g 诊断导航
-" 完整诊断列表 :CocDiagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" 代码跳转
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" K 显示文档悬浮窗
-nnoremap <silent> K :call ShowDocumentation()<CR>
-
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
-" 光标停留时高亮当前符号及其引用
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" 重命名符号
-nmap <leader>rn <Plug>(coc-rename)
-
-" 格式化选中代码
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " 设置指定文件类型的 formatexpr
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " 跳转到占位符时更新签名帮助
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" 对选中代码执行 code action
-" 示例: <leader>aap 对当前段落执行
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" 光标位置的 code action
-nmap <leader>ac  <Plug>(coc-codeaction-cursor)
-" 整个 buffer 的 code action
-nmap <leader>as  <Plug>(coc-codeaction-source)
-" 自动修复当前行的诊断
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" 重构
-nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
-xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
-nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
-
-" Code Lens（已禁用）
-" nmap <leader>cl  <Plug>(coc-codelens-action)
-
-" 函数/类 text object（需要 LSP 支持 textDocument.documentSymbol）
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" <C-f>/<C-b> 滚动浮动窗口/弹出菜单
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
-" <C-s> 选择范围（需要 LSP 支持 textDocument/selectionRange）
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-" :Format 格式化当前 buffer
-command! -nargs=0 Format :call CocActionAsync('format')
-
-" :Fold 折叠当前 buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" :OR 整理当前 buffer 的 import
-command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
-
-" CocList 快捷键
-" 所有诊断
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" 管理扩展
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" 命令列表
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" 当前文件的符号大纲
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" 搜索工作区符号
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" 搜索工作区文件
-nnoremap <silent><nowait> <space>f  :<C-u>CocList files<cr>
-" 下一项操作（已禁用）
-"nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" 上一项操作（已禁用）
-"nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" 恢复上次 CocList
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nmap <leader>rs <cmd>LspRestart<CR>
 nnoremap <silent> to :Outline<CR>
 
-" 切换 pyright inlay hints（tv=变量类型, tp=参数类型）
-function! TogglePyrightInlayHints(kind, config_key)
-    if &filetype != 'python'
-        echo 'Not a Python file.' | return
-    endif
-    let state_var = 'g:pyright_inlay' . a:kind . 'Hints_state'
-    if !exists(state_var) | let {state_var} = v:false | endif
-    let {state_var} = !{state_var}
-    call CocAction('updateConfig', 'pyright.inlayHints.' . a:config_key, {state_var})
-    echo 'pyright.inlayHints.' . a:config_key . ': ' . ({state_var} ? 'on' : 'off')
-endfunction
-
-let g:pyright_inlayVariableHints_state = v:true
-nnoremap <silent> tv :call TogglePyrightInlayHints('Variable', 'variableTypes')<CR>
-nnoremap <silent> tp :call TogglePyrightInlayHints('Parameter', 'parameterTypes')<CR>
-" 切换当前 buffer 所有 inlay hints（th, coc.nvim 内置，适用所有文件类型）
-nnoremap <silent> th :CocCommand document.toggleInlayHint<CR>
-
-" 切换 coc 扩展（tr=coc-ruff）
-function! ToggleCocExtension(extension)
-    call CocAction('toggleExtension', a:extension)
-    let l:status = CocAction('extensionStats')
-    for ext in l:status
-        if has_key(ext, 'id') && ext.id ==# a:extension
-            echo a:extension . (ext.state ==# 'activated' ? ' enabled' : ' disabled')
-            return
-        endif
-    endfor
-    echo 'Extension ' . a:extension . ' not found.'
-endfunction
-nnoremap <silent> tr :call ToggleCocExtension('@yaegassy/coc-ruff')<CR>
+" <space> 前缀键位（诊断面板 + 工作区符号搜索）
+nnoremap <silent><nowait> <space>a <cmd>Trouble diagnostics toggle<cr>
+nnoremap <silent><nowait> <space>s <cmd>Telescope lsp_workspace_symbols<cr>
 
 " ============================================================================
 " Lua Plugin Configurations
@@ -605,21 +431,179 @@ vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
 vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
 vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
 
--- zbirenbaum/copilot.lua（替代 copilot.vim）
--- accept: <leader>a  next: <C-e>  prev: <leader>p  dismiss: <C-]>
+-- zbirenbaum/copilot.lua（通过 blink-copilot 集成到补全菜单）
 require('copilot').setup({
-  suggestion = {
-    auto_trigger = true,
-    keymap = {
-      accept  = '<leader>a',
-      next    = '<C-e>',
-      prev    = '<leader>p',
-      dismiss = '<C-]>',
-      accept_word = false,
-      accept_line = false,
+  suggestion = { enabled = false },  -- 禁用 ghost text，由 blink 菜单显示
+  panel = { enabled = false },
+  filetypes = { ['*'] = true },
+})
+
+-- saghen/blink.cmp（替代 coc.nvim 补全）
+require('blink.cmp').setup({
+  keymap = {
+    preset = 'none',
+    ['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+    ['<C-e>']     = { 'hide', 'fallback' },
+    ['<CR>']      = { 'accept', 'fallback' },
+    ['<Tab>']     = { 'select_next', 'snippet_forward', 'fallback' },
+    ['<S-Tab>']   = { 'select_prev', 'snippet_backward', 'fallback' },
+    ['<C-n>']     = { 'select_next', 'fallback' },
+    ['<C-p>']     = { 'select_prev', 'fallback' },
+    ['<C-b>']     = { 'scroll_documentation_up', 'fallback' },
+    ['<C-f>']     = { 'scroll_documentation_down', 'fallback' },
+  },
+  appearance = { nerd_font_variant = 'mono' },
+  completion = {
+    documentation = { auto_show = true, auto_show_delay_ms = 200 },
+    list = { selection = { preselect = true, auto_insert = false } },
+    accept = { auto_brackets = { enabled = true } },
+  },
+  sources = {
+    default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+    providers = {
+      copilot = {
+        name = 'copilot',
+        module = 'blink-copilot',
+        score_offset = 100,
+        async = true,
+      },
     },
   },
-  filetypes = { ['*'] = true },
+  fuzzy = { implementation = 'prefer_rust_with_warning' },
+})
+
+-- windwp/nvim-autopairs（替代 coc-pairs）
+require('nvim-autopairs').setup()
+
+-- williamboman/mason.nvim + mason-lspconfig（LSP server 安装管理）
+require('mason').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = { 'pyright', 'ruff', 'ts_ls', 'jsonls', 'yamlls', 'html' },
+})
+
+-- LSP server 配置（Neovim 0.11+ 原生 API，替代 coc.nvim）
+-- nvim-lspconfig 作为数据包提供各 server 的默认 cmd/filetypes/root_markers
+-- mason-lspconfig 自动对 ensure_installed 的 server 调用 vim.lsp.enable()
+vim.lsp.config('*', {
+  capabilities = require('blink.cmp').get_lsp_capabilities(),
+})
+
+vim.lsp.config('pyright', {
+  settings = {
+    pyright = { disableOrganizeImports = true },
+    python = {
+      analysis = {
+        inlayHints = {
+          variableTypes = true,
+          functionReturnTypes = true,
+          callArgumentNames = true,
+          pytestParameters = true,
+        },
+      },
+    },
+  },
+})
+
+-- stevearc/conform.nvim（替代 coc-prettier + coc-ruff 格式化）
+require('conform').setup({
+  formatters_by_ft = {
+    python     = { 'ruff_format', 'ruff_organize_imports' },
+    javascript = { 'prettier', stop_after_first = true },
+    typescript = { 'prettier', stop_after_first = true },
+    javascriptreact = { 'prettier' },
+    typescriptreact = { 'prettier' },
+    html       = { 'prettier' },
+    css        = { 'prettier' },
+    json       = { 'prettier' },
+    yaml       = { 'prettier' },
+  },
+})
+
+-- folke/trouble.nvim（替代 CocList diagnostics）
+require('trouble').setup({
+  focus = true,
+  auto_close = true,
+})
+
+-- LSP keymaps + autocmd（替代 coc.nvim VimScript 配置）
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+    -- ruff: hover 由 pyright 处理，禁用 ruff 的 hover
+    if client and client.name == 'ruff' then
+      client.server_capabilities.hoverProvider = false
+    end
+
+    local function map(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+    end
+
+    -- 代码跳转（保持 coc 风格键位）
+    map('n', 'gd', vim.lsp.buf.definition, 'Go to definition')
+    map('n', 'gy', vim.lsp.buf.type_definition, 'Go to type definition')
+    map('n', 'gi', vim.lsp.buf.implementation, 'Go to implementation')
+    map('n', 'gr', vim.lsp.buf.references, 'Show references')
+    map('n', 'K', vim.lsp.buf.hover, 'Hover documentation')
+
+    -- 诊断导航
+    map('n', '[g', function() vim.diagnostic.jump({ count = -1 }) end, 'Previous diagnostic')
+    map('n', ']g', function() vim.diagnostic.jump({ count = 1 }) end, 'Next diagnostic')
+
+    -- 重命名 / code action / 格式化
+    map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
+    map({ 'n', 'x' }, '<leader>a', vim.lsp.buf.code_action, 'Code action')
+    map('n', '<leader>qf', function()
+      local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+      vim.lsp.buf.code_action({ context = { only = { 'quickfix' }, diagnostics = vim.diagnostic.get(0, { lnum = lnum }) } })
+    end, 'Quick fix')
+    map({ 'n', 'x' }, '<leader>f', function()
+      require('conform').format({ async = true, lsp_format = 'fallback' })
+    end, 'Format')
+
+    -- 光标停留时高亮当前符号及其引用（仅首个支持的 client 注册一次）
+    if client and client:supports_method('textDocument/documentHighlight') and not vim.b[bufnr].lsp_highlight_attached then
+      vim.b[bufnr].lsp_highlight_attached = true
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = bufnr,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = bufnr,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+
+    -- Inlay hints（Neovim 0.10+ 原生 API）
+    if client and client:supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
+  end,
+})
+
+-- th: toggle inlay hints（全局）
+vim.keymap.set('n', 'th', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = 'Toggle inlay hints' })
+
+-- :Format 命令（兼容旧习惯）
+vim.api.nvim_create_user_command('Format', function()
+  require('conform').format({ async = true, lsp_format = 'fallback' })
+end, {})
+
+-- 诊断显示配置
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '✘',
+      [vim.diagnostic.severity.WARN]  = '▲',
+      [vim.diagnostic.severity.INFO]  = 'ℹ',
+      [vim.diagnostic.severity.HINT]  = '➤',
+    },
+  },
+  virtual_text = { spacing = 4 },
+  float = { border = 'rounded' },
 })
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
@@ -656,13 +640,11 @@ require('lualine').setup({
     lualine_b = {
       { 'FugitiveHead', icon = '' },
       { 'diff', source = diff_source },
-      { 'diagnostics', sources = { 'coc' } },
+      'diagnostics',
     },
     lualine_c = {
       { 'filename', path = 1, symbols = { readonly = '[RO]', modified = '[+]' } },
       'filesize',
-      'g:coc_status',
-      'b:coc_current_function',
     },
     lualine_x = { 'fileformat', 'encoding', 'filetype' },
   },
@@ -697,12 +679,6 @@ require('lualine').setup({
     },
   },
   extensions = { 'nerdtree', 'fugitive', 'quickfix' },
-})
-
--- coc 状态变化时刷新 lualine
-vim.api.nvim_create_autocmd('User', {
-  pattern = { 'CocStatusChange', 'CocDiagnosticChange' },
-  callback = function() require('lualine').refresh() end,
 })
 
 -- 可视模式 * 和 # 搜索选中文本（替代 vim-visual-star-search）
@@ -807,7 +783,7 @@ if has_auto_session then
   })
 end
 
--- fannheyward/telescope-coc.nvim
+-- nvim-telescope/telescope.nvim
 require("telescope").setup({
   defaults = {
     mappings = {
@@ -817,14 +793,7 @@ require("telescope").setup({
       },
     },
   },
-  extensions = {
-    coc = {
-        theme = 'ivy',
-        prefer_locations = true,
-    }
-  },
 })
-require('telescope').load_extension('coc')
 
 -- lukas-reineke/indent-blankline.nvim
 require("ibl").setup()
@@ -863,7 +832,7 @@ if has_outline then
       autofold_depth = false,
     },
     providers = {
-      priority = { 'coc', 'markdown', 'norg', 'man' },
+      priority = { 'lsp', 'markdown', 'norg', 'man' },
     },
   })
 end
