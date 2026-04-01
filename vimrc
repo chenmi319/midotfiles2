@@ -49,9 +49,9 @@ Plug 'folke/flash.nvim'
 " editing
 " NOTE: tcomment_vim 已移除 — Nvim 0.10+ 内置: gc{motion}, gcc, gcip (≈gcp)
 Plug 'kylechui/nvim-surround'
-Plug 'tpope/vim-abolish'
+Plug 'gregorias/coerce.nvim', { 'tag': 'v1.1' }
 
-Plug 'AndrewRadev/splitjoin.vim'
+Plug 'Wansmer/treesj'
 Plug 'echasnovski/mini.align'
 Plug 'andymass/vim-matchup'
 Plug 'echasnovski/mini.ai'
@@ -187,8 +187,8 @@ nnoremap <leader>ft <cmd>Telescope coc type_definitions<cr>
 nnoremap <leader>fa <cmd>Telescope coc diagnostics<cr>
 nnoremap <silent> tt :Telescope resume<cr>
 
-" tpope/vim-abolish
-" 按 crs 转 snake_case, crm MixedCase, crc camelCase, cru UPPER_CASE, cr- dash-case, cr. dot.case
+" gregorias/coerce.nvim（替代 vim-abolish 的 cr* coercion）— 配置在 lua << EOF 块
+" 按 crs snake_case, crp PascalCase, crc camelCase, cru UPPER_CASE, crk kebab-case, crd dot.case
 
 " kylechui/nvim-surround — 配置见 lua << EOF 块
 " 用法: ys{motion}{char} 添加, ds{char} 删除, cs{旧}{新} 替换
@@ -209,9 +209,8 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " echasnovski/mini.align — 配置在 lua << EOF 块
 
-" AndrewRadev/splitjoin.vim
-nmap sj :SplitjoinSplit<cr>
-nmap sk :SplitjoinJoin<cr>
+" Wansmer/treesj（替代 splitjoin.vim）— 配置在 lua << EOF 块
+" sj 展开为多行, sk 合并为单行
 
 " christoomey/vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
@@ -600,6 +599,16 @@ require('mini.ai').setup({
 --   V选中 → gA → =    带实时预览的对齐（推荐）
 -- 修饰键（在输入分隔符前按）: s=正则 j=切换方向 t=trim空白 i=忽略字符串/注释
 require('mini.align').setup()
+
+-- gregorias/coerce.nvim（替代 vim-abolish 的 cr* coercion）
+-- Normal: cr + s/p/c/u/k/d  Visual/Motion: gcr + s/p/c/u/k/d
+require('coerce').setup()
+
+-- Wansmer/treesj（替代 splitjoin.vim）
+local treesj = require('treesj')
+treesj.setup({ use_default_keymaps = false })
+vim.keymap.set('n', 'sj', treesj.split, { desc = 'Split to multi-line' })
+vim.keymap.set('n', 'sk', treesj.join, { desc = 'Join to single line' })
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
 -- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
