@@ -650,7 +650,29 @@ require('lualine').setup({
   },
   tabline = {
     lualine_a = {
-      { 'tabs', mode = 2, path = 1, tab_max_length = 16, max_length = vim.o.columns },
+      { 'tabs', mode = 2, path = 0, tab_max_length = 40, max_length = vim.o.columns,
+        fmt = function(name, context)
+          -- 收集所有 tab 的文件名，找出重名的
+          local dupes = {}
+          for i = 1, vim.fn.tabpagenr('$') do
+            local buflist = vim.fn.tabpagebuflist(i)
+            local winnr = vim.fn.tabpagewinnr(i)
+            local bufname = vim.fn.fnamemodify(vim.fn.bufname(buflist[winnr]), ':t')
+            dupes[bufname] = (dupes[bufname] or 0) + 1
+          end
+          -- 当前 tab 的 buffer
+          local buflist = vim.fn.tabpagebuflist(context.tabnr)
+          local winnr = vim.fn.tabpagewinnr(context.tabnr)
+          local bufname = vim.fn.bufname(buflist[winnr])
+          local tail = vim.fn.fnamemodify(bufname, ':t')
+          if dupes[tail] and dupes[tail] > 1 then
+            -- 重名：追加父目录以区分
+            local parent = vim.fn.fnamemodify(bufname, ':p:h:t')
+            return parent .. '/' .. tail
+          end
+          return tail
+        end,
+      },
     },
   },
   extensions = { 'nerdtree', 'fugitive', 'quickfix' },
