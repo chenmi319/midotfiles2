@@ -566,7 +566,6 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 -- navarasu/onedark.nvim
 require('onedark').setup({
-  style = 'dark',
   highlights = {
     IblScope = { fg = '$grey', fmt = 'nocombine' },  -- scope 线: 用灰色替代默认紫色
   },
@@ -600,12 +599,7 @@ require('mini.ai').setup({
 --   V选中 → ga → #    按 # 对齐行尾注释
 --   V选中 → gA → =    带实时预览的对齐（推荐）
 -- 修饰键（在输入分隔符前按）: s=正则 j=切换方向 t=trim空白 i=忽略字符串/注释
-require('mini.align').setup({
-  mappings = {
-    start = 'ga',
-    start_with_preview = 'gA',
-  },
-})
+require('mini.align').setup()
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
 -- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
@@ -635,11 +629,9 @@ end
 
 require('lualine').setup({
   options = {
-    theme = 'auto',
     globalstatus = true,    -- 所有分屏共用一个状态栏（Nvim 0.7+）
   },
   sections = {
-    lualine_a = { 'mode' },
     lualine_b = {
       { 'FugitiveHead', icon = '' },
       { 'diff', source = diff_source },
@@ -652,8 +644,6 @@ require('lualine').setup({
       'b:coc_current_function',
     },
     lualine_x = { 'fileformat', 'encoding', 'filetype' },
-    lualine_y = { 'progress' },
-    lualine_z = { 'location' },
   },
   inactive_sections = {
     lualine_c = { { 'filename', path = 1 } },
@@ -688,12 +678,9 @@ end)
 
 -- catgoose/nvim-colorizer.lua
 require('colorizer').setup({
-  filetypes = { '*' },
   options = {
     parsers = {
-      css = false,
       names = { enable = false },
-      hex = { default = true },
     },
   },
 })
@@ -817,30 +804,18 @@ vim.api.nvim_create_autocmd('FileType', {
 -- HiPhish/rainbow-delimiters.nvim: 零配置，默认设置即可
 
 -- vim-matchup（treesitter 集成）
-vim.g.matchup_treesitter_enabled = 1
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
 vim.g.matchup_matchparen_deferred = 1
-vim.g.matchup_matchparen_deferred_show_delay = 50
-vim.g.matchup_matchparen_deferred_hide_delay = 700
 
 -- nvim-treesitter-context
 require('treesitter-context').setup({
-  enable = true,
   separator = "-",
-  mode = "cursor"
 })
 
 -- hedyhli/outline.nvim
 local has_outline, outline = pcall(require, 'outline')
 if has_outline then
   outline.setup({
-    outline_window = {
-      position = 'right',
-      width = 25,
-      auto_close = false,
-      show_numbers = false,
-      show_relative_numbers = false,
-    },
     symbol_folding = {
       autofold_depth = false,
     },
