@@ -145,7 +145,7 @@ colorscheme onedark
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_open_on_new_tab = 1
-map <silent> <leader>tn :NERDTreeTabsToggle<CR>
+nnoremap <silent> <leader>tn :NERDTreeTabsToggle<CR>
 
 " scrooloose/nerdtree.git
 let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
@@ -154,22 +154,7 @@ let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
 
 " folke/flash.nvim — 配置见 lua << EOF 块
 
-" nvim-telescope/telescope.nvim
-" 用 Telescope 搜索文件、内容、buffer 等
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fF <cmd>Telescope find_files hidden=true<cr>
-nnoremap <leader>fA <cmd>Telescope find_files hidden=true no_ignore=true<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-" telescope LSP 集成（替代 telescope-coc.nvim）
-nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
-nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
-nnoremap <leader>fi <cmd>Telescope lsp_implementations<cr>
-nnoremap <leader>ft <cmd>Telescope lsp_type_definitions<cr>
-nnoremap <leader>fa <cmd>Telescope diagnostics<cr>
-nnoremap <silent> tt :Telescope resume<cr>
+" nvim-telescope/telescope.nvim — 键位配置在 lua << EOF 块
 
 " gregorias/coerce.nvim（替代 vim-abolish 的 cr* coercion）— 配置在 lua << EOF 块
 " 按 crs snake_case, crp PascalCase, crc camelCase, cru UPPER_CASE, crk kebab-case, crd dot.case
@@ -182,14 +167,9 @@ nnoremap <silent> tt :Telescope resume<cr>
 " NOTE: vim-unimpaired 已移除 — Nvim 0.11+ 内置: [b ]b [q ]q [l ]l [a ]a [f ]f [n ]n [d ]d
 " [e/]e（交换行）和 [<Space>/]<Space>（插入空行）由内联 Lua 替代
 
-" HiPhish/rainbow-delimiters.nvim（Lua 配置在底部）
+" HiPhish/rainbow-delimiters.nvim — 配置在 lua << EOF 块
 
-" tpope/vim-fugitive
-autocmd User fugitive
-  \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-  \   nnoremap <buffer> .. :edit %:h<CR> |
-  \ endif
-autocmd BufReadPost fugitive://* set bufhidden=delete
+" tpope/vim-fugitive — 配置在 lua << EOF 块
 
 " echasnovski/mini.align — 配置在 lua << EOF 块
 
@@ -199,10 +179,9 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " mrjones2014/smart-splits.nvim（替代 vim-tmux-navigator）— 配置在 lua << EOF 块
 " C-h/j/k/l 在 vim splits 和 tmux panes 间无缝导航
 
-" lewis6991/gitsigns.nvim (lua config at bottom)
+" lewis6991/gitsigns.nvim — 配置在 lua << EOF 块
 
-" nvim-treesitter/nvim-treesitter-context (lua config at bottom)
-nnoremap <silent> tc :TSContext toggle<CR>
+" nvim-treesitter/nvim-treesitter-context — 键位配置在 lua << EOF 块
 
 " zbirenbaum/copilot.lua（替代 copilot.vim）— 配置在 lua << EOF 块
 
@@ -778,6 +757,23 @@ require("telescope").setup({
   },
 })
 
+-- Telescope 全局键位
+local builtin = require('telescope.builtin')
+-- 搜索文件、内容、buffer 等
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fF', function() builtin.find_files({ hidden = true }) end, { desc = 'Find files (hidden)' })
+vim.keymap.set('n', '<leader>fA', function() builtin.find_files({ hidden = true, no_ignore = true }) end, { desc = 'Find files (all)' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
+-- Telescope LSP 集成
+vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { desc = 'LSP references' })
+vim.keymap.set('n', '<leader>fd', builtin.lsp_definitions, { desc = 'LSP definitions' })
+vim.keymap.set('n', '<leader>fi', builtin.lsp_implementations, { desc = 'LSP implementations' })
+vim.keymap.set('n', '<leader>ft', builtin.lsp_type_definitions, { desc = 'LSP type definitions' })
+vim.keymap.set('n', '<leader>fa', builtin.diagnostics, { desc = 'Diagnostics' })
+vim.keymap.set('n', 'tt', builtin.resume, { desc = 'Telescope resume' })
+
 -- lukas-reineke/indent-blankline.nvim
 require("ibl").setup()
 
@@ -805,6 +801,25 @@ vim.g.matchup_matchparen_deferred = 1
 -- nvim-treesitter-context
 require('treesitter-context').setup({
   separator = "-",
+})
+vim.keymap.set('n', 'tc', '<cmd>TSContext toggle<cr>', { desc = 'Toggle treesitter context' })
+
+-- tpope/vim-fugitive
+-- 在 tree/blob buffer 中，.. 跳转到父目录；fugitive object buffer 关闭时自动删除
+local fugitive_group = vim.api.nvim_create_augroup('FugitiveConfig', { clear = true })
+vim.api.nvim_create_autocmd('User', {
+  group = fugitive_group,
+  pattern = { 'FugitiveTree', 'FugitiveBlob' },
+  callback = function()
+    vim.keymap.set('n', '..', '<cmd>edit %:h<CR>', { buffer = true })
+  end,
+})
+vim.api.nvim_create_autocmd('User', {
+  group = fugitive_group,
+  pattern = 'FugitiveObject',
+  callback = function()
+    vim.bo.bufhidden = 'delete'
+  end,
 })
 
 -- hedyhli/outline.nvim
