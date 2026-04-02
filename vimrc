@@ -274,15 +274,8 @@ inoremap <F8> <C-O>:set wrap! wrap?<CR>
 command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi nonascii ctermbg=2 guibg=Red
 
 " ============================================================================
-" LSP / Diagnostics / Formatting（VimScript 键位，Lua 配置在底部）
+" LSP / Diagnostics / Formatting — 键位配置在 lua << EOF 块
 " ============================================================================
-
-nnoremap <leader>rs <cmd>LspRestart<CR>
-nnoremap <silent> to :Outline<CR>
-
-" <space> 前缀键位（诊断面板 + 工作区符号搜索）
-nnoremap <silent><nowait> <space>a <cmd>Trouble diagnostics toggle<cr>
-nnoremap <silent><nowait> <space>s <cmd>Telescope lsp_workspace_symbols<cr>
 
 " ============================================================================
 " Lua Plugin Configurations
@@ -466,16 +459,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
     end
 
-    -- 代码跳转（保持 coc 风格键位）
+    -- 代码跳转 — K, grr, gri, gra, grt, gO, [d/]d 由 Neovim 0.11+ 内置
     map('n', 'gd', vim.lsp.buf.definition, 'Go to definition')
-    map('n', 'gy', vim.lsp.buf.type_definition, 'Go to type definition')
-    map('n', 'gi', vim.lsp.buf.implementation, 'Go to implementation')
-    map('n', 'gr', vim.lsp.buf.references, 'Show references')
-    map('n', 'K', vim.lsp.buf.hover, 'Hover documentation')
-
-    -- 诊断导航
-    map('n', '[g', function() vim.diagnostic.jump({ count = -1 }) end, 'Previous diagnostic')
-    map('n', ']g', function() vim.diagnostic.jump({ count = 1 }) end, 'Next diagnostic')
 
     -- 重命名 / code action / 格式化
     map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
@@ -512,6 +497,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.keymap.set('n', 'th', function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = 'Toggle inlay hints' })
+
+-- LSP / Diagnostics 全局键位
+vim.keymap.set('n', '<leader>rs', '<cmd>LspRestart<CR>', { desc = 'Restart LSP' })
+vim.keymap.set('n', 'to', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })
+vim.keymap.set('n', '<space>a', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'Trouble diagnostics' })
+vim.keymap.set('n', '<space>s', '<cmd>Telescope lsp_workspace_symbols<cr>', { desc = 'Workspace symbols' })
 
 -- :Format 命令（兼容旧习惯）
 vim.api.nvim_create_user_command('Format', function()
