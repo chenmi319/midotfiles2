@@ -135,6 +135,16 @@ set splitright
 set laststatus=3
 " 原生补全菜单最多 15 行（blink.cmp 用自己的浮窗，此项影响原生补全）
 set pumheight=15
+" :s/foo/bar 实时预览替换效果，split 窗口显示屏幕外匹配
+set inccommand=split
+" 折行时保持缩进对齐（配合 wrap + linebreak）
+set breakindent
+" 关闭未保存 buffer 时弹确认而非报错
+set confirm
+" visual block 模式可超出行尾选择（编辑表格/对齐时实用）
+set virtualedit=block
+" 去掉文件末尾空行的 ~ 标记；diff 删除区域用斜线填充
+set fillchars=eob:\ ,diff:╱
 
 " 会话选项 - 控制 session 保存/恢复的内容
 " 不保存全局选项（防止插件冲突）、折叠状态、空窗口
