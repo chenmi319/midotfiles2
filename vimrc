@@ -119,14 +119,22 @@ call plug#end()
 " General Settings
 " ============================================================================
 
-" 显示行号
+" 显示行号 + 相对行号（方便 5j/3k 计数跳转）
 set number
+set relativenumber
 " 高亮当前行
 set cursorline
 " 不显示模式（lualine 已显示）
 set noshowmode
 " 光标不闪烁
 set guicursor=a:blinkon0
+" 新分屏在下方/右方打开，更符合阅读直觉
+set splitbelow
+set splitright
+" 全局状态栏（多窗口只显示一条 lualine）
+set laststatus=3
+" 原生补全菜单最多 15 行（blink.cmp 用自己的浮窗，此项影响原生补全）
+set pumheight=15
 
 " 会话选项 - 控制 session 保存/恢复的内容
 " 不保存全局选项（防止插件冲突）、折叠状态、空窗口
