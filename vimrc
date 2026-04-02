@@ -598,6 +598,26 @@ vim.api.nvim_create_autocmd('User', {
 
 -- lewis6991/gitsigns.nvim — Git 行状态标记
 require('gitsigns').setup({
+  -- 用半块色块替代默认细线，更醒目
+  signs = {
+    add          = { text = '▌' },
+    change       = { text = '▌' },
+    delete       = { text = '_' },
+    topdelete    = { text = '‾' },
+    changedelete = { text = '~' },
+    untracked    = { text = '┆' },
+  },
+  -- staged 用粗虚线区分
+  signs_staged = {
+    add          = { text = '┇' },
+    change       = { text = '┇' },
+    delete       = { text = '_' },
+    topdelete    = { text = '‾' },
+    changedelete = { text = '~' },
+    untracked    = { text = '┆' },
+  },
+  -- 行号也跟着变色，双重提示
+  numhl = true,
   on_attach = function(bufnr)
     local gs = require('gitsigns')
     local function map(mode, l, r, opts)
@@ -615,6 +635,10 @@ require('gitsigns').setup({
       if vim.wo.diff then vim.cmd.normal({'[c', bang = true})
       else gs.nav_hunk('prev') end
     end, { desc = 'Previous hunk' })
+
+    -- ]C / [C: 跳到下/上一个已暂存 (staged) 的修改块
+    map('n', ']C', function() gs.nav_hunk('next', { target = 'staged' }) end, { desc = 'Next staged hunk' })
+    map('n', '[C', function() gs.nav_hunk('prev', { target = 'staged' }) end, { desc = 'Previous staged hunk' })
 
     map('n', '<leader>hp', gs.preview_hunk, { desc = 'Preview hunk' })           -- ,hp: 弹窗预览当前 hunk 的 diff
     map('n', '<leader>hb', function() gs.blame_line({ full = true }) end, { desc = 'Blame line (full)' })  -- ,hb: 显示当前行完整 blame 信息
