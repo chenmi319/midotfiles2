@@ -196,42 +196,8 @@ nnoremap <leader>Y :%y+<CR>
 nnoremap 0 ^
 nnoremap ^ 0
 
-" --- surround 快捷键（leader + 括号/引号包裹）
-map ," ysiw"
-vmap ," c"<C-R>""<ESC>
-map ,' ysiw'
-vmap ,' c'<C-R>"'<ESC>
-map ,( ysiw(
-map ,) ysiw)
-vmap ,( c( <C-R>" )<ESC>
-vmap ,) c(<C-R>")<ESC>
-map ,] ysiw]
-map ,[ ysiw[
-vmap ,[ c[ <C-R>" ]<ESC>
-vmap ,] c[<C-R>"]<ESC>
-map ,} ysiw}
-map ,{ ysiw{
-vmap ,} c{ <C-R>" }<ESC>
-vmap ,{ c{<C-R>"}<ESC>
-map ,` ysiw`
+" --- surround: nvim-surround 内置 ysiw<char> (normal) / S<char> (visual)，无需自定义
 nnoremap ,. '.
-
-" --- emacs 风格快捷键（插入模式 + 命令行模式）
-inoremap <C-a> <C-O><S-i>
-inoremap <C-e> <End>  " NOTE: blink.cmp 补全菜单打开时 C-e 用于关闭菜单，关闭后回退到此映射
-inoremap <C-b> <LEFT>
-inoremap <C-f> <RIGHT>
-inoremap <C-h> <BACKSPACE>
-inoremap <C-d> <DELETE>
-
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <C-p> <UP>
-cnoremap <C-n> <DOWN>
-cnoremap <C-b> <LEFT>
-cnoremap <C-f> <RIGHT>
-cnoremap <C-h> <BACKSPACE>
-cnoremap <C-d> <DELETE>
 
 " --- NERDTree / 窗口管理
 " <C-\>: 智能切换 — 在所有 tab 中打开 NERDTree 并定位文件，或全局切换
@@ -246,13 +212,11 @@ function! OpenNerdTree()
   endif
 endfunction
 nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
-nmap <silent> ,qc :cclose<CR>
-nmap <silent> ,qo :copen<CR>
+nnoremap <silent> ,qc :cclose<CR>
+nnoremap <silent> ,qo :copen<CR>
 nnoremap <C-w>f :sp +e<cfile><CR>
 nnoremap <C-w>gf :tabe<cfile><CR>
-map <silent> ,gz <C-w>o
-nnoremap <silent> vv <C-w>v
-nnoremap <silent> ss <C-w>s
+nnoremap <silent> ,gz <C-w>o
 
 " --- 路径复制（,c 前缀: f=从~开始, r=相对, n=文件名, s=短/相对, l=长/绝对）
 " NOTE: ,cr 和 ,cs 在 normal 模式下功能相同（都是相对路径），保留冗余方便记忆
@@ -266,19 +230,22 @@ xnoremap <silent> ,cs :<C-u>let @* = expand("%") . ":" . line("'<") . "-" . line
 xnoremap <silent> ,cl :<C-u>let @* = expand("%:p") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 
 " --- 搜索 / 标记
-nmap <silent> // :nohlsearch<CR>
+nnoremap <silent> // :nohlsearch<CR>
 nnoremap ' `
 nnoremap ` '
 
 " --- tab 管理
-nnoremap <C-t>c :tabnew<CR>
+nnoremap <leader>tc :tabnew<CR>
 nnoremap <silent> H :tabprevious<CR>
 nnoremap <silent> L :tabnext<CR>
 nnoremap ˙ gT
 nnoremap ¬ gt
 let g:lasttab = 1
 nnoremap <silent> T :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
+augroup LastTab
+  autocmd!
+  autocmd TabLeave * let g:lasttab = tabpagenr()
+augroup END
 nnoremap <silent> <leader>1 1gt
 nnoremap <silent> <leader>2 2gt
 nnoremap <silent> <leader>3 3gt
@@ -295,15 +262,12 @@ vnoremap < <gv
 vnoremap > >gv
 nnoremap j gj
 nnoremap k gk
-inoremap <expr> <c-j> pumvisible() ? "\<C-e>\<Down>" : "\<Down>"
-inoremap <expr> <c-k> pumvisible() ? "\<C-e>\<Up>" : "\<Up>"
-nmap <silent> <leader>> ciw<Esc>:let @"=substitute(strtrans(@"), '[A-Z]\C', '_\L&', 'g')<CR>"0p
-nmap <silent> <leader>< ciw<Esc>:let @"=substitute(strtrans(@"), '_\([a-z]\)\C', '\U\1', 'g')<CR>"0p
-map <leader>ww :w<CR>
-map <leader>xx :x<CR>
-map <leader>qq :qa<CR>
+" NOTE: <leader>> / <leader>< 大小写转换已由 coerce.nvim 替代（crs=snake, crc=camel）
+nnoremap <leader>ww :w<CR>
+nnoremap <leader>xx :x<CR>
+nnoremap <leader>qq :qa<CR>
 nnoremap <F8> :set wrap! wrap?<CR>
-imap <F8> <C-O><F8>
+inoremap <F8> <C-O>:set wrap! wrap?<CR>
 " 显示不可见字符
 " highlight nonascii guibg=Red ctermbg=2
 " autocmd BufReadPost * syntax match nonascii "[^\u0000-\u007F]"
@@ -313,7 +277,7 @@ command! NonASCIIHighlight exec 'syntax match nonascii "[^\u0000-\u007F]"' | hi 
 " LSP / Diagnostics / Formatting（VimScript 键位，Lua 配置在底部）
 " ============================================================================
 
-nmap <leader>rs <cmd>LspRestart<CR>
+nnoremap <leader>rs <cmd>LspRestart<CR>
 nnoremap <silent> to :Outline<CR>
 
 " <space> 前缀键位（诊断面板 + 工作区符号搜索）
