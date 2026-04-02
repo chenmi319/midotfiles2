@@ -68,7 +68,8 @@ Plug 'folke/flash.nvim'
 " 括号/引号包裹操作（ys/ds/cs）
 Plug 'kylechui/nvim-surround'
 " 命名风格转换（crs snake_case, crc camelCase 等）
-Plug 'gregorias/coerce.nvim', { 'tag': 'v1.1' }
+Plug 'gregorias/coop.nvim'
+Plug 'gregorias/coerce.nvim'
 " 代码块展开/合并（sj 展开, sk 合并）
 Plug 'Wansmer/treesj'
 " 文本对齐（ga 触发）
