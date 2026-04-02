@@ -64,10 +64,7 @@ Plug 'folke/trouble.nvim'
 " 快速跳转（增强 f/t/s，替代 easymotion/hop）
 Plug 'folke/flash.nvim'
 
-" NOTE: vim-visual-star-search 已移除 — 由内联 Lua 替代（见 lua << EOF 块）
-
 " --- editing ---
-" NOTE: tcomment_vim 已移除 — Nvim 0.10+ 内置: gc{motion}, gcc, gcip (≈gcp)
 " 括号/引号包裹操作（ys/ds/cs）
 Plug 'kylechui/nvim-surround'
 " 命名风格转换（crs snake_case, crc camelCase 等）
@@ -80,7 +77,6 @@ Plug 'echasnovski/mini.align'
 Plug 'andymass/vim-matchup'
 " 增强文本对象（函数参数 ia/aa, 条件 ii/ai 等，基于 treesitter）
 Plug 'echasnovski/mini.ai'
-" NOTE: textobj-word-column.vim 已移除 — 已废弃；ic/ac 与内置注释 text object 冲突
 
 " --- session ---
 " 自动保存/恢复会话（按工作目录）
@@ -235,7 +231,6 @@ nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
 " ============================================================================
 " Custom Keybindings
 " ============================================================================
-" NOTE: vim-unimpaired 已移除 — Nvim 0.11+ 内置: [b ]b [q ]q [l ]l [a ]a [f ]f [n ]n [d ]d
 " NOTE: [e/]e（交换行）和 [<Space>/]<Space>（插入空行）由内联 Lua 替代
 
 " --- 导航 / 光标移动
@@ -602,18 +597,18 @@ require('gitsigns').setup({
   signs = {
     add          = { text = '▌' },
     change       = { text = '▌' },
-    delete       = { text = '_' },
-    topdelete    = { text = '‾' },
-    changedelete = { text = '~' },
+    delete       = { text = '▁' },
+    topdelete    = { text = '▔' },
+    changedelete = { text = '▋' },
     untracked    = { text = '┆' },
   },
-  -- staged 用粗虚线区分
+  -- staged 同样字符，靠颜色区分
   signs_staged = {
-    add          = { text = '┇' },
-    change       = { text = '┇' },
-    delete       = { text = '_' },
-    topdelete    = { text = '‾' },
-    changedelete = { text = '~' },
+    add          = { text = '▌' },
+    change       = { text = '▌' },
+    delete       = { text = '▁' },
+    topdelete    = { text = '▔' },
+    changedelete = { text = '▋' },
     untracked    = { text = '┆' },
   },
   -- 行号也跟着变色，双重提示
