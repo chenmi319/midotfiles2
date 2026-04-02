@@ -15,69 +15,105 @@ let g:python_indent = { 'open_paren': 'shiftwidth()' }
 
 call plug#begin()
 
-" appearance
+" --- appearance ---
+" 主题
 Plug 'navarasu/onedark.nvim'
+" 状态栏
 Plug 'nvim-lualine/lualine.nvim'
+" 文件类型图标（Lua 插件通用依赖）
 Plug 'nvim-tree/nvim-web-devicons'
+" CSS/Hex 颜色值实时预览
 Plug 'catgoose/nvim-colorizer.lua'
-Plug 'ryanoasis/vim-devicons'                   " NOTE: 仅供 NERDTree 使用；迁移 nvim-tree 时删除
+" 文件类型图标（VimL 版，仅供 NERDTree 使用；迁移 nvim-tree 时删除）
+Plug 'ryanoasis/vim-devicons'
+" 缩进参考线
 Plug 'lukas-reineke/indent-blankline.nvim'
+" 彩虹括号（匹配括号不同颜色）
 Plug 'HiPhish/rainbow-delimiters.nvim'
 
-" treesitter
+" --- treesitter ---
 " NOTE: main 分支需要 tree-sitter-cli (>= 0.26.1) 才能 :TSInstall/:TSUpdate
 "   macOS: brew install tree-sitter-cli
 "   Ubuntu: sudo apt install tree-sitter-cli  (24.04+, check version >= 0.26.1)
+" 语法高亮 / 代码结构解析
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" 顶部固定显示当前函数/类上下文
 Plug 'nvim-treesitter/nvim-treesitter-context'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'  " mini.ai treesitter text objects 所需的查询文件
+" treesitter 文本对象查询文件（mini.ai 依赖）
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
-" git
+" --- git ---
+" Git 命令集成（:Git blame/diff/log 等）
 Plug 'tpope/vim-fugitive'
+" 行级 git diff 标记 + hunk 操作
 Plug 'lewis6991/gitsigns.nvim'
 
-" navigation
+" --- navigation ---
+" 文件树侧栏
 Plug 'preservim/nerdtree'
+" NERDTree 多 tab 同步
 Plug 'chenmi319/vim-nerdtree-tabs'
+" LSP 符号大纲面板
 Plug 'hedyhli/outline.nvim'
+" Lua 异步工具库（telescope 等插件的依赖）
 Plug 'nvim-lua/plenary.nvim'
+" 模糊搜索（文件/内容/buffer/LSP 符号等）
 Plug 'nvim-telescope/telescope.nvim'
+" 诊断/引用/quickfix 列表面板
 Plug 'folke/trouble.nvim'
+" 快速跳转（增强 f/t/s，替代 easymotion/hop）
 Plug 'folke/flash.nvim'
 
-" search
 " NOTE: vim-visual-star-search 已移除 — 由内联 Lua 替代（见 lua << EOF 块）
 
-" editing
+" --- editing ---
 " NOTE: tcomment_vim 已移除 — Nvim 0.10+ 内置: gc{motion}, gcc, gcip (≈gcp)
+" 括号/引号包裹操作（ys/ds/cs）
 Plug 'kylechui/nvim-surround'
+" 命名风格转换（crs snake_case, crc camelCase 等）
 Plug 'gregorias/coerce.nvim', { 'tag': 'v1.1' }
-
+" 代码块展开/合并（sj 展开, sk 合并）
 Plug 'Wansmer/treesj'
+" 文本对齐（ga 触发）
 Plug 'echasnovski/mini.align'
+" 增强 % 匹配（支持 if/else/end 等语言结构）
 Plug 'andymass/vim-matchup'
+" 增强文本对象（函数参数 ia/aa, 条件 ii/ai 等，基于 treesitter）
 Plug 'echasnovski/mini.ai'
 " NOTE: textobj-word-column.vim 已移除 — 已废弃；ic/ac 与内置注释 text object 冲突
 
-" session / integration
+" --- session ---
+" 自动保存/恢复会话（按工作目录）
 Plug 'rmagatti/auto-session'
+
+" --- tmux 集成 ---
+" C-h/j/k/l 在 vim splits 和 tmux panes 间无缝导航 + 窗口 resize
 Plug 'mrjones2014/smart-splits.nvim'
 
-
-" filetype
+" --- filetype ---
+" Markdown 渲染增强（表格/代码块/标题等美化显示）
 Plug 'MeanderingProgrammer/render-markdown.nvim'
 
-" ai
+" --- ai ---
+" GitHub Copilot（Lua 版，替代 copilot.vim）
 Plug 'zbirenbaum/copilot.lua'
 
-" lsp / completion
+" --- lsp / completion ---
+" LSP 客户端配置框架
 Plug 'neovim/nvim-lspconfig'
+" LSP server 自动安装管理
 Plug 'williamboman/mason.nvim'
+" mason + lspconfig 桥接（自动配置已安装的 server）
 Plug 'mason-org/mason-lspconfig.nvim'
+" 补全引擎（替代 nvim-cmp，更快）
 Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
+" 通用代码片段集合
 Plug 'rafamadriz/friendly-snippets'
+" blink.cmp 的 Copilot 补全源
 Plug 'fang2hou/blink-copilot'
+" 代码格式化框架（替代 null-ls/none-ls 的 formatting 部分）
 Plug 'stevearc/conform.nvim'
+" 自动补全括号/引号
 Plug 'windwp/nvim-autopairs'
 
 call plug#end()
