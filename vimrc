@@ -151,7 +151,6 @@ set fillchars=eob:\ ,diff:╱
 set sessionoptions-=options
 set sessionoptions-=folds
 set sessionoptions-=blank
-set sessionoptions+=tabpages,winsize,curdir
 
 " 持久化 undo（目录由 Neovim XDG 默认管理）
 set undofile
