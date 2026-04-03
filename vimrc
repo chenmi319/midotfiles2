@@ -769,8 +769,8 @@ require('conform').setup({
     python     = { 'ruff_format', 'ruff_organize_imports' },
     javascript = { 'prettier', stop_after_first = true },
     typescript = { 'prettier', stop_after_first = true },
-    javascriptreact = { 'prettier' },
-    typescriptreact = { 'prettier' },
+    javascriptreact = { 'prettier', stop_after_first = true },
+    typescriptreact = { 'prettier', stop_after_first = true },
     html       = { 'prettier' },
     css        = { 'prettier' },
     json       = { 'prettier' },
@@ -806,8 +806,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
     map({ 'n', 'x' }, '<leader>a', vim.lsp.buf.code_action, 'Code action')
     map('n', '<leader>qf', function()
-      local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
-      vim.lsp.buf.code_action({ context = { only = { 'quickfix' }, diagnostics = vim.diagnostic.get(0, { lnum = lnum }) } })
+      vim.lsp.buf.code_action({ context = { only = { 'quickfix' } }, apply = true })
     end, 'Quick fix')
     map({ 'n', 'x' }, '<leader>f', function()
       require('conform').format({ async = true, lsp_format = 'fallback' })
@@ -844,6 +843,7 @@ vim.diagnostic.config({
     },
   },
   virtual_text = { spacing = 4 },  -- 行尾诊断信息间距
+  severity_sort = true,             -- 高优先级诊断排在前面（ERROR > WARN > INFO > HINT）
   float = { border = 'rounded' },  -- 浮窗圆角边框
 })
 
