@@ -223,7 +223,10 @@ colorscheme onedark
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_open_on_new_tab = 1
-let g:NERDTreeIgnore = ['^__pycache__$', 'Session.vim', '.DS_Store']
+let g:NERDTreeIgnore = ['^__pycache__$', '\.pyc$', 'Session.vim', '.DS_Store', '^node_modules$', '\.git$', '\.cache$']
+" 显示隐藏文件；精简界面（去掉顶部帮助提示）
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
 
 " <leader>tn: 在所有 tab 中同步切换 NERDTree
 nnoremap <silent> <leader>tn :NERDTreeTabsToggle<CR>
