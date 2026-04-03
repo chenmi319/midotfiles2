@@ -1,152 +1,127 @@
-[color]
-  ui = auto
+# ── 身份 ──
+[include]
+  path = ~/.gitconfig.user
+
+# ── 核心 ──
+[core]
+  editor = nvim
+  pager = delta
+  excludesfile = ~/.gitignore
+  quotepath = false
+  autocrlf = false
+
+# ── 显示 ──
 [color "branch"]
   current = yellow reverse
   local = yellow
   remote = green
 [color "diff"]
   meta = yellow bold
-  frag = magenta bold
   old = red bold
   new = green bold
 [color "status"]
-  added = green
   changed = yellow
-  untracked = red
+[delta]
+  navigate = true
+  side-by-side = true
+  line-numbers = true
+  dark = true
+  minus-style = "normal #551e21"
+  plus-style = "normal #174d2b"
+  minus-emph-style = "bold red #8b2c2f"
+  plus-emph-style = "bold green #297745"
+  syntax-theme = "Solarized (dark)"
+  file-style = "bold yellow ul"
+  hunk-header-style = "bold cyan"
+[interactive]
+  diffFilter = delta --color-only
+[advice]
+  statusHints = false
+
+# ── 差异 & 合并 ──
+[diff]
+  mnemonicprefix = true
+  algorithm = histogram
+[merge]
+  summary = true
+  verbosity = 1
+  conflictStyle = zdiff3
+
+# ── 工作流 ──
+[push]
+  default = simple
+[apply]
+  whitespace = nowarn
+[commit]
+  template = ~/.gitmessage
+[rerere]
+  enabled = true
+
+# ── 别名 ──
 [alias]
-  # add
-  a = add                           # add
-  chunkyadd = add --patch           # stage commits chunk by chunk
+  # 添加
+  a = add
+  chunkyadd = add --patch           # 按块暂存
 
-  # via http://blog.apiaxle.com/post/handy-git-tips-to-stop-you-getting-fired/
-  snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-  snapshots = !git stash list --grep snapshot
-
-  #via http://stackoverflow.com/questions/5188320/how-can-i-get-a-list-of-git-branches-ordered-by-most-recent-commit
+  # 分支
+  b = branch -v
   recent-branches = !git for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(refname:short)'
 
-  # branch
-  b = branch -v                     # branch (verbose)
+  # 切换
+  co = checkout
+  nb = checkout -b                  # 新建分支
 
-  # commit
-  c = commit -m                     # commit with message
-  ca = commit -am                   # commit all with message
-  ci = commit                       # commit
-  amend = commit --amend            # ammend your last commit
+  # 拣选
+  cp = cherry-pick -x               # 附加 "cherry picked from" 记录
 
-  # checkout
-  co = checkout                     # checkout
-  nb = checkout -b                  # create and switch to a new branch (mnemonic: "git new branch branchname...")
+  # 提交
+  c = commit -m
+  ca = commit -am
+  ci = commit
+  amend = commit --amend
 
-  # cherry-pick
-  cp = cherry-pick -x               # grab a change from a branch
+  # 差异
+  d = diff
+  dc = diff --cached
+  last = diff HEAD^
 
-  # diff
-  d = diff                          # diff unstaged changes
-  dc = diff --cached                # diff staged changes
-  last = diff HEAD^                 # diff last committed change
-
-  # log
+  # 日志
   l = log --graph --date=short
   lg = log --graph --pretty=format:'%C(yellow)%h%C(reset) -%C(cyan)%d%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)' --abbrev-commit
   changes = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\" --name-status
   short = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\"
   simple = log --pretty=format:\" * %s\"
   shortnocolor = log --pretty=format:\"%h %cr %cn %s\"
+  filelog = log -u
 
-  # pull
-  pl = pull                         # pull
+  # 拉取
+  pl = pull
 
-  # push
-  ps = push                         # push
+  # 推送
+  ps = push
 
-  # rebase
-  rc = rebase --continue            # continue rebase
-  rs = rebase --skip                # skip rebase
+  # 变基
+  rc = rebase --continue
+  rs = rebase --skip
 
-  # remote
-  r = remote -v                     # show remotes (verbose)
+  # 远程
+  r = remote -v
 
-  # reset
-  unstage = reset HEAD              # remove files from index (tracking)
-  uncommit = reset --soft HEAD^     # go back before last commit, with files in uncommitted state
-  filelog = log -u                  # show changes to a file
+  # 重置
+  unstage = reset HEAD
+  uncommit = reset --soft HEAD^
 
-  # stash
-  ss = stash                        # stash changes
-  sl = stash list                   # list stashes
-  sa = stash apply                  # apply stash (restore changes)
-  sd = stash drop                   # drop stashes (destory changes)
+  # 暂存
+  ss = stash
+  sl = stash list
+  sa = stash apply
+  sd = stash drop
+  snapshot = !git stash push -m "snapshot: $(date)" && git stash apply "stash@{0}"
+  snapshots = !git stash list --grep snapshot
 
-  # status
-  s = status                        # status
-  st = status                       # status
+  # 状态
+  s = status
+  st = status
 
-  # tag
-  t = tag -n                        # show tags with <n> lines of each tag message
-[merge]
-  summary = true
-  verbosity = 1
-  conflictStyle = zdiff3
-[apply]
-  whitespace = nowarn
-[branch]
-  autosetupmerge = true
-[push]
-  # 'git push' will push the current branch to its tracking branch
-  # the usual default is to push all branches
-  default = upstream
-[core]
-  autocrlf = false
-  editor = nvim
-  excludesfile = ~/.gitignore
-  pager = delta
-  quotepath = false
-[interactive]
-  diffFilter = delta --color-only
-[delta]
-  # --- Functionality ---
-  navigate = true      # use n and N to move between diff sections
-  side-by-side = true  # Enable side-by-side view
-  line-numbers = true  # Show line numbers
-
-  # --- High-Contrast Dark Theme ---
-  dark = true # Important: ensures delta knows the terminal background is dark
-
-  # Style for deleted lines (red background)
-  # Format: "foreground background attributes"
-  # We use a slightly brighter background color than the default.
-  minus-style = "normal #551e21"
-
-  # Style for added lines (green background)
-  # Using a desaturated green for better readability.
-  plus-style = "normal #174d2b"
-
-  # This is the KEY for clarity: highlight the exact word changes.
-  # We make the background much brighter and the text bold for emphasis.
-  minus-emph-style = "bold red #8b2c2f"
-  plus-emph-style = "bold green #297745"
-
-  # Use a good built-in theme for code syntax highlighting
-  syntax-theme = "Solarized (dark)"
-
-  # Style for file headers and hunk headers to make them stand out
-  file-style = "bold yellow ul"
-  hunk-header-style = "bold cyan"
-[advice]
-  statusHints = false
-[diff]
-  # Git diff will use (i)ndex, (w)ork tree, (c)ommit and (o)bject
-  # instead of a/b/c/d as prefixes for patches
-  mnemonicprefix = true
-  algorithm = patience
-[rerere]
-  # Remember my merges
-  # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
-  enabled = true
-[include]
-  path = .gitconfig.user
-[commit]
-  template = ~/.gitmessage
-[diff "sopsdiffer"]
-  textconv = sops -d
+  # 标签
+  t = tag -n
