@@ -333,6 +333,11 @@ lua << EOF
 -- ║ 1. Bootstrap                                                         ║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
+-- SSH 环境强制 OSC 52 剪贴板，跳过自动探测（避免 xclip 无 X / tmux buffer 陷阱）
+if os.getenv('SSH_TTY') then
+  vim.g.clipboard = 'osc52'
+end
+
 -- 重新打开文件时恢复光标位置（替代 lastpos.vim）
 -- NOTE: 必须在插件 setup 之前注册，确保能捕获启动时的 buffer
 vim.api.nvim_create_autocmd('BufReadPost', {
