@@ -519,8 +519,8 @@ require('coerce').setup()
 -- Wansmer/treesj（替代 splitjoin.vim）
 local treesj = require('treesj')
 treesj.setup({ use_default_keymaps = false })
-vim.keymap.set('n', 'sj', treesj.split, { desc = 'Split to multi-line' })   -- sj: 展开为多行
-vim.keymap.set('n', 'sk', treesj.join, { desc = 'Join to single line' })    -- sk: 合并为单行
+vim.keymap.set('n', '<leader>j', treesj.split, { desc = 'Split to multi-line' })   -- ,j: 展开为多行
+vim.keymap.set('n', '<leader>k', treesj.join, { desc = 'Join to single line' })    -- ,k: 合并为单行
 
 -- windwp/nvim-autopairs — 自动补全括号/引号（替代 coc-pairs）
 require('nvim-autopairs').setup()
