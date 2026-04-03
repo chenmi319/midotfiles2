@@ -453,11 +453,11 @@ require('lualine').setup({
 
 -- nvim-treesitter (main branch API)
 -- 安装 parser（已安装则跳过；异步执行）
-require('nvim-treesitter').install({ 'python', 'lua', 'json', 'yaml', 'bash', 'markdown', 'javascript', 'typescript', 'tsx', 'html' })
+require('nvim-treesitter').install({ 'python', 'lua', 'json', 'yaml', 'bash', 'markdown', 'javascript', 'typescript', 'tsx', 'html', 'css', 'vim', 'vimdoc', 'diff', 'gitcommit' })
 
 -- 为已安装语言启用 treesitter 高亮 + 缩进
 -- NOTE: lua/markdown 由 Neovim 0.12 ftplugin 自动启用；这里列出是为了完整性
-local ts_filetypes = { 'python', 'lua', 'json', 'yaml', 'sh', 'markdown', 'javascript', 'typescript', 'typescriptreact', 'html' }
+local ts_filetypes = { 'python', 'lua', 'json', 'yaml', 'sh', 'markdown', 'javascript', 'typescript', 'typescriptreact', 'html', 'css', 'vim', 'diff', 'gitcommit' }
 vim.api.nvim_create_autocmd('FileType', {
   pattern = ts_filetypes,
   callback = function()
@@ -468,7 +468,8 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- nvim-treesitter-context — 顶部固定显示当前函数/类上下文
 require('treesitter-context').setup({
-  separator = "-",
+  separator = "─",
+  max_lines = 5,         -- context 最多占 5 行屏幕空间
 })
 -- tc: 切换 treesitter context 显示
 vim.keymap.set('n', 'tc', '<cmd>TSContext toggle<cr>', { desc = 'Toggle treesitter context' })
