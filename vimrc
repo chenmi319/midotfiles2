@@ -727,6 +727,7 @@ require('blink.cmp').setup({
     },
   },
   fuzzy = { implementation = 'prefer_rust_with_warning' },
+  signature = { enabled = true },  -- 输入函数参数时自动显示签名提示
 })
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
