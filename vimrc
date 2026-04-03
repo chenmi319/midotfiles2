@@ -277,11 +277,6 @@ nnoremap ` '
 " ,qc/,qo: 关闭/打开 quickfix 窗口
 nnoremap <silent> ,qc :cclose<CR>
 nnoremap <silent> ,qo :copen<CR>
-" C-w f/gf: 分屏/新tab打开光标下文件路径
-nnoremap <C-w>f :sp +e<cfile><CR>
-nnoremap <C-w>gf :tabe<cfile><CR>
-" ,gz: 关闭其他所有窗口（仅保留当前）
-nnoremap <silent> ,gz <C-w>o
 
 " --- Tab 管理
 " ,tc: 新建 tab, ,tx: 关闭 tab
@@ -293,16 +288,6 @@ nnoremap <silent> <leader>t[ :tabmove -1<CR>
 " H/L: 前/后一个 tab
 nnoremap <silent> H :tabprevious<CR>
 nnoremap <silent> L :tabnext<CR>
-" Option+h/l (macOS): 前/后一个 tab
-nnoremap ˙ gT
-nnoremap ¬ gt
-let g:lasttab = 1
-" T: 切换到上次访问的 tab
-nnoremap <silent> T :exe "tabn ".g:lasttab<CR>
-augroup LastTab
-  autocmd!
-  autocmd TabLeave * let g:lasttab = tabpagenr()
-augroup END
 " ,1-9: 按编号切换 tab, ,0: 最后一个 tab
 for i in range(1, 9)
   exe 'nnoremap <silent> <leader>' . i . ' ' . i . 'gt'
