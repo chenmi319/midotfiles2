@@ -179,12 +179,7 @@ set foldlevel=99
 
 " 补全菜单忽略的文件模式
 set wildignore=*.o,*.obj,*~
-set wildignore+=*vim/backups*
-set wildignore+=*sass-cache*
 set wildignore+=*DS_Store*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
