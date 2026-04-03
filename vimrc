@@ -568,6 +568,8 @@ vim.keymap.set('n', '<leader>fA', function() builtin.find_files({ hidden = true,
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
+vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'Recent files' })
+vim.keymap.set('n', '<leader>f/', builtin.current_buffer_fuzzy_find, { desc = 'Buffer fuzzy find' })
 -- Telescope LSP 集成
 vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { desc = 'LSP references' })
 vim.keymap.set('n', '<leader>fd', builtin.lsp_definitions, { desc = 'LSP definitions' })
