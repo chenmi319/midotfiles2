@@ -912,6 +912,15 @@ vim.keymap.set('n', ']e', function()
   if vim.v.count == 0 then vim.cmd('move .+1') else vim.cmd('move .+' .. vim.v.count) end
   vim.cmd('normal! ==')
 end, { desc = 'Move line down' })
+-- visual 模式：选中多行整体上/下移动
+vim.keymap.set('x', '[e', function()
+  vim.cmd("'<,'>move '<-2")
+  vim.cmd('normal! gv=gv')
+end, { desc = 'Move selection up' })
+vim.keymap.set('x', ']e', function()
+  vim.cmd("'<,'>move '>+1")
+  vim.cmd('normal! gv=gv')
+end, { desc = 'Move selection down' })
 -- [<Space> / ]<Space>: 在上方/下方插入空行（支持 count，如 3[<Space> 插入 3 行）
 vim.keymap.set('n', '[<Space>', function()
   for _ = 1, math.max(vim.v.count, 1) do vim.fn.append(vim.fn.line('.') - 1, '') end
