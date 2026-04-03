@@ -84,7 +84,7 @@ Plug 'echasnovski/mini.ai'
 Plug 'rmagatti/auto-session'
 
 " --- tmux 集成 ---
-" C-h/j/k/l 在 vim splits 和 tmux panes 间无缝导航 + 窗口 resize
+" C-h/j/k/l 在 vim splits 和 tmux panes 间无缝导航
 Plug 'mrjones2014/smart-splits.nvim'
 
 " --- filetype ---
@@ -808,7 +808,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('n', '<leader>qf', function()
       vim.lsp.buf.code_action({ context = { only = { 'quickfix' } }, apply = true })
     end, 'Quick fix')
-    map({ 'n', 'x' }, '<leader>f', function()
+    map({ 'n', 'x' }, '<leader>fm', function()
       require('conform').format({ async = true, lsp_format = 'fallback' })
     end, 'Format')
 
@@ -862,7 +862,14 @@ vim.api.nvim_create_user_command('Format', function()
 end, {})
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
--- ║ 10. Session                                                          ║
+-- ║ 10. Filetype                                                         ║
+-- ╚════════════════════════════════════════════════════════════════════════╝
+
+-- MeanderingProgrammer/render-markdown.nvim — Markdown 渲染增强
+require('render-markdown').setup()
+
+-- ╔════════════════════════════════════════════════════════════════════════╗
+-- ║ 11. Session                                                         ║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 -- rmagatti/auto-session — 自动保存/恢复编辑会话
@@ -885,7 +892,7 @@ require('auto-session').setup({
 })
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
--- ║ 11. Outline                                                          ║
+-- ║ 12. Outline                                                          ║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 -- hedyhli/outline.nvim — 代码大纲/符号面板
@@ -899,7 +906,7 @@ require('outline').setup({
 })
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
--- ║ 12. Utility                                                          ║
+-- ║ 13. Utility                                                          ║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
