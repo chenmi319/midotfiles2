@@ -284,8 +284,12 @@ nnoremap <C-w>gf :tabe<cfile><CR>
 nnoremap <silent> ,gz <C-w>o
 
 " --- Tab 管理
-" ,tc: 新建 tab
+" ,tc: 新建 tab, ,tx: 关闭 tab
 nnoremap <leader>tc :tabnew<CR>
+nnoremap <leader>tx :tabclose<CR>
+" ,t]/,t[: 向右/左移动当前 tab 位置
+nnoremap <silent> <leader>t] :tabmove +1<CR>
+nnoremap <silent> <leader>t[ :tabmove -1<CR>
 " H/L: 前/后一个 tab
 nnoremap <silent> H :tabprevious<CR>
 nnoremap <silent> L :tabnext<CR>
@@ -300,15 +304,9 @@ augroup LastTab
   autocmd TabLeave * let g:lasttab = tabpagenr()
 augroup END
 " ,1-9: 按编号切换 tab, ,0: 最后一个 tab
-nnoremap <silent> <leader>1 1gt
-nnoremap <silent> <leader>2 2gt
-nnoremap <silent> <leader>3 3gt
-nnoremap <silent> <leader>4 4gt
-nnoremap <silent> <leader>5 5gt
-nnoremap <silent> <leader>6 6gt
-nnoremap <silent> <leader>7 7gt
-nnoremap <silent> <leader>8 8gt
-nnoremap <silent> <leader>9 9gt
+for i in range(1, 9)
+  exe 'nnoremap <silent> <leader>' . i . ' ' . i . 'gt'
+endfor
 nnoremap <silent> <leader>0 :tablast<CR>
 
 " --- 文件操作
