@@ -866,25 +866,23 @@ end, {})
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 -- rmagatti/auto-session — 自动保存/恢复编辑会话
-local has_auto_session, auto_session = pcall(require, 'auto-session')
-if has_auto_session then
-  auto_session.setup({
-    root_dir = vim.fn.stdpath('state') .. '/sessions/',
-    -- 黑名单模式：不设 allowed_dirs，大部分目录自动保存 session
-    suppressed_dirs = {
-      '/', '~/', '~/Desktop', '~/Downloads', '~/Documents',
-      '/tmp', '/private/tmp', '/private/var',
-    },
-    bypass_save_filetypes = {
-      'gitcommit', 'gitrebase',   -- git 操作
-      'help', 'man', 'qf',       -- 只读 / 临时 buffer
-      'TelescopePrompt', 'NvimTree', 'nerdtree',  -- 插件 UI
-    },
-    session_lens = {
-      load_on_setup = false,
-    },
-  })
-end
+require('auto-session').setup({
+  root_dir = vim.fn.stdpath('state') .. '/sessions/',
+  -- 黑名单模式：不设 allowed_dirs，大部分目录自动保存 session
+  suppressed_dirs = {
+    '/', '~/', '~/Desktop', '~/Downloads', '~/Documents', '~/Library',
+    '/tmp', '/private/tmp', '/private/var',
+  },
+  bypass_save_filetypes = {
+    'gitcommit', 'gitrebase',   -- git 操作
+    'help', 'man', 'qf',       -- 只读 / 临时 buffer
+    'TelescopePrompt', 'NvimTree', 'nerdtree',  -- 插件 UI
+    'Outline', 'Trouble',
+  },
+  session_lens = {
+    load_on_setup = false,
+  },
+})
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
 -- ║ 11. Outline                                                          ║
