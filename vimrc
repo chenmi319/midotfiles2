@@ -836,7 +836,6 @@ vim.diagnostic.config({
 vim.keymap.set('n', 'th', function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = 'Toggle inlay hints' })                                             -- th: 切换 inlay hints
-vim.keymap.set('n', '<leader>rs', '<cmd>LspRestart<CR>', { desc = 'Restart LSP' })  -- ,rs: 重启 LSP server
 vim.keymap.set('n', 'to', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })          -- to: 切换 Outline 面板
 vim.keymap.set('n', '<space>a', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'Trouble diagnostics' })     -- Space+a: 诊断面板
 vim.keymap.set('n', '<space>s', '<cmd>Telescope lsp_workspace_symbols<cr>', { desc = 'Workspace symbols' })  -- Space+s: 工作区符号搜索
