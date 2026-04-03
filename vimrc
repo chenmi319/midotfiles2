@@ -411,10 +411,11 @@ require('lualine').setup({
       { 'filename', path = 1, symbols = { readonly = '[RO]', modified = '[+]' } },
       'filesize',
     },
-    lualine_x = { 'fileformat', 'encoding', 'filetype' },
-  },
-  inactive_sections = {
-    lualine_c = { { 'filename', path = 1 } },
+    lualine_x = {
+      { 'fileformat', cond = function() return vim.bo.fileformat ~= 'unix' end },
+      { 'encoding', cond = function() return (vim.bo.fenc or vim.o.enc) ~= 'utf-8' end },
+      'filetype',
+    },
   },
   tabline = {
     lualine_a = {
