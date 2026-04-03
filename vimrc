@@ -155,11 +155,12 @@ set sessionoptions-=blank
 " 持久化 undo（目录由 Neovim XDG 默认管理）
 set undofile
 
-" 缩进：2 空格
+" 缩进：2 空格，>/<缩进对齐到 shiftwidth 倍数
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set expandtab
+set shiftround
 
 " 不可见字符显示
 set list listchars=tab:>-,trail:-,nbsp:␣
@@ -173,9 +174,8 @@ set linebreak
 set foldmethod=expr
 set foldexpr=v:lua.vim.treesitter.foldexpr()
 set foldtext=v:lua.vim.treesitter.foldtext()
-" 最大折叠层级 3，打开文件时不自动折叠
-set foldnestmax=3
-set nofoldenable
+" 打开文件时全部展开，手动 zc 折叠不会被意外重置
+set foldlevel=99
 
 " 补全菜单忽略的文件模式
 set wildignore=*.o,*.obj,*~
