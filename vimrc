@@ -889,17 +889,14 @@ require('auto-session').setup({
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 -- hedyhli/outline.nvim — 代码大纲/符号面板
-local has_outline, outline = pcall(require, 'outline')
-if has_outline then
-  outline.setup({
-    symbol_folding = {
-      autofold_depth = false,  -- 不自动折叠符号
-    },
-    providers = {
-      priority = { 'lsp', 'markdown', 'norg', 'man' },  -- LSP 优先
-    },
-  })
-end
+require('outline').setup({
+  symbol_folding = {
+    autofold_depth = false,  -- 不自动折叠符号
+  },
+  providers = {
+    priority = { 'lsp', 'markdown', 'norg', 'man' },  -- LSP 优先
+  },
+})
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
 -- ║ 12. Utility                                                          ║
