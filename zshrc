@@ -84,6 +84,10 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# nvm plugin: auto-switch node version on .nvmrc (replaces custom load-nvmrc)
+zstyle ':omz:plugins:nvm' autoload yes
+zstyle ':omz:plugins:nvm' silent-autoload yes
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -398,17 +402,6 @@ update_mi_dot_files() {
 alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
 
 autoload -U add-zsh-hook
-load-nvmrc() {
-  local nvmrc_path="$PWD/.nvmrc"
-
-  if command -v nvm >/dev/null 2>&1; then
-    if [[ -f "$nvmrc_path" ]]; then
-      nvm use --silent
-    else
-      nvm use --silent default
-    fi
-  fi
-}
 
 load-uv-venv() {
   if [[ -f "$PWD/.venv/bin/activate" ]]; then
@@ -420,9 +413,7 @@ load-uv-venv() {
   fi
 }
 
-add-zsh-hook chpwd load-nvmrc
 add-zsh-hook chpwd load-uv-venv
-load-nvmrc
 load-uv-venv
 
 # alias proxy='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
