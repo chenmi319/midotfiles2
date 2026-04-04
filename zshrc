@@ -213,7 +213,7 @@ export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bot
 # edit default editor
 export EDITOR=vim
 export VISUAL="$EDITOR"
-export LESS="-F -g -i -M -R -w -X -z-4"
+export LESS="-F -i -j4 -M -R -w -X -z-4 --mouse"
 
 # for tmux use ssh-agent
 fixssh() {
