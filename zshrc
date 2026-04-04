@@ -206,9 +206,9 @@ fix_mouse() {
 }
 precmd_functions+=(fix_mouse)
 
-# HomeBrew
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
-# HomeBrew END
+# HomeBrew mirror (TUNA)
+export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
 
 # edit default editor
 export EDITOR=vim
