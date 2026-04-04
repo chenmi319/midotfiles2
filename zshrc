@@ -227,12 +227,6 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 
-# alias mysql57='docker run -it --rm mysql:5.7 env LANG=C.UTF-8 mysql -A'
-# alias mysql57import='docker run -i --rm mysql:5.7 env LANG=C.UTF-8 mysql -A'
-# alias psql13='docker run -it --rm postgres:13 psql'
-# alias psql11='docker run -it --rm postgres:11 psql'
-# alias psql10='docker run -it --rm postgres:10 psql'
-# alias redis-cli='docker run -it --rm redis:alpine redis-cli'
 # ---- docker run helper: interactive -> -it, piped -> -i ----
 _dockrun() {
   local tty_args=()
@@ -244,14 +238,9 @@ _dockrun() {
   docker run --rm "${tty_args[@]}" "$@"
 }
 
-# MySQL 5.7：交互或脚本均可
+# MySQL 5.7 (EOL 2023-10; 仅用作客户端连接远程库)
 mysql57() {
   _dockrun mysql:5.7 env LANG=C.UTF-8 mysql -A "$@"
-}
-
-# MySQL 5.7：特意用于导入（永远保留 -i，避免 -t 干扰管道/文件输入）
-mysql57import() {
-  docker run --rm -i mysql:5.7 env LANG=C.UTF-8 mysql -A "$@"
 }
 
 # Postgres：不同版本分别一个函数（交互则 -it；脚本/管道则 -i）
