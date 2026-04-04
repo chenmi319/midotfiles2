@@ -91,7 +91,6 @@ plugins=(
   colored-man-pages
   command-not-found
   encode64
-  genpass
   history-substring-search
   safe-paste
   tmux
