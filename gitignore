@@ -8,7 +8,9 @@
 .__MACOSX/
 .AppleDouble
 .LSOverride
-# Icon must end with two \r
+# Icon\r\r — macOS custom icon file; exact pattern requires literal CR bytes
+# which most editors will strip, so we use bare "Icon" (may overmatch, but
+# files named exactly "Icon" without CR suffix are virtually nonexistent)
 Icon
 
 
@@ -64,8 +66,6 @@ Sessionx.vim
 .netrwhist
 *~
 
-# Auto-generated tag files
-tags
 
 # Persistent undo
 [._]*.un~
@@ -125,22 +125,12 @@ opencodetmp/
 # =============================================================================
 # Security safeguard
 # =============================================================================
-# Environment files
+# Environment files (only definite private files; templates belong in project .gitignore)
 .env
-.env.*
-!.env.example
+.env.local
+.env.*.local
 
-# Private keys & certificates
-*.key
-*.pem
-*.p12
-*.pfx
+# SSH private keys & credentials (universally private; other secrets belong in project .gitignore)
 id_rsa
 id_ed25519
-
-# Credential / token files
 .netrc
-.npmrc
-.pypirc
-credentials.json
-service-account*.json
