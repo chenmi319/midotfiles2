@@ -393,9 +393,20 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 alias conda=micromamba
 
-try_link(){
-  if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
-  ln -s $1 $2
+try_link() {
+  if (( $# != 2 )); then
+    echo "Usage: try_link <source> <target>" >&2
+    return 1
+  fi
+  # 已是正确的符号链接则跳过
+  if [[ -L "$2" ]] && [[ "$(readlink "$2")" == "$1" ]]; then
+    return 0
+  fi
+  # 目标存在（或悬空链接）则备份
+  if [[ -e "$2" || -L "$2" ]]; then
+    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)"
+  fi
+  ln -s "$1" "$2"
 }
 
 # git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2, git pull

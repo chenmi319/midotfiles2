@@ -10,9 +10,18 @@
 git clone https://gh-proxy.com/https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 
 # 后续多处用到的软链辅助函数，先粘贴到当前 shell
-try_link(){
-  if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
-  ln -s $1 $2
+try_link() {
+  if (( $# != 2 )); then
+    echo "Usage: try_link <source> <target>" >&2
+    return 1
+  fi
+  if [[ -L "$2" ]] && [[ "$(readlink "$2")" == "$1" ]]; then
+    return 0
+  fi
+  if [[ -e "$2" || -L "$2" ]]; then
+    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)"
+  fi
+  ln -s "$1" "$2"
 }
 ```
 
