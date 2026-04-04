@@ -99,7 +99,6 @@ plugins=(
   git
   redis-cli
   nvm
-  rvm
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
