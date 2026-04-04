@@ -88,6 +88,12 @@ COMPLETION_WAITING_DOTS="true"
 zstyle ':omz:plugins:nvm' autoload yes
 zstyle ':omz:plugins:nvm' silent-autoload yes
 
+# z plugin: smart case matching, echo destination, show ~ in listings
+ZSHZ_CASE=smart
+ZSHZ_ECHO=1
+ZSHZ_TILDE=1
+ZSHZ_EXCLUDE_DIRS=($HOME /tmp /private/tmp)
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
