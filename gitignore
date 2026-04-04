@@ -1,71 +1,146 @@
-# OSX       taken from: https://github.com/github/gitignore/blob/master/Global/OSX.gitignore
-# ----------------------------------------------------------------------------------------------
+# =============================================================================
+# macOS                https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
+# =============================================================================
 .DS_Store
 # Thumbnails
 ._*
-# Files that might appear on external disk
+# Resource forks on external volumes
+.__MACOSX/
+.AppleDouble
+.LSOverride
+# Icon must end with two \r
+Icon
+
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
 .Spotlight-V100
+.TemporaryItems
 .Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-# Windows   taken from: https://github.com/github/gitignore/blob/master/Global/Windows.gitignore
-# ----------------------------------------------------------------------------------------------
-# Windows image file caches
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# =============================================================================
+# Windows             https://github.com/github/gitignore/blob/main/Global/Windows.gitignore
+# =============================================================================
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
 
-# Folder config file
-Desktop.ini
+# =============================================================================
+# Vim/Neovim          https://github.com/github/gitignore/blob/main/Global/Vim.gitignore
+# =============================================================================
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
 
-# Tags      taken from: https://github.com/github/gitignore/blob/master/Global/Tags.gitignore
-# ----------------------------------------------------------------------------------------------
-# Ignore tags created by etags, ctags, gtags (GNU global) and cscope
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+.netrwhist
+*~
+
+# Auto-generated tag files
+tags
+
+# Persistent undo
+[._]*.un~
+
+# =============================================================================
+# Tags                https://github.com/github/gitignore/blob/main/Global/Tags.gitignore
+# =============================================================================
 TAGS
+.TAGS
 !TAGS/
 tags
 !tags/
 .tags
-.tags1
-gtags.files
 GTAGS
 GRTAGS
 GPATH
+GSYMS
+gtags.files
 cscope.files
 cscope.out
-cscope.in.out
-cscope.po.out
 
-# Vim       taken from: https://github.com/github/gitignore/blob/master/Global/vim.gitignore
-# ----------------------------------------------------------------------------------------------
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
-*~
-
-# SASS
-# ----------------------------------------------------------------------------------------------
-.sass-cache
-
+# =============================================================================
+# AI & coding tools
+# =============================================================================
+# Gemini
 .gemini/
 GEMINI.md
 
-.taskmaster/
+# Claude / Anthropic
+CLAUDE.md
+.claude
 
+# GitHub Copilot
 .github/copilot-instructions.md
 
-CLAUDE.md
+# Other AI coding assistants
 QWEN.md
 CODEBUDDY.md
-.serena/
 .qoder/
-.claude
-opencodetmp/
+.taskmaster/
 
+# Serena
+.serena/
+
+# OpenCode
+opencode.jsonc
+opencodetmp/
+.tmp
+
+# Beans (issue tracker)
 .beans.yml
 .beans/
 
-opencode.jsonc
-.tmp
-
 # Planning files
 .planning/
+
+# =============================================================================
+# Security safeguard
+# =============================================================================
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Private keys & certificates
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Credential / token files
+.netrc
+.npmrc
+.pypirc
+credentials.json
+service-account*.json
