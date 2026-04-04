@@ -1,5 +1,5 @@
-# Disable Powerlevel10k instant prompt to avoid conflicts with console output
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+# Powerlevel10k instant prompt: quiet mode (suppress gitstatus init warnings)
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -191,7 +191,7 @@ source $ZSH/oh-my-zsh.sh
 
 # fix mouse issues in terminal (after p10k initialization)
 fix_mouse() {
-  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?2004l'
+  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?2004l' >/dev/tty
 }
 precmd_functions+=(fix_mouse)
 
@@ -383,9 +383,6 @@ update_mi_dot_files() {
 
 alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
 
-# for rvm load .ruby-version or something else
-cd .
-
 autoload -U add-zsh-hook
 load-nvmrc() {
   local nvmrc_path="$PWD/.nvmrc"
@@ -453,3 +450,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export WORDCHARS='*?[]~=&;!#$%^(){}<>'
 
 command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
+
