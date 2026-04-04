@@ -405,14 +405,12 @@ load-nvmrc() {
 }
 
 load-uv-venv() {
-  if command -v uv >/dev/null 2>&1; then
-    if [[ -f "$PWD/.venv/bin/activate" ]]; then
-      if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
-        source "$PWD/.venv/bin/activate"
-      fi
-    elif [[ -n "$VIRTUAL_ENV" ]] && [[ "$VIRTUAL_ENV" == *//.venv ]]; then
-      deactivate 2>/dev/null
+  if [[ -f "$PWD/.venv/bin/activate" ]]; then
+    if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
+      source "$PWD/.venv/bin/activate"
     fi
+  elif [[ -n "$VIRTUAL_ENV" ]] && [[ "$VIRTUAL_ENV" == */.venv ]]; then
+    deactivate 2>/dev/null
   fi
 }
 
