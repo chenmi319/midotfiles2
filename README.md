@@ -8,6 +8,12 @@
 # git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
 # git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 git clone https://gh-proxy.com/https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
+
+# 后续多处用到的软链辅助函数，先粘贴到当前 shell
+try_link(){
+  if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
+  ln -s $1 $2
+}
 ```
 
 # zsh
@@ -23,10 +29,6 @@ git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.o
 # powerlevel10k 用到字体安装: https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#fonts
 git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-try_link(){
-  if [[ -a $2 ]]; then mv -f $2 $2.bak.`date +%Y%m%d%H%M%S`; fi
-  ln -s $1 $2
-}
 try_link ~/.midotfiles2/zshrc ~/.zshrc
 try_link ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
 ```
@@ -85,31 +87,45 @@ vim +PlugClean +qall
 
 
 
-# bash bashit(for develop)
+# bash bashit (for develop, 历史参考)
+
+> **注意**: Bash-it 已进入维护模式 ([Discussion #2346](https://github.com/Bash-it/bash-it/discussions/2346))，不会再有新功能。
+> 如果是新环境建议直接用 zsh + oh-my-zsh。以下仅供已有 bash 环境参考。
+
 * run in bash:
-```
+```bash
 git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
- ~/.bash_it/install.sh
+~/.bash_it/install.sh
+```
+* 编辑 `~/.bashrc`，设置主题和环境变量:
+```bash
+# Bash-it 主题（install.sh 默认是 bobby，改为 sexy）
+export BASH_IT_THEME='sexy'
+export SEXY_THEME_SHOW_PYTHON=true
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+export PATH="$PATH:$HOME/bin"
+
+# tmux 256色 + UTF-8（现代终端通常不需要，服务器环境可保留）
+alias tmux='tmux -2 -u'
 ```
 * relogin and run in bash:
-```
-bash-it enable completion bundler capistrano rake ssh tmux conda
-bash-it enable plugin git git-subrepo history nginx rails ruby rvm ssh tmux
-bash-it enable alias git rails tmux vim
-echo "export VISUAL=vim" >> ~/.bashrc
-echo "export EDITOR=\"\$VISUAL\"" >> ~/.bashrc
-echo "alias tmux='tmux -2 -u'" >> ~/.bashrc
-sed -i 's/bobby/sexy/g' ~/.bashrc
-echo "export SEXY_THEME_SHOW_PYTHON=true" >> ~/.bashrc
-echo "export PATH=\"\$PATH:\$HOME/bin\"" >> ~/.bashrc
+```bash
+# 按需启用，只列你实际用的
+bash-it enable completion ssh tmux conda
+bash-it enable plugin git history ssh tmux
+bash-it enable alias git tmux vim
 ```
 * relogin
 
-# bash liquid(for server)
+# bash liquid (for server)
 * run in bash:
-```
-git clone https://github.com/nojhan/liquidprompt.git ~/.liquidprompt
+```bash
+# 使用 stable 分支，避免跟踪开发分支
+git clone --branch stable https://github.com/liquidprompt/liquidprompt.git ~/.liquidprompt
 echo '[[ $- = *i* ]] && source ~/.liquidprompt/liquidprompt' >> ~/.bashrc
+# tmux 256色 + UTF-8（服务器环境下 $TERM 可能不准确，保留作为防御）
 echo "alias tmux='tmux -2 -u'" >> ~/.bashrc
 try_link ~/.midotfiles2/liquidpromptrc ~/.liquidpromptrc
 ```
