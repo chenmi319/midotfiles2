@@ -350,8 +350,21 @@ setopt HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
 setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
 
 
-if kubectl version --client >/dev/null 2>&1; then
-  source <(kubectl completion zsh)
+# kubectl completion (cached; regenerates when kubectl binary updates)
+# On generation failure, keeps old cache; skips source if no valid cache exists.
+if (( $+commands[kubectl] )); then
+  _kubectl_comp="${XDG_CACHE_HOME:-$HOME/.cache}/kubectl_completion.zsh"
+  if [[ ! -f "$_kubectl_comp" || "$commands[kubectl]" -nt "$_kubectl_comp" ]]; then
+    mkdir -p "${_kubectl_comp:h}" 2>/dev/null
+    _kubectl_tmp="$_kubectl_comp.tmp.$$"
+    if kubectl completion zsh >| "$_kubectl_tmp" 2>/dev/null && [[ -s "$_kubectl_tmp" ]]; then
+      mv -f "$_kubectl_tmp" "$_kubectl_comp"
+    else
+      rm -f "$_kubectl_tmp"
+    fi
+  fi
+  [[ -f "$_kubectl_comp" ]] && source "$_kubectl_comp"
+  unset _kubectl_comp _kubectl_tmp
 fi
 
 complete -o nospace -F /usr/local/bin/aliyun aliyun
