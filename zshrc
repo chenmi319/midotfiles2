@@ -105,6 +105,7 @@ plugins=(
 )
 
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+fpath=($HOME/.docker/completions $fpath)
 
 
 ### --- zsh completion cache: enable + auto-clean -----------------------------
@@ -145,14 +146,10 @@ function _zcompcache_clean() {
   fi
 }
 
-# 5) 初始化补全（在 zstyle 之后）
-autoload -Uz compinit
-compinit
-
-# 6) 后台触发清理，不阻塞启动
+# 5) 后台触发清理，不阻塞启动（compinit 由 oh-my-zsh.sh 统一调用）
 _zcompcache_clean &!
 
-# 7) 手动一键清理命令
+# 6) 手动一键清理命令
 zcompcache-clear() {
   command find "$ZCOMP_CACHE_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
   : >| "$ZCOMP_CACHE_DIR/.last_clean"
@@ -356,8 +353,6 @@ if kubectl version --client >/dev/null 2>&1; then
   source <(kubectl completion zsh)
 fi
 
-autoload -U +X compinit && compinit -i
-autoload -U +X bashcompinit && bashcompinit -i
 complete -o nospace -F /usr/local/bin/aliyun aliyun
 
 # >>> mamba initialize >>>
@@ -429,12 +424,6 @@ alias vimns='VIM_NO_SESSION=1'
 # command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=($HOME/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
 
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
