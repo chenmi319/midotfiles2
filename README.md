@@ -148,13 +148,19 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 nvim +PlugInstall +qall
 
+# treesitter parser 安装
+# macOS 下 nvim 启动时自动编译安装（需要 tree-sitter-cli）
+# 远程 Linux 服务器如果 :TSInstall 不工作，用脚本手动编译：
+# bash ~/.midotfiles2/scripts/install-ts-parsers.sh      # 首次安装
+# bash ~/.midotfiles2/scripts/install-ts-parsers.sh -f   # 强制重装全部
+
 # 日常维护
 # nvim +PlugUpdate +qall   # 升级插件
 # nvim +PlugClean +qall    # 清理未使用插件
 
 # LSP servers 由 mason.nvim 自动安装（:MasonInstall pyright ruff typescript-language-server 等）
 # 外部 formatter（conform.nvim 调用）:
-#   ruff:     pip install ruff  或 brew install ruff
+#   ruff:     curl -LsSf https://astral.sh/ruff/install.sh | sh  （或 brew install ruff）
 #   prettier: npm install -g prettier
 ```
 
