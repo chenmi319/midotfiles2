@@ -2,19 +2,19 @@
 # macOS                https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
 # =============================================================================
 .DS_Store
-# Thumbnails
+# 缩略图
 ._*
-# Resource forks on external volumes
+# 外部卷上的资源分支
 .__MACOSX/
 .AppleDouble
 .LSOverride
-# Icon\r\r — macOS custom icon file; exact pattern requires literal CR bytes
-# which most editors will strip, so we use bare "Icon" (may overmatch, but
-# files named exactly "Icon" without CR suffix are virtually nonexistent)
+# Icon\r\r — macOS 自定义图标文件；精确匹配需要字面 CR 字节，
+# 但大多数编辑器会将其去除，所以这里用 "Icon"（可能误匹配，
+# 但实际上几乎不存在恰好名为 "Icon" 且不带 CR 后缀的文件）
 Icon
 
 
-# Files that might appear in the root of a volume
+# 可能出现在卷根目录的文件
 .DocumentRevisions-V100
 .fseventsd
 .Spotlight-V100
@@ -23,7 +23,7 @@ Icon
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
-# Directories potentially created on remote AFP share
+# 远程 AFP 共享上可能创建的目录
 .AppleDB
 .AppleDesktop
 Network Trash Folder
@@ -50,7 +50,7 @@ $RECYCLE.BIN/
 # =============================================================================
 # Vim/Neovim          https://github.com/github/gitignore/blob/main/Global/Vim.gitignore
 # =============================================================================
-# Swap
+# 交换文件
 [._]*.s[a-v][a-z]
 !*.svg
 [._]*.sw[a-p]
@@ -58,16 +58,16 @@ $RECYCLE.BIN/
 [._]ss[a-gi-z]
 [._]sw[a-p]
 
-# Session
+# 会话文件
 Session.vim
 Sessionx.vim
 
-# Temporary
+# 临时文件
 .netrwhist
 *~
 
 
-# Persistent undo
+# 持久撤销
 [._]*.un~
 
 # =============================================================================
@@ -88,7 +88,7 @@ cscope.files
 cscope.out
 
 # =============================================================================
-# AI & coding tools
+# AI 及编码工具
 # =============================================================================
 # Gemini
 .gemini/
@@ -101,7 +101,7 @@ CLAUDE.md
 # GitHub Copilot
 .github/copilot-instructions.md
 
-# Other AI coding assistants
+# 其他 AI 编码助手
 QWEN.md
 CODEBUDDY.md
 .qoder/
@@ -115,22 +115,22 @@ opencode.jsonc
 opencodetmp/
 .tmp
 
-# Beans (issue tracker)
+# Beans（议题追踪器）
 .beans.yml
 .beans/
 
-# Planning files
+# 规划文件
 .planning/
 
 # =============================================================================
-# Security safeguard
+# 安全防护
 # =============================================================================
-# Environment files (only definite private files; templates belong in project .gitignore)
+# 环境变量文件（仅限明确的私密文件；模板文件应在项目级 .gitignore 中处理）
 .env
 .env.local
 .env.*.local
 
-# SSH private keys & credentials (universally private; other secrets belong in project .gitignore)
+# SSH 私钥与凭据（通用私密文件；其他密钥应在项目级 .gitignore 中处理）
 id_rsa
 id_ed25519
 .netrc
