@@ -253,9 +253,7 @@ alias uvsb="source $HOME/uv_venv/base/bin/activate"
 ### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
 typeset -gaU KUBEFILES
-setopt NULL_GLOB
-KUBEFILES=($HOME/.kube/chenmi-* $HOME/.kube/*eks* $HOME/.kube/*rancher*.yaml $HOME/.kube/*mixbio*.yaml $HOME/.kube/*mycluster)
-unsetopt NULL_GLOB
+KUBEFILES=($HOME/.kube/chenmi-*(N) $HOME/.kube/*eks*(N) $HOME/.kube/*rancher*.yaml(N) $HOME/.kube/*mixbio*.yaml(N) $HOME/.kube/*mycluster(N))
 export KUBECONFIG="${(j.:.)KUBEFILES}"
 
 # kubectl 上下文快捷别名
