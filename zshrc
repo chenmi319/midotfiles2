@@ -165,7 +165,7 @@ if (( $+commands[kubectl] )); then
 fi
 
 # aliyun CLI 补全
-complete -o nospace -F /usr/local/bin/aliyun aliyun
+(( $+commands[aliyun] )) && complete -o nospace -F "$commands[aliyun]" aliyun
 
 ### --- 8. 函数定义 ----------------------------------------------------------
 # 修复终端鼠标状态（p10k 初始化后通过 precmd 钩子运行）
@@ -218,9 +218,7 @@ try_link() {
 
 # 更新 dotfiles 仓库
 update_mi_dot_files() {
-  cd ~/.midotfiles2
-  git pull
-  cd -
+  git -C ~/.midotfiles2 pull
 }
 
 # uv 虚拟环境自动激活/反激活（基于 .venv 目录）
