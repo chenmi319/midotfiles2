@@ -85,22 +85,23 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 * 安装 tmux 插件：进入 tmux 后执行 `prefix + I`（默认 `Ctrl-b` 后按大写 `I`）
 
 
-# vim
-* [安装 neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md) (>= 0.11)
-* 安装 ripgrep
+# neovim
 ```bash
-mkdir -p ~/.config/nvim
-try_link ~/.midotfiles2/vimrc ~/.config/nvim/init.vim
-try_link ~/.config/nvim/init.vim ~/.vimrc
+# macOS
+brew install neovim ripgrep tree-sitter-cli
+# Ubuntu/Debian
+# sudo apt install neovim ripgrep tree-sitter-cli
 
-# 安装 nvim 插件
+try_link ~/.midotfiles2/nvim ~/.config/nvim
+
+# 安装 vim-plug
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-vim +PlugInstall +qall
-# 升级
-vim +PlugUpdate +qall
-# 清理
-vim +PlugClean +qall
+nvim +PlugInstall +qall
+
+# 日常维护
+# nvim +PlugUpdate +qall   # 升级插件
+# nvim +PlugClean +qall    # 清理未使用插件
 
 # LSP servers 由 mason.nvim 自动安装（:MasonInstall pyright ruff typescript-language-server 等）
 # 外部 formatter（conform.nvim 调用）:
