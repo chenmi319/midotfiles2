@@ -96,6 +96,8 @@ Plug 'MeanderingProgrammer/render-markdown.nvim'
 Plug 'zbirenbaum/copilot.lua'
 
 " --- lsp / completion ---
+" LSP 面包屑（状态栏显示当前类/函数路径）
+Plug 'SmiteshP/nvim-navic'
 " LSP 客户端配置框架
 Plug 'neovim/nvim-lspconfig'
 " LSP server 自动安装管理
@@ -379,6 +381,15 @@ require("ibl").setup()
 
 -- HiPhish/rainbow-delimiters.nvim — 彩虹括号：零配置，默认设置即可
 
+-- SmiteshP/nvim-navic — LSP 面包屑（状态栏显示当前光标所在的类/函数路径）
+local navic = require('nvim-navic')
+navic.setup({
+  lsp = { auto_attach = true },  -- 自动 attach 到支持 documentSymbol 的 LSP
+  highlight = false,              -- 不单独着色，跟随状态栏背景
+  depth_limit = 5,                -- 最多显示 5 级嵌套
+  lazy_update_context = true,     -- 仅在 CursorHold 时更新，减少性能开销
+})
+
 -- nvim-lualine/lualine.nvim — 状态栏（替代 lightline.vim）
 local function diff_source()
   local gitsigns = vim.b.gitsigns_status_dict
@@ -400,6 +411,7 @@ require('lualine').setup({
     lualine_c = {
       { 'filename', path = 1, symbols = { readonly = '[RO]', modified = '[+]' } },
       'filesize',
+      { 'navic' },                                     -- LSP 面包屑：当前类/函数路径
     },
     lualine_x = {
       { 'fileformat', cond = function() return vim.bo.fileformat ~= 'unix' end },
