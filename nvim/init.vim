@@ -882,6 +882,10 @@ require('auto-session').setup({
     load_on_setup = false,
   },
 })
+-- ,sd: 删除当前目录的 session（解决 session 损坏导致启动报错）
+vim.keymap.set('n', '<leader>sd', '<cmd>SessionDelete<CR>', { desc = 'Delete current session' })
+-- ,ss: Telescope 搜索/切换 session
+vim.keymap.set('n', '<leader>ss', '<cmd>SessionSearch<CR>', { desc = 'Search sessions' })
 
 -- ╔════════════════════════════════════════════════════════════════════════╗
 -- ║ 12. Outline                                                          ║
