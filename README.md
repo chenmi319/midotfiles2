@@ -1,15 +1,19 @@
 # midotfiles2
 
 # 准备工作
-* 安装 git, curl
-* ITerm2 使用 DarkBackground 就可以了，不用 Solarized Dark
-* ITerm2 Preferences -> Selection -> Applications in terminal may access clipboard
-```bash
-# git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
-# git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
-git clone https://gh-proxy.com/https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 
-# 后续多处用到的软链辅助函数，先粘贴到当前 shell
+> 主要面向 macOS，Linux 服务器可参考但需自行将 `brew` 替换为 `apt`/`yum` 等包管理器命令。
+
+* 安装 git、curl（macOS 需要 Homebrew 或 Xcode Command Line Tools）
+* 安装 [MesloLGS NF 字体](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#fonts) 并在终端中启用（Powerlevel10k 主题需要，装晚了终端会乱码）
+* iTerm2：配色使用 Dark Background 即可，避免使用 Solarized Dark 等其他主题
+* iTerm2：Preferences → General → Selection → Applications in terminal may access clipboard
+```bash
+git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
+# 已配 SSH key：git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
+
+# 后续多处用到的软链辅助函数
+# 此时 zshrc 尚未链接，需先手动粘贴到当前 shell
 try_link() {
   if (( $# != 2 )); then
     echo "Usage: try_link <source> <target>" >&2
