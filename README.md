@@ -8,6 +8,13 @@
 * 安装 [MesloLGS NF 字体](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#fonts) 并在终端中启用（Powerlevel10k 主题需要，装晚了终端会乱码）
 * iTerm2：配色使用 Dark Background 即可，避免使用 Solarized Dark 等其他主题
 * iTerm2：Preferences → General → Selection → Applications in terminal may access clipboard
+* iTerm2：关闭标签页活动指示（tmux 状态栏刷新会触发，改由 tmux 自身的 monitor-activity 提示）：
+  - Settings → Appearance → Tabs → 取消勾选 **Show activity indicator** 和 **Show new-output indicator**
+  - 或通过命令行设置（重启 iTerm2 生效）：
+```bash
+defaults write com.googlecode.iterm2 HideActivityIndicator -bool true
+defaults write com.googlecode.iterm2 ShowNewOutputIndicator -bool false
+```
 ```bash
 git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 # 已配 SSH key：git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2
