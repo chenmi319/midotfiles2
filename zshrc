@@ -1,11 +1,11 @@
-### --- P10k 即时提示 --------------------------------------------------------
+### --- 1. P10k 即时提示 -----------------------------------------------------
 # 必须位于文件最顶部；需要控制台输入的代码（密码提示等）放在此块之前
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-### --- 环境变量与 PATH ------------------------------------------------------
+### --- 2. 环境变量与 PATH ---------------------------------------------------
 # PATH 去重（首次出现优先）
 typeset -U path PATH
 
@@ -27,7 +27,7 @@ export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bot
 # Ctrl+W 分词：去掉下划线，使其与连字符一样作为分隔符
 WORDCHARS='*?[]~=&;!#$%^(){}<>'
 
-### --- Oh-My-Zsh 配置 ------------------------------------------------------
+### --- 3. Oh-My-Zsh 配置 ---------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
@@ -64,7 +64,7 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-### --- 补全系统 -------------------------------------------------------------
+### --- 4. 补全系统 ----------------------------------------------------------
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 fpath=($HOME/.docker/completions $fpath)
 
@@ -108,10 +108,10 @@ zcompcache-clear() {
   echo "zcompcache cleared."
 }
 
-### --- 加载 Oh-My-Zsh -------------------------------------------------------
+### --- 5. 加载 Oh-My-Zsh ---------------------------------------------------
 source $ZSH/oh-my-zsh.sh
 
-### --- Zsh 选项与历史记录 ---------------------------------------------------
+### --- 6. Zsh 选项与历史记录 ------------------------------------------------
 # 放在 source oh-my-zsh.sh 之后，覆盖 OMZ 默认的 share_history 等设置
 HISTSIZE=200000
 SAVEHIST=200000
@@ -124,7 +124,7 @@ unsetopt SHARE_HISTORY
 
 unsetopt auto_name_dirs
 
-### --- 工具初始化 -----------------------------------------------------------
+### --- 7. 工具初始化 --------------------------------------------------------
 # mamba / micromamba（此块由 mamba init 管理）
 export MAMBA_EXE="$HOME/.local/bin/micromamba";
 export MAMBA_ROOT_PREFIX="$HOME/micromamba";
@@ -164,7 +164,7 @@ fi
 # aliyun CLI 补全
 complete -o nospace -F /usr/local/bin/aliyun aliyun
 
-### --- 函数定义 -------------------------------------------------------------
+### --- 8. 函数定义 ----------------------------------------------------------
 # 修复终端鼠标状态（p10k 初始化后通过 precmd 钩子运行）
 fix_mouse() {
   printf '\e[?1000l\e[?1002l\e[?1006l\e[?1003l\e[?2004l' >/dev/tty
@@ -242,14 +242,14 @@ unproxy() { unset http_proxy https_proxy all_proxy; }
 oc()  { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@"; }
 occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@" --continue; }
 
-### --- 别名 -----------------------------------------------------------------
+### --- 9. 别名 --------------------------------------------------------------
 alias conda=micromamba
 alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
 alias vimns='VIM_NO_SESSION=1'
 alias uvs='source .venv/bin/activate'
 alias uvsb="source $HOME/uv_venv/base/bin/activate"
 
-### --- Kubernetes 与 Helm ---------------------------------------------------
+### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
 typeset -gaU KUBEFILES
 setopt NULL_GLOB
@@ -326,7 +326,7 @@ alias bjprod-kops1-15='AWS_REGION=cn-north-1 KOPS_STATE_STORE=s3://alo7-kops/pro
 alias mykops1-16='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://kops-bach-test kops1.16'
 alias nxprod-kops1-15='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://alo7-kops-zhy/prod kops1.15'
 
-### --- P10k 主题加载 --------------------------------------------------------
+### --- 11. P10k 主题加载 ----------------------------------------------------
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # 修复终端鼠标状态（必须在 p10k 初始化之后）
