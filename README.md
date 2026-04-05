@@ -72,15 +72,17 @@ EOF
 
 
 # tmux
-* [安装 tmux](https://github.com/tmux/tmux/wiki/Installing)
 ```bash
-# mac 需要安装 reattach-to-user-namespace
-HOMEBREW_NO_AUTO_UPDATE=1 brew install reattach-to-user-namespace
-# 安装 tpm
+# macOS
+brew install tmux
+# Ubuntu/Debian
+# sudo apt install tmux
+
+# 安装 tpm（tmux 插件管理器）
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 ```
-* 安装 tmux 插件, 进入 tmux 后执行 `prefix + I`
+* 安装 tmux 插件：进入 tmux 后执行 `prefix + I`（默认 `Ctrl-b` 后按大写 `I`）
 
 
 # vim
