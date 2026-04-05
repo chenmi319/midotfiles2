@@ -13,17 +13,19 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/libpq/bin:$HOME/.opencode/bin:$BUN_INSTALL/bin:$PATH"
 
 export LANG=en_US.UTF-8
+# LC_ALL 强制覆盖所有 locale 分类，会使 LC_* 单项设置无效；
+# 仅在需要确保所有分类一致时使用，否则只设 LANG 即可
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export VISUAL="$EDITOR"
-export LESS="-F -i -j4 -M -R -w -X -z-4 --mouse"
+export LESS="-F -i -j4 -M -R -w -z-4 --mouse"
 
 # Homebrew 镜像（清华 TUNA）
 export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
 
 # Ctrl+W 分词：去掉下划线，使其与连字符一样作为分隔符
-export WORDCHARS='*?[]~=&;!#$%^(){}<>'
+WORDCHARS='*?[]~=&;!#$%^(){}<>'
 
 ### --- Zsh 选项与历史记录 ---------------------------------------------------
 HISTSIZE=200000
