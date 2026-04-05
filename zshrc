@@ -24,9 +24,6 @@ export LESS="-F -i -j4 -M -R -w -z-4 --mouse"
 export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
 
-# Ctrl+W 分词：去掉下划线，使其与连字符一样作为分隔符
-WORDCHARS='*?[]~=&;!#$%^(){}<>'
-
 ### --- 3. Oh-My-Zsh 配置 ---------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -68,10 +65,6 @@ plugins=(
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 fpath=($HOME/.docker/completions $fpath)
 
-# 补全缓存（compinit 由 oh-my-zsh.sh 统一调用）
-zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path "$HOME/.zcompcache"
-
 # 可调参数
 ZCOMP_CACHE_DIR=${ZCOMP_CACHE_DIR:-$HOME/.zcompcache}
 ZCOMP_CACHE_TTL_DAYS=${ZCOMP_CACHE_TTL_DAYS:-14}
@@ -89,6 +82,9 @@ _zcompcache_clean() {
   [[ -f $stamp ]] && read -r last < "$stamp"
   [[ $last != <-> ]] && last=0
   (( now - last < ZCOMP_CACHE_CLEAN_INTERVAL_SECS )) && return 0
+
+  # 清除残留锁文件（超过 60 分钟视为异常）
+  command find "$lock" -mmin +60 -delete 2>/dev/null
 
   if ( set -o noclobber; : > "$lock" ) 2>/dev/null; then
     trap 'rm -f "$lock"' EXIT
@@ -123,6 +119,13 @@ setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
 unsetopt SHARE_HISTORY
 
 unsetopt auto_name_dirs
+
+# 覆盖 OMZ lib/completion.zsh 的默认值
+# Ctrl+W 分词：去掉下划线，使其与连字符一样作为分隔符（OMZ 会重置为空）
+WORDCHARS='*?[]~=&;!#$%^(){}<>'
+# 补全缓存统一到 ~/.zcompcache（OMZ 默认指向 ~/.oh-my-zsh/cache）
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$HOME/.zcompcache"
 
 ### --- 7. 工具初始化 --------------------------------------------------------
 # mamba / micromamba（此块由 mamba init 管理）
