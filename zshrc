@@ -246,7 +246,6 @@ occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@" --continue; }
 ### --- 9. 别名 --------------------------------------------------------------
 alias conda=micromamba
 alias genpass='openssl rand -base64 24 | cut -c1-16'
-alias vimns='VIM_NO_SESSION=1'
 alias uvs='source .venv/bin/activate'
 alias uvsb="source $HOME/uv_venv/base/bin/activate"
 
