@@ -112,12 +112,34 @@ try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 * 安装 tmux 插件：进入 tmux 后执行 `prefix + I`（默认 `Ctrl-b` 后按大写 `I`）
 
 
+# nvm / Node.js
+
+> Copilot.lua 要求 Node.js >= 22，tree-sitter-cli、prettier 等工具也通过 npm 安装。
+> macOS 和 Linux 统一使用 nvm 管理 Node 版本。
+
+```bash
+# 安装 nvm（https://github.com/nvm-sh/nvm）
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
+
+# 重新加载 shell 后安装 Node.js 22 LTS
+nvm install 22
+nvm alias default 22
+```
+
+* zshrc 已配置 oh-my-zsh nvm 插件，遇到 `.nvmrc` 文件时自动切换版本
+* 若远程机器通过系统包管理器装了旧版 Node，nvm 安装后会优先使用 nvm 管理的版本
+
+
 # neovim
 ```bash
 # macOS
-brew install neovim ripgrep tree-sitter-cli
+brew install neovim ripgrep
 # Ubuntu/Debian
-# sudo apt install neovim ripgrep tree-sitter-cli
+# sudo apt install neovim ripgrep
+
+# tree-sitter-cli（macOS 也可 brew install tree-sitter-cli）
+# 注意：最新版可能要求 GLIBC >= 2.39，Ubuntu 22.04 需指定兼容版本
+npm install -g tree-sitter-cli@0.24.7
 
 try_link ~/.midotfiles2/nvim ~/.config/nvim
 

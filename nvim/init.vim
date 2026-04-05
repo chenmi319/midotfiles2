@@ -727,8 +727,11 @@ require('blink.cmp').setup({
 -- williamboman/mason.nvim + mason-lspconfig — LSP server 安装管理
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'pyright', 'ruff', 'ts_ls', 'jsonls', 'yamlls', 'html' },
+  -- ruff 不走 mason（官方推荐独立安装，避免 pip 依赖问题）
+  ensure_installed = { 'pyright', 'ts_ls', 'jsonls', 'yamlls', 'html' },
 })
+-- ruff 直接使用 PATH 中的可执行文件（brew install ruff / ruff 官方安装脚本）
+vim.lsp.enable('ruff')
 
 -- LSP server 配置（Neovim 0.11+ 原生 API，替代 coc.nvim）
 -- nvim-lspconfig 作为数据包提供各 server 的默认 cmd/filetypes/root_markers
