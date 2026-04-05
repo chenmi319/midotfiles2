@@ -30,17 +30,20 @@ try_link() {
 ```
 
 # zsh
-* 安装zsh
 ```bash
-# 安装 oh-my-zsh, 有文件夹权限问题，参考修改代码: compaudit | xargs chmod g-w,o-w
+# macOS
+brew install zsh
+# Ubuntu/Debian
+# sudo apt install zsh -y
+
+# 安装 oh-my-zsh（若遇权限问题：compaudit | xargs chmod g-w,o-w）
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # oh-my-zsh 插件
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
-# powerlevel10k 用到字体安装: https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#fonts
-git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone --depth=1 https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 
 try_link ~/.midotfiles2/zshrc ~/.zshrc
 try_link ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
