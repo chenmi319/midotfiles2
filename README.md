@@ -29,6 +29,33 @@ try_link() {
 }
 ```
 
+# 代理隧道（可选）
+
+> 远程机器无法直接访问 GitHub 等外网时，可通过 SSH 反向隧道借用本地代理。
+
+**本地**（开一个终端保持运行）：
+```bash
+ssh -N \
+  -R 7890:127.0.0.1:7890 \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 \
+  -o ServerAliveCountMax=3 \
+  <remote-host>
+```
+
+**远程**（在需要翻墙的 shell 中执行）：
+```bash
+export HTTP_PROXY=http://127.0.0.1:7890
+export HTTPS_PROXY=http://127.0.0.1:7890
+
+# 验证代理是否生效
+curl -I https://github.com
+```
+
+* `7890` 是 Clash 等代理工具的默认端口，按实际情况修改
+* 隧道仅在 SSH 连接存活期间有效，断开后远程端口自动关闭
+* 后续所有 `git clone`、`curl` 命令均会自动走代理
+
 # zsh
 ```bash
 # macOS
