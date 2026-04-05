@@ -1,104 +1,61 @@
-# Powerlevel10k instant prompt: quiet mode (suppress gitstatus init warnings)
+### --- P10k 即时提示 --------------------------------------------------------
+# 必须位于文件最顶部；需要控制台输入的代码（密码提示等）放在此块之前
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Ensure PATH entries are unique (first occurrence wins)
+### --- 环境变量与 PATH ------------------------------------------------------
+# PATH 去重（首次出现优先）
 typeset -U path PATH
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/libpq/bin:$HOME/.opencode/bin:$BUN_INSTALL/bin:$PATH"
 
-# Path to your oh-my-zsh installation.
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export EDITOR=vim
+export VISUAL="$EDITOR"
+export LESS="-F -i -j4 -M -R -w -X -z-4 --mouse"
+
+# Homebrew 镜像（清华 TUNA）
+export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+
+# Ctrl+W 分词：去掉下划线，使其与连字符一样作为分隔符
+export WORDCHARS='*?[]~=&;!#$%^(){}<>'
+
+### --- Zsh 选项与历史记录 ---------------------------------------------------
+HISTSIZE=200000
+SAVEHIST=200000
+HISTFILE=~/.zsh_history
+setopt APPEND_HISTORY INC_APPEND_HISTORY_TIME EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
+setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
+
+unsetopt auto_name_dirs
+
+### --- Oh-My-Zsh 配置 ------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+# 自动更新：提醒模式，每 14 天检查一次
 zstyle ':omz:update' mode reminder
 zstyle ':omz:update' frequency 14
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# 补全等待时显示红点
 COMPLETION_WAITING_DOTS="true"
-# COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# nvm plugin: auto-switch node version on .nvmrc (replaces custom load-nvmrc)
+# nvm 插件：遇到 .nvmrc 自动切换版本
 zstyle ':omz:plugins:nvm' autoload yes
 zstyle ':omz:plugins:nvm' silent-autoload yes
 
-# z plugin: smart case matching, echo destination, show ~ in listings
+# z 插件：智能大小写、显示目标路径、列表中用 ~ 缩写、排除目录
 ZSHZ_CASE=smart
 ZSHZ_ECHO=1
 ZSHZ_TILDE=1
 ZSHZ_EXCLUDE_DIRS=($HOME /tmp /private/tmp)
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(
   aliases
   colored-man-pages
@@ -115,26 +72,23 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+### --- 补全系统 -------------------------------------------------------------
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 fpath=($HOME/.docker/completions $fpath)
 
-
-### --- zsh completion cache: enable + auto-clean -----------------------------
-
-# 1) 开启补全缓存（放在 compinit 之前）
+# 补全缓存（compinit 由 oh-my-zsh.sh 统一调用）
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path "$HOME/.zcompcache"
 
-# 2) 可调参数（按需改）
-ZCOMP_CACHE_DIR=${ZCOMP_CACHE_DIR:-$HOME/.zcompcache}        # 缓存目录
-ZCOMP_CACHE_TTL_DAYS=${ZCOMP_CACHE_TTL_DAYS:-14}             # 文件保留天数
-ZCOMP_CACHE_CLEAN_INTERVAL_SECS=${ZCOMP_CACHE_CLEAN_INTERVAL_SECS:-86400}  # 清理频率（秒），默认每天一次
+# 可调参数
+ZCOMP_CACHE_DIR=${ZCOMP_CACHE_DIR:-$HOME/.zcompcache}
+ZCOMP_CACHE_TTL_DAYS=${ZCOMP_CACHE_TTL_DAYS:-14}
+ZCOMP_CACHE_CLEAN_INTERVAL_SECS=${ZCOMP_CACHE_CLEAN_INTERVAL_SECS:-86400}
 
-# 3) 准备目录
 mkdir -p "$ZCOMP_CACHE_DIR"
 
-# 4) 自动清理函数（带锁，避免并发；限频，避免每次都清理）
-function _zcompcache_clean() {
+# 自动清理（带锁 + 限频，后台执行不阻塞启动）
+_zcompcache_clean() {
   local stamp="$ZCOMP_CACHE_DIR/.last_clean"
   local lock="$ZCOMP_CACHE_DIR/.clean.lock"
   local now=$EPOCHSECONDS
@@ -144,90 +98,80 @@ function _zcompcache_clean() {
   [[ $last != <-> ]] && last=0
   (( now - last < ZCOMP_CACHE_CLEAN_INTERVAL_SECS )) && return 0
 
-  # 简易加锁，失败即有其他进程在清理
   if ( set -o noclobber; : > "$lock" ) 2>/dev/null; then
     trap 'rm -f "$lock"' EXIT
-    # 删除超期文件
     command find "$ZCOMP_CACHE_DIR" \
       -type f ! -name '.last_clean' ! -name '.clean.lock' \
       -mtime +$((ZCOMP_CACHE_TTL_DAYS)) -print -delete >/dev/null 2>&1
-    # 清空空目录
     command find "$ZCOMP_CACHE_DIR" -type d -empty -delete >/dev/null 2>&1
     print -r -- "$now" >| "$stamp"
   fi
 }
-
-# 5) 后台触发清理，不阻塞启动（compinit 由 oh-my-zsh.sh 统一调用）
 _zcompcache_clean &!
 
-# 6) 手动一键清理命令
+# 手动一键清理
 zcompcache-clear() {
   command find "$ZCOMP_CACHE_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
   : >| "$ZCOMP_CACHE_DIR/.last_clean"
   echo "zcompcache cleared."
 }
-### --------------------------------------------------------------------------
 
-
+### --- 加载 Oh-My-Zsh -------------------------------------------------------
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+### --- 工具初始化 -----------------------------------------------------------
+# mamba / micromamba（此块由 mamba init 管理）
+export MAMBA_EXE="$HOME/.local/bin/micromamba";
+export MAMBA_ROOT_PREFIX="$HOME/micromamba";
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias micromamba="$MAMBA_EXE"
+fi
+unset __mamba_setup
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# goenv
+command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# uv / cargo 环境
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# bun 补全
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# kubectl 补全（缓存；kubectl 更新时自动重新生成）
+if (( $+commands[kubectl] )); then
+  _kubectl_comp="${XDG_CACHE_HOME:-$HOME/.cache}/kubectl_completion.zsh"
+  if [[ ! -f "$_kubectl_comp" || "$commands[kubectl]" -nt "$_kubectl_comp" ]]; then
+    mkdir -p "${_kubectl_comp:h}" 2>/dev/null
+    _kubectl_tmp="$_kubectl_comp.tmp.$$"
+    if kubectl completion zsh >| "$_kubectl_tmp" 2>/dev/null && [[ -s "$_kubectl_tmp" ]]; then
+      mv -f "$_kubectl_tmp" "$_kubectl_comp"
+    else
+      rm -f "$_kubectl_tmp"
+    fi
+  fi
+  [[ -f "$_kubectl_comp" ]] && source "$_kubectl_comp"
+  unset _kubectl_comp _kubectl_tmp
+fi
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# aliyun CLI 补全
+complete -o nospace -F /usr/local/bin/aliyun aliyun
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# fix mouse issues in terminal (after p10k initialization)
+### --- 函数定义 -------------------------------------------------------------
+# 修复终端鼠标状态（p10k 初始化后通过 precmd 钩子运行）
 fix_mouse() {
-  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?2004l' >/dev/tty
+  printf '\e[?1000l\e[?1002l\e[?1006l\e[?1003l\e[?2004l' >/dev/tty
 }
-precmd_functions+=(fix_mouse)
 
-# HomeBrew mirror (TUNA)
-export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
-
-# edit default editor
-export EDITOR=vim
-export VISUAL="$EDITOR"
-export LESS="-F -i -j4 -M -R -w -X -z-4 --mouse"
-
-# for tmux use ssh-agent
+# tmux 中同步 SSH agent 环境变量
 fixssh() {
-  eval $(tmux show-env    \
+  eval $(tmux show-env \
     |sed -n 's/^\(SSH_[^=]*\)=\(.*\)/export \1="\2"/p')
 }
 
-unsetopt auto_name_dirs
-
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-
-# ---- docker run helper: interactive -> -it, piped -> -i ----
+# Docker 运行辅助：交互环境用 -it，管道/脚本用 -i
 _dockrun() {
   local tty_args=()
   if [ -t 0 ] && [ -t 1 ]; then
@@ -238,33 +182,77 @@ _dockrun() {
   docker run --rm "${tty_args[@]}" "$@"
 }
 
-# MySQL 5.7 (EOL 2023-10; 仅用作客户端连接远程库)
-mysql57() {
-  _dockrun mysql:5.7 env LANG=C.UTF-8 mysql -A "$@"
-}
+# MySQL 5.7 客户端（EOL 2023-10；仅用作客户端连接远程库）
+mysql57() { _dockrun mysql:5.7 env LANG=C.UTF-8 mysql -A "$@"; }
 
-# Postgres：不同版本分别一个函数（交互则 -it；脚本/管道则 -i）
+# Postgres 客户端（不同版本）
 psql13() { _dockrun postgres:13 psql "$@"; }
 psql11() { _dockrun postgres:11 psql "$@"; }
 psql10() { _dockrun postgres:10 psql "$@"; }
 
-# Redis CLI：同理
+# Redis CLI（通过 Docker 运行）
 redis-cli() { _dockrun redis:alpine redis-cli "$@"; }
 
+# 符号链接辅助：已存在且正确则跳过，否则备份后创建
+try_link() {
+  if (( $# != 2 )); then
+    echo "Usage: try_link <source> <target>" >&2
+    return 1
+  fi
+  if [[ -L "$2" ]] && [[ "$(readlink "$2")" == "$1" ]]; then
+    return 0
+  fi
+  if [[ -e "$2" || -L "$2" ]]; then
+    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)"
+  fi
+  ln -s "$1" "$2"
+}
 
-# fix failing bck-i-search
-#bindkey '^R' history-incremental-search-backward
+# 更新 dotfiles 仓库
+update_mi_dot_files() {
+  cd ~/.midotfiles2
+  git pull
+  cd -
+}
 
-# export KUBECONFIG="${HOME}/.kube/chenmi-kube-admin-pro-dev-rw:${HOME}/.kube/chenmi-kube-pro-nx:${HOME}/.kube/chenmi-kube-ali-prod:${HOME}/.kube/chenmi-kube-ali-dev:${HOME}/.kube/chenmi-kube-ali-dev-ask:${HOME}/.kube/chenmi-kube-ali-dev-worker:${HOME}/.kube/eks:${HOME}/.kube/chenmi-kube-ali-prod-worker:${HOME}/.kube/mixbio-dev:${HOME}/.kube/rancher-rke.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio.yaml:${HOME}/.kube/mixbio-rancher.yaml:${HOME}/.kube/mixbio-prod.yaml:${HOME}/.kube/kube_config_azure:${HOME}/.kube/chenmi-kube-ali-applyai"
+# uv 虚拟环境自动激活/反激活（基于 .venv 目录）
+autoload -U add-zsh-hook
+load-uv-venv() {
+  if [[ -f "$PWD/.venv/bin/activate" ]]; then
+    if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
+      source "$PWD/.venv/bin/activate"
+    fi
+  elif [[ -n "$VIRTUAL_ENV" ]] && [[ "$VIRTUAL_ENV" == */.venv ]]; then
+    deactivate 2>/dev/null
+  fi
+}
+add-zsh-hook chpwd load-uv-venv
+load-uv-venv
+
+# 代理开关
+proxy()   { export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890; }
+unproxy() { unset http_proxy https_proxy all_proxy; }
+
+# OpenCode 包装（强制中文 locale）
+oc()  { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@"; }
+occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@" --continue; }
+
+### --- 别名 -----------------------------------------------------------------
+alias conda=micromamba
+alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
+alias vimns='VIM_NO_SESSION=1'
+alias uvs='source .venv/bin/activate'
+alias uvsb="source $HOME/uv_venv/base/bin/activate"
+
+### --- Kubernetes 与 Helm ---------------------------------------------------
+# KUBECONFIG：自动聚合 ~/.kube 下的配置文件
 typeset -gaU KUBEFILES
 setopt NULL_GLOB
 KUBEFILES=($HOME/.kube/chenmi-* $HOME/.kube/*eks* $HOME/.kube/*rancher*.yaml $HOME/.kube/*mixbio*.yaml $HOME/.kube/*mycluster)
 unsetopt NULL_GLOB
 export KUBECONFIG="${(j.:.)KUBEFILES}"
-#alias kube_dev_ningxia='kubectl --kubeconfig ~/.kube/kube_config_ningxia'
-#alias kube_prod_beijing='kubectl --kubeconfig ~/.kube/kube_config_pro'
-#alias kube_dev_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=ningxia-dev'
-#alias kube_dev='kubectl --context=ningxia-dev'
+
+# kubectl 上下文快捷别名
 alias kube_prod_ro='kubectl --kubeconfig ~/.kube/chenmi-kube-pro-dev-ro --context=prod'
 alias kube_prod='kubectl --context=prod'
 alias kube_prod_eks='kubectl --context=eks'
@@ -281,10 +269,10 @@ alias kube_mixbio='kubectl --context=mixbio'
 alias kube_mixbio_prod='kubectl --context=mixbio-prod'
 alias kube_azure='kubectl --context=azure-dev1'
 alias kube_ali_applyai='kubectl --context=ali-applyai'
-# add `127.0.0.1 host.docker.internal` in /etc/hosts
+# 需要在 /etc/hosts 添加 `127.0.0.1 host.docker.internal`
 alias kube_mycluster='kubectl --context=k3d-mycluster'
 
-#alias create_ns_dev='python3 ./main.py nx-dev'
+# 命名空间创建脚本
 alias create_ns_prod='python3 ./main.py prod'
 alias create_ns_prod_nx='python3 ./main.py nx-prod'
 alias create_ns_ali_dev='python3 ./main.py ali-dev'
@@ -294,7 +282,7 @@ alias create_ns_ali_prod='python3 ./main.py ali-prod'
 alias create_ns_ali_prod_worker='python3 ./main.py ali-prod-worker'
 alias create_ns_mixbio_prod='python3 ./main_n.py mixbio-prod'
 
-#alias new-k8s-permission_dev='python3 ./main.py nx'
+# K8s 权限创建脚本
 alias new-k8s-permission_prod='python3 ./main.py prod'
 alias new-k8s-permission_ali_dev='python3 ./main.py ali-dev'
 alias new-k8s-permission_ali_dev_ask='python3 ./main.py ali-dev-ask'
@@ -304,6 +292,7 @@ alias new-k8s-permission_ali_prod_worker='python3 ./main.py ali-prod-worker'
 alias new-k8s-permission_mixbio_dev='python3 ./main.py mixbio-dev'
 alias new-k8s-permission_mixbio_prod='python3 ./main_n.py mixbio-prod'
 
+# Helm 上下文快捷别名
 alias helm_ali_dev='helm_2_16_3 --kube-context=ali-dev'
 alias helm3_ali_dev='helm3 --kube-context=ali-dev'
 alias helm_ali_dev_ask='helm_2_16_12 --kube-context=ali-dev-ask'
@@ -323,142 +312,17 @@ alias helm_azure='helm3 --kube-context=azure-dev1'
 alias helm_ali_applyai='helm3 --kube-context=ali-applyai'
 alias helm_mycluster='helm3 --kube-context=k3d-mycluster'
 
-#alias velero_dev='velero --kubecontext=ningxia-dev'
+# Velero 上下文快捷别名
 alias velero_prod='velero --kubecontext=prod'
 alias velero_prod_nx='velero --kubecontext=prod-nx'
 
-#alias bjdev-kops1-15='AWS_REGION=cn-north-1 KOPS_STATE_STORE=s3://alo7-kops/dev kops1.15'
-#alias bjdev-kops1-16='AWS_REGION=cn-north-1 KOPS_STATE_STORE=s3://alo7-kops/dev kops1.16'
+# Kops 上下文快捷别名
 alias bjprod-kops1-15='AWS_REGION=cn-north-1 KOPS_STATE_STORE=s3://alo7-kops/prod kops1.15'
 alias mykops1-16='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://kops-bach-test kops1.16'
-#alias nxdev-kops1-15='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://alo7-kops-zhy/dev kops1.15'
 alias nxprod-kops1-15='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://alo7-kops-zhy/prod kops1.15'
 
-#alias tmux='tmux -2 -u'
+### --- P10k 主题加载 --------------------------------------------------------
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-#export PATH="$PATH:$HOME/.rvm/bin"
-
-
-# --- History ---
-HISTSIZE=200000
-SAVEHIST=200000
-HISTFILE=~/.zsh_history
-setopt APPEND_HISTORY INC_APPEND_HISTORY_TIME EXTENDED_HISTORY
-setopt HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
-setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
-
-
-# kubectl completion (cached; regenerates when kubectl binary updates)
-# On generation failure, keeps old cache; skips source if no valid cache exists.
-if (( $+commands[kubectl] )); then
-  _kubectl_comp="${XDG_CACHE_HOME:-$HOME/.cache}/kubectl_completion.zsh"
-  if [[ ! -f "$_kubectl_comp" || "$commands[kubectl]" -nt "$_kubectl_comp" ]]; then
-    mkdir -p "${_kubectl_comp:h}" 2>/dev/null
-    _kubectl_tmp="$_kubectl_comp.tmp.$$"
-    if kubectl completion zsh >| "$_kubectl_tmp" 2>/dev/null && [[ -s "$_kubectl_tmp" ]]; then
-      mv -f "$_kubectl_tmp" "$_kubectl_comp"
-    else
-      rm -f "$_kubectl_tmp"
-    fi
-  fi
-  [[ -f "$_kubectl_comp" ]] && source "$_kubectl_comp"
-  unset _kubectl_comp _kubectl_tmp
-fi
-
-complete -o nospace -F /usr/local/bin/aliyun aliyun
-
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'mamba init' !!
-export MAMBA_EXE="$HOME/.local/bin/micromamba";
-export MAMBA_ROOT_PREFIX="$HOME/micromamba";
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
-else
-    alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
-fi
-unset __mamba_setup
-# <<< mamba initialize <<<
-alias conda=micromamba
-
-try_link() {
-  if (( $# != 2 )); then
-    echo "Usage: try_link <source> <target>" >&2
-    return 1
-  fi
-  # 已是正确的符号链接则跳过
-  if [[ -L "$2" ]] && [[ "$(readlink "$2")" == "$1" ]]; then
-    return 0
-  fi
-  # 目标存在（或悬空链接）则备份
-  if [[ -e "$2" || -L "$2" ]]; then
-    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)"
-  fi
-  ln -s "$1" "$2"
-}
-
-# git clone git@github.com:chenmi319/midotfiles2.git ~/.midotfiles2, git pull
-update_mi_dot_files() {
-  cd ~/.midotfiles2
-  git pull
-  cd -
-}
-
-alias genpass='cat /dev/urandom | head -n 16 | shasum | base64 | cut -c1-16'
-
-autoload -U add-zsh-hook
-
-load-uv-venv() {
-  if [[ -f "$PWD/.venv/bin/activate" ]]; then
-    if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
-      source "$PWD/.venv/bin/activate"
-    fi
-  elif [[ -n "$VIRTUAL_ENV" ]] && [[ "$VIRTUAL_ENV" == */.venv ]]; then
-    deactivate 2>/dev/null
-  fi
-}
-
-add-zsh-hook chpwd load-uv-venv
-load-uv-venv
-
-# alias proxy='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
-# alias proxy_run='https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
-proxy() { export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890; }
-unproxy(){ unset http_proxy https_proxy all_proxy; }
-alias vimns='VIM_NO_SESSION=1'
-
-# Disabled: conflicts with npm-installed GitHub Copilot CLI
-# command -v gh &>/dev/null && eval "$(gh copilot alias -- zsh)"
-
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
-
-alias uvs='source .venv/bin/activate'
-alias uvsb="source $HOME/uv_venv/base/bin/activate"
-
-# opencode
-export PATH=/Users/chenmi/.opencode/bin:$PATH
-
-oc() {
-  LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@"
-}
-
-occ() {
-  LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@" --continue
-}
-
-# bun completions
-[ -s "/Users/chenmi/.bun/_bun" ] && source "/Users/chenmi/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Word character configuration for Ctrl+W behavior
-# Remove underscore from WORDCHARS so it's treated as a word separator like hyphen
-export WORDCHARS='*?[]~=&;!#$%^(){}<>'
-
-command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
-
+# 修复终端鼠标状态（必须在 p10k 初始化之后）
+precmd_functions+=(fix_mouse)
