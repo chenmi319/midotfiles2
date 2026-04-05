@@ -53,7 +53,6 @@ plugins=(
   colored-man-pages
   command-not-found
   encode64
-  history-substring-search
   safe-paste
   tmux
   z
@@ -62,6 +61,7 @@ plugins=(
   nvm
   zsh-autosuggestions
   zsh-syntax-highlighting
+  history-substring-search
 )
 
 ### --- 4. 补全系统 ----------------------------------------------------------
