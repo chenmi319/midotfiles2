@@ -155,17 +155,17 @@ try_link ~/.midotfiles2/liquidpromptrc ~/.liquidpromptrc
 ```
 * relogin
 
-# mac 按键快速响应
+# mac
 ```bash
-# Enable full keyboard access for all controls
-# (e.g. enable Tab in modal dialogs)
+# 所有控件启用完整键盘访问（如在对话框中用 Tab 切换按钮）
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-# Disable press-and-hold for keys in favor of key repeat
+# 关闭长按弹出字符选择面板，改为按键重复
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-# Set a blazingly fast keyboard repeat rate
+# 按键重复速率（KeyRepeat=1 ≈ 15ms，InitialKeyRepeat=15 ≈ 225ms）
 defaults write NSGlobalDomain KeyRepeat -int 1
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 ```
+* 修改后需注销并重新登录才能生效
 
