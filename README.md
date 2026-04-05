@@ -138,8 +138,9 @@ brew install neovim ripgrep
 # sudo apt install neovim ripgrep
 
 # tree-sitter-cli（macOS 也可 brew install tree-sitter-cli）
-# 注意：最新版可能要求 GLIBC >= 2.39，Ubuntu 22.04 需指定兼容版本
-npm install -g tree-sitter-cli@0.24.7
+npm install -g tree-sitter-cli
+# Ubuntu 22.04 (GLIBC 2.35)：最新版预编译二进制要求 GLIBC >= 2.39，需指定兼容版本
+# npm install -g tree-sitter-cli@0.24.7
 
 try_link ~/.midotfiles2/nvim ~/.config/nvim
 
