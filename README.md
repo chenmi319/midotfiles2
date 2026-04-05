@@ -29,6 +29,28 @@ try_link() {
 }
 ```
 
+> zshrc 已将 `$HOME/bin` 加入 PATH（优先级最高）。在无 root / brew 权限的远程服务器上，
+> 可以直接下载预编译二进制到 `~/bin/`，无需包管理器。
+
+```bash
+mkdir -p ~/bin
+
+# 示例（Linux x86_64，版本号去各项目 GitHub Releases 页面查看）：
+# delta:   https://github.com/dandavison/delta/releases
+# ripgrep: https://github.com/BurntSushi/ripgrep/releases
+# neovim:  https://github.com/neovim/neovim/releases
+
+# 下载解压后将二进制放入 ~/bin/ 即可，如：
+# cp delta ~/bin/
+# cp rg ~/bin/
+# neovim 有 lib/ 和 share/ 依赖，需保留完整目录并软链接：
+# tar xzf nvim-linux-x86_64.tar.gz -C ~/bin/
+# ln -sf nvim-linux-x86_64/bin/nvim ~/bin/nvim
+```
+
+* ruff 的安装脚本默认装到 `~/.local/bin/`（也在 PATH 中），无需额外操作
+* 后续各 section 的 `brew install` / `apt install` 仍然是有包管理器时的首选
+
 # 代理隧道（可选）
 
 > 远程机器无法直接访问 GitHub 等外网时，可通过 SSH 反向隧道借用本地代理。
