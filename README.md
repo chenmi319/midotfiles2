@@ -52,17 +52,22 @@ try_link ~/.midotfiles2/p10k.zsh ~/.p10k.zsh
 
 
 # git
-* [安装 git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 或者 [下载 git](https://git-scm.com/downloads)
 ```bash
+# macOS
+brew install git delta
+# Ubuntu/Debian
+# sudo apt install git git-delta
+
 try_link ~/.midotfiles2/gitconfig ~/.gitconfig
 try_link ~/.midotfiles2/gitignore ~/.gitignore
 try_link ~/.midotfiles2/gitmessage ~/.gitmessage
-```
-you should create ~/.gitconfig.user like
-```
+
+# 创建个人身份配置（修改 name 和 email 后执行）
+cat > ~/.gitconfig.user <<'EOF'
 [user]
   name = xxx
   email = xxx
+EOF
 ```
 
 
