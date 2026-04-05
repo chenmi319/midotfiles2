@@ -27,16 +27,6 @@ export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bot
 # Ctrl+W 分词：去掉下划线，使其与连字符一样作为分隔符
 WORDCHARS='*?[]~=&;!#$%^(){}<>'
 
-### --- Zsh 选项与历史记录 ---------------------------------------------------
-HISTSIZE=200000
-SAVEHIST=200000
-HISTFILE=~/.zsh_history
-setopt APPEND_HISTORY INC_APPEND_HISTORY_TIME EXTENDED_HISTORY
-setopt HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
-setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
-
-unsetopt auto_name_dirs
-
 ### --- Oh-My-Zsh 配置 ------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -120,6 +110,19 @@ zcompcache-clear() {
 
 ### --- 加载 Oh-My-Zsh -------------------------------------------------------
 source $ZSH/oh-my-zsh.sh
+
+### --- Zsh 选项与历史记录 ---------------------------------------------------
+# 放在 source oh-my-zsh.sh 之后，覆盖 OMZ 默认的 share_history 等设置
+HISTSIZE=200000
+SAVEHIST=200000
+HISTFILE=~/.zsh_history
+setopt APPEND_HISTORY INC_APPEND_HISTORY_TIME EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS HIST_VERIFY
+setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
+# 关闭 OMZ 的 share_history（与 INC_APPEND_HISTORY_TIME 互斥）
+unsetopt SHARE_HISTORY
+
+unsetopt auto_name_dirs
 
 ### --- 工具初始化 -----------------------------------------------------------
 # mamba / micromamba（此块由 mamba init 管理）
