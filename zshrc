@@ -57,7 +57,7 @@ plugins=(
   redis-cli
   nvm
   zsh-autosuggestions
-  zsh-syntax-highlighting
+  fast-syntax-highlighting
   history-substring-search
 )
 
