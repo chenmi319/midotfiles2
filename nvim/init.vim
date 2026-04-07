@@ -514,9 +514,15 @@ require('mini.ai').setup({
 require('mini.align').setup()
 
 -- gregorias/coerce.nvim（替代 vim-abolish 的 cr* coercion）
--- Normal: cr + s/p/c/u/k/d  Visual/Motion: gcr + s/p/c/u/k/d
+-- Normal: cr + s/p/c/u/k/d  Visual/Motion: gR + s/p/c/u/k/d
 -- crs=snake_case crp=PascalCase crc=camelCase cru=UPPER_CASE crk=kebab-case crd=dot.case
-require('coerce').setup()
+-- NOTE: 默认 visual/motion 前缀 gcr 与 Neovim 内置 gc 注释冲突，改为 gR
+require('coerce').setup({
+  default_mode_keymap_prefixes = {
+    motion_mode = 'gR',
+    visual_mode = 'gR',
+  },
+})
 
 -- Wansmer/treesj（替代 splitjoin.vim）
 local treesj = require('treesj')
