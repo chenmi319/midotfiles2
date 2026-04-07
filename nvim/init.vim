@@ -221,9 +221,8 @@ let mapleader=","
 colorscheme onedark
 
 " --- NERDTree + vim-nerdtree-tabs（文件树）
-" 终端启动时自动打开 NERDTree；焦点始终在文件窗口；新 tab 自动显示
-let g:nerdtree_tabs_open_on_console_startup = 1
-let g:nerdtree_tabs_smart_startup_focus = 2
+" 启动时不自动打开；打开文件后焦点回到文件窗口；新 tab 自动显示
+let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_open_on_new_tab = 1
 let g:NERDTreeIgnore = ['^__pycache__$', '\.pyc$', 'Session.vim', '.DS_Store', '^node_modules$', '\.git$', '\..*cache$']
