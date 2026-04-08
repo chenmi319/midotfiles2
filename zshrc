@@ -17,6 +17,7 @@ export LANG=en_US.UTF-8
 # 仅在需要确保所有分类一致时使用，否则只设 LANG 即可
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
+[[ -f ~/.config/claude_api_key ]] && export ANTHROPIC_API_KEY="$(cat ~/.config/claude_api_key)"
 export VISUAL="$EDITOR"
 export LESS="-F -i -j4 -M -R -w -z-4 --mouse"
 
