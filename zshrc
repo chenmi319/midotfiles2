@@ -117,6 +117,10 @@ setopt HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS HIST_VERIFY
 setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
 # 关闭 OMZ 的 share_history（与 INC_APPEND_HISTORY_TIME 互斥）
 unsetopt SHARE_HISTORY
+# 每次 prompt 前从历史文件加载新条目，实现跨终端历史可搜索
+autoload -Uz add-zsh-hook
+_reload_history() { fc -R }
+add-zsh-hook precmd _reload_history
 
 unsetopt auto_name_dirs
 
