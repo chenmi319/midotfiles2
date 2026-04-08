@@ -253,6 +253,7 @@ alias conda=micromamba
 alias genpass='openssl rand -base64 24 | cut -c1-16'
 alias uvs='source .venv/bin/activate'
 alias uvsb="source $HOME/uv_venv/base/bin/activate"
+alias claude='claude --verbose'
 
 ### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
