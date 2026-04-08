@@ -811,7 +811,48 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     -- 代码跳转 — K, grr, gri, gra, grt, gO, [d/]d 由 Neovim 0.11+ 内置
-    map('n', 'gd', vim.lsp.buf.definition, 'Go to definition')
+    map('n', 'gd', function()
+      vim.lsp.buf.definition({ on_list = function(options)
+        local items = options.items
+        if not items or #items == 0 then return end
+
+        -- 多个结果 → quickfix list
+        if #items > 1 then
+          vim.fn.setqflist({}, ' ', options)
+          vim.cmd('copen')
+          return
+        end
+
+        local item = items[1]
+        local target = item.filename
+        local current = vim.api.nvim_buf_get_name(0)
+
+        -- 跳转前标记 jumplist（C-o 可回）
+        vim.cmd("normal! m'")
+
+        -- 同文件：直接跳
+        if target == current then
+          vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
+          return
+        end
+
+        -- 目标文件已在某个 tab 打开 → 跳过去
+        for _, tp in ipairs(vim.api.nvim_list_tabpages()) do
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tp)) do
+            if vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win)) == target then
+              vim.api.nvim_set_current_tabpage(tp)
+              vim.api.nvim_set_current_win(win)
+              vim.api.nvim_win_set_cursor(win, { item.lnum, item.col - 1 })
+              return
+            end
+          end
+        end
+
+        -- 目标文件未打开 → 新 tab
+        vim.cmd('tabedit ' .. vim.fn.fnameescape(target))
+        vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
+      end })
+    end, 'Go to definition (tab-aware)')
 
     -- 重命名 / code action / 格式化
     map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
