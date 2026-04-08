@@ -822,6 +822,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map({ 'n', 'x' }, '<leader>fm', function()
       require('conform').format({ async = true, lsp_format = 'fallback' })
     end, 'Format')
+    map('n', '<leader>rs', function()
+      for _, c in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+        c:stop()
+      end
+      vim.cmd('edit')
+    end, 'Restart LSP servers')
 
     -- 光标停留时高亮当前符号及其引用（仅首个支持的 client 注册一次）
     if client and client:supports_method('textDocument/documentHighlight') and not vim.b[bufnr].lsp_highlight_attached then
