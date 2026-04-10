@@ -131,6 +131,9 @@ Telescope 内部：
 | `,fm` | n/v | 格式化文件/选区（conform） |
 | `th` | n | 切换 inlay hints |
 | `to` | n | 切换 Outline 面板 |
+| `W` | n (Outline) | 折叠所有符号 |
+| `E` | n (Outline) | 展开所有符号 |
+| `R` | n (Outline) | 重置折叠状态 |
 | `<Space>a` | n | 打开/关闭 Trouble 诊断面板 |
 | `<Space>s` | n | 工作区符号搜索 |
 

@@ -959,7 +959,7 @@ vim.keymap.set('n', '<leader>ss', '<cmd>SessionSearch<CR>', { desc = 'Search ses
 -- hedyhli/outline.nvim — 代码大纲/符号面板
 require('outline').setup({
   symbol_folding = {
-    autofold_depth = false,  -- 不自动折叠符号
+    autofold_depth = 1,  -- 默认只展开顶层符号
   },
   providers = {
     priority = { 'lsp', 'markdown', 'norg', 'man' },  -- LSP 优先
