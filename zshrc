@@ -133,7 +133,8 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$HOME/.zcompcache"
 
 ### --- 7. 工具初始化 --------------------------------------------------------
-# mamba / micromamba（此块由 mamba init 管理）
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba shell init' !!
 export MAMBA_EXE="$HOME/.local/bin/micromamba";
 export MAMBA_ROOT_PREFIX="$HOME/micromamba";
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
@@ -143,6 +144,7 @@ else
     alias micromamba="$MAMBA_EXE"
 fi
 unset __mamba_setup
+# <<< mamba initialize <<<
 
 # goenv
 command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
@@ -150,7 +152,7 @@ command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
 # uv / cargo 环境
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
-# bun 补全
+# bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # kubectl 补全（缓存；kubectl 更新时自动重新生成）
