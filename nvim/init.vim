@@ -709,6 +709,7 @@ require('blink.cmp').setup({
     preset = 'none',
     ['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },  -- 手动触发补全/切换文档
     ['<C-e>']     = { 'hide', 'fallback' },       -- 关闭补全菜单
+    ['<C-y>']     = { 'select_and_accept', 'fallback' },  -- 确认选中项（Vim 经典键）
     ['<CR>']      = { 'accept', 'fallback' },      -- 确认选中项
     ['<Tab>']     = { 'select_next', 'snippet_forward', 'fallback' },  -- 下一项 / snippet 下一占位
     ['<S-Tab>']   = { 'select_prev', 'snippet_backward', 'fallback' }, -- 上一项 / snippet 上一占位
