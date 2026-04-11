@@ -307,12 +307,12 @@ nnoremap <leader>qq :qa<CR>
 " NOTE: ,cr 和 ,cs 在 normal 模式下功能相同（都是相对路径），保留冗余方便记忆
 " ,cf: 复制路径（~/开头）  ,cr/,cs: 相对路径  ,cn: 文件名  ,cl: 绝对路径
 nnoremap <silent> ,cf :let @+ = expand("%:~")<CR>
-nnoremap <silent> ,cr :let @+ = expand("%")<CR>
+nnoremap <silent> ,cr :let @+ = expand("%:.")<CR>
 nnoremap <silent> ,cn :let @+ = expand("%:t")<CR>
-nnoremap <silent> ,cs :let @+ = expand("%")<CR>
+nnoremap <silent> ,cs :let @+ = expand("%:.")<CR>
 nnoremap <silent> ,cl :let @+ = expand("%:p")<CR>
 " visual: 复制路径:行号范围 + 选中内容 (s=short/相对, l=long/绝对)
-xnoremap <silent> ,cs :<C-u>let @+ = expand("%") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
+xnoremap <silent> ,cs :<C-u>let @+ = expand("%:.") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 xnoremap <silent> ,cl :<C-u>let @+ = expand("%:p") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 
 " --- 可视模式 / 杂项
