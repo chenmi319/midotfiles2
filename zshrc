@@ -17,7 +17,11 @@ export LANG=en_US.UTF-8
 # 仅在需要确保所有分类一致时使用，否则只设 LANG 即可
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
-[[ -f ~/.config/claude_api_key ]] && export ANTHROPIC_API_KEY="$(cat ~/.config/claude_api_key)"
+[[ -f ~/.secrets/claude_api_key ]] && export ANTHROPIC_API_KEY="$(cat ~/.secrets/claude_api_key)"
+[[ -f ~/.secrets/context7_api_key ]] && export CONTEXT7_API_KEY="$(cat ~/.secrets/context7_api_key)"
+[[ -f ~/.secrets/sentry_access_token ]] && export SENTRY_ACCESS_TOKEN="$(cat ~/.secrets/sentry_access_token)"
+[[ -f ~/.secrets/exa_api_key ]] && export EXA_API_KEY="$(cat ~/.secrets/exa_api_key)"
+[[ -f ~/.secrets/tavily_api_key ]] && export TAVILY_API_KEY="$(cat ~/.secrets/tavily_api_key)"
 export VISUAL="$EDITOR"
 export LESS="-F -i -j4 -M -R -w -z-4 --mouse"
 

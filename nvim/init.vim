@@ -476,6 +476,22 @@ require('treesitter-context').setup({
 -- tc: 切换 treesitter context 显示
 vim.keymap.set('n', 'tc', '<cmd>TSContext toggle<cr>', { desc = 'Toggle treesitter context' })
 
+-- nvim-treesitter-textobjects — 函数/类间跳转（move 模块）
+require('nvim-treesitter-textobjects').setup({
+  move = { set_jumps = true },  -- 跳转时记入 jumplist（C-o 可回）
+})
+local ts_move = require('nvim-treesitter-textobjects.move')
+-- ]m/[m: 下/上一个函数开头  ]M/[M: 下/上一个函数结尾
+vim.keymap.set({ 'n', 'x', 'o' }, ']m', function() ts_move.goto_next_start('@function.outer', 'textobjects') end, { desc = 'Next function start' })
+vim.keymap.set({ 'n', 'x', 'o' }, '[m', function() ts_move.goto_previous_start('@function.outer', 'textobjects') end, { desc = 'Prev function start' })
+vim.keymap.set({ 'n', 'x', 'o' }, ']M', function() ts_move.goto_next_end('@function.outer', 'textobjects') end, { desc = 'Next function end' })
+vim.keymap.set({ 'n', 'x', 'o' }, '[M', function() ts_move.goto_previous_end('@function.outer', 'textobjects') end, { desc = 'Prev function end' })
+-- ]]/[[: 下/上一个类开头  ][/[]: 下/上一个类结尾
+vim.keymap.set({ 'n', 'x', 'o' }, ']]', function() ts_move.goto_next_start('@class.outer', 'textobjects') end, { desc = 'Next class start' })
+vim.keymap.set({ 'n', 'x', 'o' }, '[[', function() ts_move.goto_previous_start('@class.outer', 'textobjects') end, { desc = 'Prev class start' })
+vim.keymap.set({ 'n', 'x', 'o' }, '][', function() ts_move.goto_next_end('@class.outer', 'textobjects') end, { desc = 'Next class end' })
+vim.keymap.set({ 'n', 'x', 'o' }, '[]', function() ts_move.goto_previous_end('@class.outer', 'textobjects') end, { desc = 'Prev class end' })
+
 -- vim-matchup — 增强 % 匹配（treesitter 集成）
 vim.g.matchup_matchparen_offscreen = { method = "popup" }  -- 匹配括号在屏幕外时弹窗显示
 vim.g.matchup_matchparen_deferred = 1                      -- 延迟匹配，减少卡顿

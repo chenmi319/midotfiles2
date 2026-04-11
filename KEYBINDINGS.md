@@ -18,6 +18,7 @@
   - [LSP](#lsp)
   - [Git (Gitsigns)](#git-gitsigns)
   - [Flash.nvim 快速跳转](#flashnvim-快速跳转)
+  - [Treesitter 代码跳转](#treesitter-代码跳转)
   - [补全 (blink.cmp)](#补全-blinkcmp)
   - [代码编辑辅助](#代码编辑辅助)
   - [Session 管理](#session-管理)
@@ -161,6 +162,19 @@ Telescope 内部：
 | `S` | n/v/o | Treesitter 节点跳转 |
 | `r` | o（operator） | 远程操作（在远处执行 motion） |
 | `C-s` | 命令行 | 在 `/` `?` 搜索时切换 flash 标签 |
+
+### Treesitter 代码跳转
+
+基于 treesitter 语法树的函数/类间跳转（`nvim-treesitter-textobjects` move 模块），支持 normal / visual / operator-pending 三种模式。
+
+| 按键 | 作用 |
+|------|------|
+| `]m` / `[m` | 跳到下一个/上一个函数开头 |
+| `]M` / `[M` | 跳到下一个/上一个函数结尾 |
+| `]]` / `[[` | 跳到下一个/上一个类开头 |
+| `][` / `[]` | 跳到下一个/上一个类结尾 |
+
+> 跳转会记入 jumplist，`C-o` 可回。支持 operator 组合，如 `d]m` 删到下一个函数头。
 
 ### 补全 (blink.cmp)
 
