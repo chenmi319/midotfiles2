@@ -121,9 +121,8 @@ call plug#end()
 " General Settings
 " ============================================================================
 
-" 显示行号 + 相对行号（方便 5j/3k 计数跳转）
+" 显示绝对行号
 set number
-set relativenumber
 " 高亮当前行
 set cursorline
 " 不显示模式（lualine 已显示）
