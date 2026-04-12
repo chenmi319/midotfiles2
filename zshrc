@@ -184,6 +184,20 @@ fix_mouse() {
   printf '\e[?1000l\e[?1002l\e[?1006l\e[?1003l\e[?2004l' >/dev/tty
 }
 
+# tmux session 恢复后 $PWD 可能被 resolve 为物理路径（tmux-resurrect 从 OS 读 cwd）
+# 检查 $HOME 下一级软链接，如果 $PWD 在其物理目标下，cd 回软链接路径
+() {
+  local link target suffix
+  for link in $HOME/*(N@); do
+    target=${link:A}
+    if [[ "$PWD" == "$target"* ]]; then
+      suffix="${PWD#$target}"
+      builtin cd "$link$suffix" 2>/dev/null
+      return
+    fi
+  done
+}
+
 # tmux 中同步 $PWD 到 pane 变量（保留软链接路径，供 new-window/split-window 使用）
 if [[ -n "$TMUX" ]]; then
   _tmux_sync_pwd() { tmux set-option -p @pane_pwd "$PWD" 2>/dev/null; }
