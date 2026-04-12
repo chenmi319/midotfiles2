@@ -31,6 +31,7 @@
 - [Shell (zsh)](#shell-zsh)
   - [常用别名](#常用别名)
   - [常用函数](#常用函数)
+  - [历史记录](#历史记录)
   - [代理](#代理)
 - [Git 别名](#git-别名)
   - [日常操作](#日常操作)
@@ -339,6 +340,13 @@ Telescope 内部：
 - `WORDCHARS` 不含 `_` 和 `-`，因此 `C-w` 删词时 `foo_bar` 会分两次删除
 - 插件 `history-substring-search`：上/下箭头按前缀搜索历史
 - 插件 `zsh-autosuggestions`：右箭头接受建议
+
+### 历史记录
+
+- 上箭头只浏览当前 shell 执行过的命令
+- 每条命令执行完立即写入 `~/.zsh_history`（`INC_APPEND_HISTORY_TIME`）
+- 新开 shell/pane 时自动加载完整历史文件，包含所有终端的命令
+- 如需在当前 shell 中立即加载其他终端的历史，手动执行 `fc -R`
 
 ---
 

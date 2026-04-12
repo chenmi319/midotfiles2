@@ -121,11 +121,9 @@ setopt APPEND_HISTORY INC_APPEND_HISTORY_TIME EXTENDED_HISTORY
 setopt HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS HIST_VERIFY
 setopt HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
 # 关闭 OMZ 的 share_history（与 INC_APPEND_HISTORY_TIME 互斥）
+# INC_APPEND_HISTORY_TIME: 命令执行完立即写入历史文件（带耗时），上箭头只看本 shell
+# 跨终端历史同步：新开 shell 时自动加载完整历史文件
 unsetopt SHARE_HISTORY
-# 每次 prompt 前从历史文件加载新条目，实现跨终端历史可搜索
-autoload -Uz add-zsh-hook
-_reload_history() { fc -R }
-add-zsh-hook precmd _reload_history
 
 unsetopt auto_name_dirs
 
@@ -179,6 +177,8 @@ fi
 (( $+commands[aliyun] )) && complete -o nospace -F "$commands[aliyun]" aliyun
 
 ### --- 8. 函数定义 ----------------------------------------------------------
+autoload -Uz add-zsh-hook
+
 # 修复终端鼠标状态（p10k 初始化后通过 precmd 钩子运行）
 fix_mouse() {
   printf '\e[?1000l\e[?1002l\e[?1006l\e[?1003l\e[?2004l' >/dev/tty
@@ -253,7 +253,6 @@ update_mi_dot_files() {
 }
 
 # uv 虚拟环境自动激活/反激活（基于 .venv 目录）
-autoload -U add-zsh-hook
 load-uv-venv() {
   if [[ -f "$PWD/.venv/bin/activate" ]]; then
     if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
