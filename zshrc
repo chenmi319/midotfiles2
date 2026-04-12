@@ -184,6 +184,12 @@ fix_mouse() {
   printf '\e[?1000l\e[?1002l\e[?1006l\e[?1003l\e[?2004l' >/dev/tty
 }
 
+# tmux 中同步 $PWD 到 pane 变量（保留软链接路径，供 new-window/split-window 使用）
+if [[ -n "$TMUX" ]]; then
+  _tmux_sync_pwd() { tmux set-option -p @pane_pwd "$PWD" 2>/dev/null; }
+  add-zsh-hook precmd _tmux_sync_pwd
+fi
+
 # tmux 中同步 SSH agent 环境变量
 fixssh() {
   eval $(tmux show-env \
