@@ -20,6 +20,7 @@ export EDITOR=vim
 [[ -f ~/.secrets/claude_api_key ]] && export ANTHROPIC_API_KEY="$(cat ~/.secrets/claude_api_key)"
 [[ -f ~/.secrets/context7_api_key ]] && export CONTEXT7_API_KEY="$(cat ~/.secrets/context7_api_key)"
 [[ -f ~/.secrets/sentry_access_token ]] && export SENTRY_ACCESS_TOKEN="$(cat ~/.secrets/sentry_access_token)"
+export SENTRY_URL=https://sentry.apply7.cn
 [[ -f ~/.secrets/exa_api_key ]] && export EXA_API_KEY="$(cat ~/.secrets/exa_api_key)"
 [[ -f ~/.secrets/tavily_api_key ]] && export TAVILY_API_KEY="$(cat ~/.secrets/tavily_api_key)"
 export VISUAL="$EDITOR"

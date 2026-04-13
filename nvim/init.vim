@@ -313,6 +313,25 @@ nnoremap <silent> ,cl :let @+ = expand("%:p")<CR>
 " visual: 复制路径:行号范围 + 选中内容 (s=short/相对, l=long/绝对)
 xnoremap <silent> ,cs :<C-u>let @+ = expand("%:.") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
 xnoremap <silent> ,cl :<C-u>let @+ = expand("%:p") . ":" . line("'<") . "-" . line("'>") . "\n" . join(getline(line("'<"), line("'>")), "\n")<CR>
+" ,co: 在 Finder 中打开所在目录  ,cO: 用系统默认程序打开文件
+" 在 NERDTree 缓冲区中自动取光标所在节点的路径
+function! s:OpenExternal(mode) abort
+  if &filetype ==# 'nerdtree'
+    let l:node = g:NERDTreeFileNode.GetSelected()
+    if empty(l:node) | return | endif
+    let l:fpath = l:node.path.str()
+    if a:mode ==# 'dir'
+      let l:target = l:node.path.isDirectory ? l:fpath : fnamemodify(l:fpath, ':h')
+    else
+      let l:target = l:fpath
+    endif
+  else
+    let l:target = a:mode ==# 'dir' ? expand('%:p:h') : expand('%:p')
+  endif
+  call system('open ' . shellescape(l:target))
+endfunction
+nnoremap <silent> ,co :call <SID>OpenExternal('dir')<CR>
+nnoremap <silent> ,cO :call <SID>OpenExternal('file')<CR>
 
 " --- 可视模式 / 杂项
 " </> 缩进后保持选区
