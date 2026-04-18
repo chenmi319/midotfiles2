@@ -48,7 +48,7 @@ zstyle ':omz:plugins:nvm' silent-autoload yes
 ZSHZ_CASE=smart
 ZSHZ_ECHO=1
 ZSHZ_TILDE=1
-ZSHZ_EXCLUDE_DIRS=($HOME /tmp /private/tmp)
+ZSHZ_EXCLUDE_DIRS=(/tmp /private/tmp)
 
 plugins=(
   aliases
