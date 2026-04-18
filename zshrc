@@ -17,7 +17,6 @@ export LANG=en_US.UTF-8
 # 仅在需要确保所有分类一致时使用，否则只设 LANG 即可
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
-[[ -f ~/.secrets/claude_api_key ]] && export ANTHROPIC_API_KEY="$(cat ~/.secrets/claude_api_key)"
 [[ -f ~/.secrets/context7_api_key ]] && export CONTEXT7_API_KEY="$(cat ~/.secrets/context7_api_key)"
 [[ -f ~/.secrets/sentry_access_token ]] && export SENTRY_ACCESS_TOKEN="$(cat ~/.secrets/sentry_access_token)"
 export SENTRY_URL=https://sentry.apply7.cn
@@ -279,7 +278,17 @@ alias conda=micromamba
 alias genpass='openssl rand -base64 24 | cut -c1-16'
 alias uvs='source .venv/bin/activate'
 alias uvsb="source $HOME/uv_venv/base/bin/activate"
+# Claude Code：默认走 Pro 订阅（OAuth，月费封顶）
 alias claude='claude --verbose'
+# 显式使用 API key 按量计费（惰性读取，不全局导出污染环境）
+claude-api() {
+  local key_file=~/.secrets/claude_api_key
+  if [[ ! -r "$key_file" ]]; then
+    echo "claude-api: $key_file 不存在或不可读" >&2
+    return 1
+  fi
+  ANTHROPIC_API_KEY="$(<"$key_file")" command claude --verbose "$@"
+}
 
 ### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
