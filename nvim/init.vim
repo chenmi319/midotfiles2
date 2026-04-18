@@ -378,6 +378,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 require('onedark').setup({
   highlights = {
     IblScope = { fg = '$grey', fmt = 'nocombine' },  -- scope 线: 用灰色替代默认紫色
+    Visual = { bg = '#264f78' },                      -- 选区: VS Code 风格蓝色，比默认 bg1 更醒目
   },
 })
 require('onedark').load()
