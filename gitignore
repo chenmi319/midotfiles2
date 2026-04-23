@@ -131,7 +131,7 @@ id_rsa
 id_ed25519
 .netrc
 
-# 规划文件（planning-with-files）
-task_plan.md
-findings.md
-progress.md
+# # 规划文件（planning-with-files）
+# task_plan.md
+# findings.md
+# progress.md
