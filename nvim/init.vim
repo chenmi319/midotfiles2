@@ -748,8 +748,8 @@ require('blink.cmp').setup({
     ['<CR>']      = { 'accept', 'fallback' },      -- 确认选中项
     ['<Tab>']     = { 'select_next', 'snippet_forward', 'fallback' },  -- 下一项 / snippet 下一占位
     ['<S-Tab>']   = { 'select_prev', 'snippet_backward', 'fallback' }, -- 上一项 / snippet 上一占位
-    ['<C-n>']     = { 'select_next', 'fallback' }, -- 下一项
-    ['<C-p>']     = { 'select_prev', 'fallback' }, -- 上一项
+    ['<C-n>']     = { 'show', 'select_next', 'fallback' }, -- 下一项（show 确保重新 fetch 所有 source 含 Copilot）
+    ['<C-p>']     = { 'show', 'select_prev', 'fallback' }, -- 上一项
     ['<C-b>']     = { 'scroll_documentation_up', 'fallback' },  -- 向上滚动文档
     ['<C-f>']     = { 'scroll_documentation_down', 'fallback' }, -- 向下滚动文档
   },
@@ -767,6 +767,8 @@ require('blink.cmp').setup({
         module = 'blink-copilot',
         score_offset = 100,  -- 提高 copilot 建议优先级
         async = true,
+        opts = { max_completions = 3 },
+        min_keyword_length = 0,  -- 词长为 0 时也触发（删字后仍请求 Copilot）
       },
     },
   },
