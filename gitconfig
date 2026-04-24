@@ -4,7 +4,10 @@
 
 # ── 核心 ──
 [core]
-  editor = nvim
+  # AI / 非交互环境优先：避免 git rebase --continue 等命令拉起 nvim 后被 SIGTERM
+  editor = true
+  # 人工交互时可改回：
+  # editor = nvim
   pager = delta
   excludesfile = ~/.gitignore
   quotepath = false
