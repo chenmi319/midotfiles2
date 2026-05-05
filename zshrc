@@ -214,11 +214,13 @@ fi
 
 # tmux 中同步 SSH agent 环境变量
 fixssh() {
-  local name value
-  for name in SSH_AUTH_SOCK SSH_AGENT_PID; do
-    value=$(tmux show-env -gqv "$name" 2>/dev/null) || continue
-    [[ -n "$value" ]] && export "$name=$value"
-  done
+  local sock
+
+  [[ -n "$TMUX" ]] || return 0
+  sock=$(tmux show-environment -qv SSH_AUTH_SOCK 2>/dev/null) || return 1
+  [[ -S "$sock" ]] || return 1
+
+  export SSH_AUTH_SOCK="$sock"
 }
 
 # Docker 运行辅助：交互环境用 -it，管道/脚本用 -i
