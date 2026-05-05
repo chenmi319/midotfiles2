@@ -10,7 +10,15 @@ fi
 typeset -U path PATH
 
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/libpq/bin:$HOME/.opencode/bin:$BUN_INSTALL/bin:$PATH"
+path=(
+  "$HOME/bin"
+  /usr/local/bin
+  /usr/local/sbin
+  /opt/homebrew/opt/libpq/bin
+  "$HOME/.opencode/bin"
+  "$BUN_INSTALL/bin"
+  $path
+)
 
 export LANG=en_US.UTF-8
 # LC_ALL 强制覆盖所有 locale 分类，会使 LC_* 单项设置无效；
@@ -266,7 +274,11 @@ add-zsh-hook chpwd load-uv-venv
 load-uv-venv
 
 # 代理开关
-proxy()   { export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890; }
+proxy() {
+  export https_proxy=http://127.0.0.1:7890
+  export http_proxy=http://127.0.0.1:7890
+  export all_proxy=socks5://127.0.0.1:7890
+}
 unproxy() { unset http_proxy https_proxy all_proxy; }
 
 # OpenCode 包装（强制中文 locale）
@@ -291,17 +303,32 @@ claude-api() {
 }
 claude-mimo() {
   local key_file=~/.secrets/xiaomimino_tpken_plan_api_key
+  local base_url=https://token-plan-cn.xiaomimimo.com/anthropic
+  local model=mimo-v2.5-pro
   if [[ ! -r "$key_file" ]]; then
     echo "claude-mimo: $key_file 不存在或不可读" >&2
     return 1
   fi
-  ANTHROPIC_BASE_URL=https://token-plan-cn.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" ANTHROPIC_MODEL=mimo-v2.5-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2.5-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2.5-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2.5-pro command claude --verbose "$@"
+  command env \
+    ANTHROPIC_BASE_URL="$base_url" \
+    ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
+    ANTHROPIC_MODEL="$model" \
+    ANTHROPIC_DEFAULT_SONNET_MODEL="$model" \
+    ANTHROPIC_DEFAULT_OPUS_MODEL="$model" \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL="$model" \
+    claude --verbose "$@"
 }
 
 ### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
 typeset -gaU KUBEFILES
-KUBEFILES=($HOME/.kube/chenmi-*(N) $HOME/.kube/*eks*(N) $HOME/.kube/*rancher*.yaml(N) $HOME/.kube/*mixbio*.yaml(N) $HOME/.kube/*mycluster(N))
+KUBEFILES=(
+  $HOME/.kube/chenmi-*(N)
+  $HOME/.kube/*eks*(N)
+  $HOME/.kube/*rancher*.yaml(N)
+  $HOME/.kube/*mixbio*.yaml(N)
+  $HOME/.kube/*mycluster(N)
+)
 export KUBECONFIG="${(j.:.)KUBEFILES}"
 
 # kubectl 上下文快捷别名
