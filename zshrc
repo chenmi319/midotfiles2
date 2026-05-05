@@ -112,13 +112,18 @@ _zcompcache_clean &!
 
 # 手动一键清理
 zcompcache-clear() {
+  if [[ -z "$ZCOMP_CACHE_DIR" || "$ZCOMP_CACHE_DIR" == "/" || "$ZCOMP_CACHE_DIR" == "$HOME" ]]; then
+    echo "zcompcache-clear: unsafe ZCOMP_CACHE_DIR: $ZCOMP_CACHE_DIR" >&2
+    return 1
+  fi
+
   command find "$ZCOMP_CACHE_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
   : >| "$ZCOMP_CACHE_DIR/.last_clean"
   echo "zcompcache cleared."
 }
 
 ### --- 5. 加载 Oh-My-Zsh ---------------------------------------------------
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 ### --- 6. Zsh 选项与历史记录 ------------------------------------------------
 # 放在 source oh-my-zsh.sh 之后，覆盖 OMZ 默认的 share_history 等设置
@@ -157,7 +162,7 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 
 # goenv
-command -v goenv >/dev/null 2>&1 && eval "$(goenv init -)"
+(( $+commands[goenv] )) && eval "$(goenv init -)"
 
 # uv / cargo 环境
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
@@ -247,16 +252,26 @@ redis-cli() { _dockrun redis:alpine redis-cli "$@"; }
 
 # 符号链接辅助：已存在且正确则跳过，否则备份后创建
 try_link() {
-  if (( $# != 2 )); then
+  if [ "$#" -ne 2 ]; then
     echo "Usage: try_link <source> <target>" >&2
     return 1
   fi
-  if [[ -L "$2" ]] && [[ "$(readlink "$2")" == "$1" ]]; then
+
+  if [ ! -e "$1" ] && [ ! -L "$1" ]; then
+    echo "try_link: source does not exist: $1" >&2
+    return 1
+  fi
+
+  mkdir -p "$(dirname "$2")" || return 1
+
+  if [ -L "$2" ] && [ "$(readlink "$2")" = "$1" ]; then
     return 0
   fi
-  if [[ -e "$2" || -L "$2" ]]; then
-    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)"
+
+  if [ -e "$2" ] || [ -L "$2" ]; then
+    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)" || return 1
   fi
+
   ln -s "$1" "$2"
 }
 
@@ -287,8 +302,8 @@ proxy() {
 unproxy() { unset http_proxy https_proxy all_proxy; }
 
 # OpenCode 包装（强制中文 locale）
-oc()  { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@"; }
-occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 opencode "$@" --continue; }
+oc()  { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 command opencode "$@"; }
+occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 command opencode "$@" --continue; }
 
 ### --- 9. 别名 --------------------------------------------------------------
 alias conda=micromamba
@@ -304,6 +319,7 @@ claude-api() {
     echo "claude-api: $key_file 不存在或不可读" >&2
     return 1
   fi
+
   ANTHROPIC_API_KEY="$(<"$key_file")" command claude --verbose "$@"
 }
 claude-mimo() {
@@ -409,4 +425,7 @@ alias nxprod-kops1-15='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://alo7-kops
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # 修复终端鼠标状态（必须在 p10k 初始化之后）
-precmd_functions+=(fix_mouse)
+add-zsh-hook precmd fix_mouse
+# 若经常重复 source ~/.zshrc，可改用幂等版：
+# add-zsh-hook -d precmd fix_mouse 2>/dev/null
+# add-zsh-hook precmd fix_mouse

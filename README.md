@@ -22,16 +22,26 @@ git clone https://github.com/chenmi319/midotfiles2.git ~/.midotfiles2
 # 后续多处用到的软链辅助函数
 # 此时 zshrc 尚未链接，需先手动粘贴到当前 shell
 try_link() {
-  if (( $# != 2 )); then
+  if [ "$#" -ne 2 ]; then
     echo "Usage: try_link <source> <target>" >&2
     return 1
   fi
-  if [[ -L "$2" ]] && [[ "$(readlink "$2")" == "$1" ]]; then
+
+  if [ ! -e "$1" ] && [ ! -L "$1" ]; then
+    echo "try_link: source does not exist: $1" >&2
+    return 1
+  fi
+
+  mkdir -p "$(dirname "$2")" || return 1
+
+  if [ -L "$2" ] && [ "$(readlink "$2")" = "$1" ]; then
     return 0
   fi
-  if [[ -e "$2" || -L "$2" ]]; then
-    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)"
+
+  if [ -e "$2" ] || [ -L "$2" ]; then
+    mv -f "$2" "$2.bak.$(date +%Y%m%d%H%M%S)" || return 1
   fi
+
   ln -s "$1" "$2"
 }
 ```
@@ -253,4 +263,3 @@ defaults write NSGlobalDomain KeyRepeat -int 1
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 ```
 * 修改后需注销并重新登录才能生效
-
