@@ -289,6 +289,14 @@ claude-api() {
   fi
   ANTHROPIC_API_KEY="$(<"$key_file")" command claude --verbose "$@"
 }
+claude-mimo() {
+  local key_file=~/.secrets/xiaomimino_tpken_plan_api_key
+  if [[ ! -r "$key_file" ]]; then
+    echo "claude-mimo: $key_file 不存在或不可读" >&2
+    return 1
+  fi
+  ANTHROPIC_BASE_URL=https://token-plan-cn.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" ANTHROPIC_MODEL=mimo-v2.5-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2.5-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2.5-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2.5-pro command claude --verbose "$@"
+}
 
 ### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
