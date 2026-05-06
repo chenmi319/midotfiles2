@@ -325,7 +325,7 @@ claude-api() {
 claude-mimo() {
   local key_file=~/.secrets/xiaomimino_tpken_plan_api_key
   local base_url=https://token-plan-cn.xiaomimimo.com/anthropic
-  local model=mimo-v2.5-pro
+  local model='mimo-v2.5-pro[1m]'
   if [[ ! -r "$key_file" ]]; then
     echo "claude-mimo: $key_file 不存在或不可读" >&2
     return 1
