@@ -346,28 +346,19 @@ claude-tencent() {
   local base_url=https://tokenhub.tencentmaas.com
   local model="${TENCENT_CUSTOM_MODEL:-}"
   local model_name="${TENCENT_CUSTOM_MODEL_NAME:-}"
+  local active_model=sonnet
+  local -a custom_model_env=()
   if [[ ! -r "$key_file" ]]; then
     echo "claude-tencent: $key_file 不存在或不可读" >&2
     return 1
   fi
 
   if [[ -n "$model" ]]; then
-    command env \
-      ANTHROPIC_BASE_URL="$base_url" \
-      ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
-      API_TIMEOUT_MS=600000 \
-      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-      ANTHROPIC_MODEL="$model" \
-      ANTHROPIC_DEFAULT_SONNET_MODEL='custom-model-a2[1m]' \
-      ANTHROPIC_DEFAULT_SONNET_MODEL_NAME='sonnet-4.6[1m]' \
-      ANTHROPIC_DEFAULT_OPUS_MODEL='custom-model-a1[1m]' \
-      ANTHROPIC_DEFAULT_OPUS_MODEL_NAME='opus-4.7[1m]' \
-      ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash[1m]' \
-      ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME='deepseek-v4-flash[1m]' \
-      ANTHROPIC_CUSTOM_MODEL_OPTION="$model" \
-      ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="$model_name" \
-      claude --verbose "$@"
-    return
+    active_model="$model"
+    custom_model_env=(
+      ANTHROPIC_CUSTOM_MODEL_OPTION="$model"
+      ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="${model_name:-$model}"
+    )
   fi
 
   command env \
@@ -375,13 +366,14 @@ claude-tencent() {
     ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
     API_TIMEOUT_MS=600000 \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-    ANTHROPIC_MODEL=sonnet \
+    ANTHROPIC_MODEL="$active_model" \
     ANTHROPIC_DEFAULT_SONNET_MODEL='custom-model-a2[1m]' \
     ANTHROPIC_DEFAULT_SONNET_MODEL_NAME='sonnet-4.6[1m]' \
     ANTHROPIC_DEFAULT_OPUS_MODEL='custom-model-a1[1m]' \
     ANTHROPIC_DEFAULT_OPUS_MODEL_NAME='opus-4.7[1m]' \
     ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash[1m]' \
     ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME='deepseek-v4-flash[1m]' \
+    "${custom_model_env[@]}" \
     claude --verbose "$@"
 }
 
