@@ -340,6 +340,75 @@ claude-mimo() {
     claude --verbose "$@"
 }
 
+# 腾讯 Token Plan：默认模型 sonnet；可选传入 custom model；/model 中 opus=最新 opus，haiku=deepseek flash
+claude-tencent() {
+  local key_file=~/.secrets/tencent_tokenplan_api_key
+  local base_url=https://tokenhub.tencentmaas.com
+  local model="${TENCENT_CUSTOM_MODEL:-}"
+  local model_name="${TENCENT_CUSTOM_MODEL_NAME:-}"
+  if [[ ! -r "$key_file" ]]; then
+    echo "claude-tencent: $key_file 不存在或不可读" >&2
+    return 1
+  fi
+
+  if [[ -n "$model" ]]; then
+    command env \
+      ANTHROPIC_BASE_URL="$base_url" \
+      ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
+      API_TIMEOUT_MS=600000 \
+      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+      ANTHROPIC_MODEL="$model" \
+      ANTHROPIC_DEFAULT_SONNET_MODEL='custom-model-a2[1m]' \
+      ANTHROPIC_DEFAULT_SONNET_MODEL_NAME='sonnet-4.6[1m]' \
+      ANTHROPIC_DEFAULT_OPUS_MODEL='custom-model-a1[1m]' \
+      ANTHROPIC_DEFAULT_OPUS_MODEL_NAME='opus-4.7[1m]' \
+      ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash[1m]' \
+      ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME='deepseek-v4-flash[1m]' \
+      ANTHROPIC_CUSTOM_MODEL_OPTION="$model" \
+      ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="$model_name" \
+      claude --verbose "$@"
+    return
+  fi
+
+  command env \
+    ANTHROPIC_BASE_URL="$base_url" \
+    ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
+    API_TIMEOUT_MS=600000 \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+    ANTHROPIC_MODEL=sonnet \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='custom-model-a2[1m]' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL_NAME='sonnet-4.6[1m]' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='custom-model-a1[1m]' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL_NAME='opus-4.7[1m]' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash[1m]' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME='deepseek-v4-flash[1m]' \
+    claude --verbose "$@"
+}
+
+claude-tencent-gpt54() {
+  TENCENT_CUSTOM_MODEL='custom-model-b1-standard[1m]' TENCENT_CUSTOM_MODEL_NAME='gpt-5.4[1m]' claude-tencent "$@"
+}
+
+claude-tencent-sonnet46() {
+  TENCENT_CUSTOM_MODEL='custom-model-a2[1m]' TENCENT_CUSTOM_MODEL_NAME='sonnet-4.6[1m]' claude-tencent "$@"
+}
+
+claude-tencent-opus46() {
+  TENCENT_CUSTOM_MODEL='custom-model-a3[1m]' TENCENT_CUSTOM_MODEL_NAME='opus-4.6[1m]' claude-tencent "$@"
+}
+
+claude-tencent-opus47() {
+  TENCENT_CUSTOM_MODEL='custom-model-a1[1m]' TENCENT_CUSTOM_MODEL_NAME='opus-4.7[1m]' claude-tencent "$@"
+}
+
+claude-tencent-deepseek-v4-flash() {
+  TENCENT_CUSTOM_MODEL='deepseek-v4-flash[1m]' TENCENT_CUSTOM_MODEL_NAME='deepseek-v4-flash[1m]' claude-tencent "$@"
+}
+
+claude-tencent-deepseek-v4-pro() {
+  TENCENT_CUSTOM_MODEL='deepseek-v4-pro[1m]' TENCENT_CUSTOM_MODEL_NAME='deepseek-v4-pro[1m]' claude-tencent "$@"
+}
+
 ### --- 10. Kubernetes 与 Helm -----------------------------------------------
 # KUBECONFIG：自动聚合 ~/.kube 下的配置文件
 typeset -gaU KUBEFILES
