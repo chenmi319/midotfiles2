@@ -490,3 +490,9 @@ add-zsh-hook precmd fix_mouse
 # 若经常重复 source ~/.zshrc，可改用幂等版：
 # add-zsh-hook -d precmd fix_mouse 2>/dev/null
 # add-zsh-hook precmd fix_mouse
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/chenmi/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/chenmi/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/chenmi/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/chenmi/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
