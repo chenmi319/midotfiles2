@@ -375,8 +375,11 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 -- navarasu/onedark.nvim — One Dark 主题
+vim.o.background = 'dark'
 require('onedark').setup({
+  style = 'dark',
   highlights = {
+    IblIndent = { fg = '$bg3', fmt = 'nocombine' },   -- 普通缩进线: 比 onedark 默认的 bg1 更明显，但仍保持深色调
     IblScope = { fg = '$grey', fmt = 'nocombine' },  -- scope 线: 用灰色替代默认紫色
     Visual = { bg = '#264f78' },                      -- 选区: VS Code 风格蓝色，比默认 bg1 更醒目
   },
@@ -396,7 +399,12 @@ require('colorizer').setup({
 })
 
 -- lukas-reineke/indent-blankline.nvim — 缩进线
-require("ibl").setup()
+require("ibl").setup({
+  indent = {
+    char = '▏',
+    highlight = 'IblIndent',
+  },
+})
 
 -- HiPhish/rainbow-delimiters.nvim — 彩虹括号：零配置，默认设置即可
 
