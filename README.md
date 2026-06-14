@@ -204,6 +204,13 @@ nvim +PlugInstall +qall
 #   prettier: npm install -g prettier
 ```
 
+* 常用代码跳转：
+  - `[i` / `]i`：跳到上一个 / 下一个更小缩进的非空行，适合快速回到外层代码块
+  - `[m` / `]m`：跳到上一个 / 下一个函数开头
+  - `[[` / `]]`：跳到上一个 / 下一个类开头
+  - `gd`：光标位于符号上时跳到定义
+  - `<C-o>`：返回上一次跳转前的位置
+
 
 
 # bash bashit (for develop, 历史参考)

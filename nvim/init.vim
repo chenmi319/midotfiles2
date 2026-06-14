@@ -1016,6 +1016,40 @@ require('outline').setup({
 -- ║ 13. Utility                                                          ║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
+-- [i / ]i: 跳到上/下一个更小缩进的非空行（适合快速回到外层代码块）
+local function jump_to_lower_indent(step)
+  local current = vim.fn.line('.')
+  local last = vim.fn.line('$')
+  local anchor = vim.fn.prevnonblank(current)
+  if anchor == 0 then anchor = vim.fn.nextnonblank(current) end
+  if anchor == 0 then return end
+
+  local base_indent = vim.fn.indent(anchor)
+  if base_indent == 0 then return end
+
+  local remaining = math.max(vim.v.count, 1)
+  local line = anchor + step
+  while line >= 1 and line <= last do
+    if vim.fn.getline(line):match('%S') and vim.fn.indent(line) < base_indent then
+      remaining = remaining - 1
+      if remaining == 0 then
+        vim.cmd("normal! m'")
+        vim.api.nvim_win_set_cursor(0, { line, math.min(vim.fn.indent(line), vim.fn.col('$') - 1) })
+        return
+      end
+      base_indent = vim.fn.indent(line)
+    end
+    line = line + step
+  end
+end
+
+vim.keymap.set('n', '[i', function()
+  jump_to_lower_indent(-1)
+end, { desc = 'Previous lower indent' })
+vim.keymap.set('n', ']i', function()
+  jump_to_lower_indent(1)
+end, { desc = 'Next lower indent' })
+
 -- vim-unimpaired 替代（Nvim 0.11+ 内置 [b ]b [q ]q 等）
 -- [e / ]e: 向上/下交换当前行（支持 count，如 3]e 向下移 3 行）
 vim.keymap.set('n', '[e', function()
