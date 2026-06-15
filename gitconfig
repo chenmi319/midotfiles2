@@ -26,7 +26,7 @@
   changed = yellow
 [delta]
   navigate = true
-  side-by-side = true
+  side-by-side = false
   line-numbers = true
   dark = true
   minus-style = "normal #551e21"
