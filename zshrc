@@ -340,6 +340,29 @@ claude-mimo() {
     claude --verbose "$@"
 }
 
+
+claude-anyrouter() {
+  local key_file=~/.secrets/anyrouter_api_key
+  local base_url=https://anyrouter.top
+  local default_model='sonnet'
+  local haiku_model='claude-haiku-4-5-20251001'
+  local sonnet_model='claude-sonnet-4-5-20250929[1m]'
+  local opus_model='claude-opus-4-8[1m]'
+  if [[ ! -r "$key_file" ]]; then
+    echo "claude-anyrouter: $key_file 不存在或不可读" >&2
+    return 1
+  fi
+  command env \
+    ANTHROPIC_BASE_URL="$base_url" \
+    ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
+    API_TIMEOUT_MS=600000 \
+    ANTHROPIC_MODEL="$default_model" \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL="$haiku_model" \
+    ANTHROPIC_DEFAULT_SONNET_MODEL="$sonnet_model" \
+    ANTHROPIC_DEFAULT_OPUS_MODEL="$opus_model" \
+    claude --verbose "$@"
+}
+
 # 腾讯 Token Plan：默认模型 sonnet；可选传入 custom model；/model 中 opus=最新 opus，haiku=deepseek flash
 claude-tencent() {
   local key_file=~/.secrets/tencent_tokenplan_api_key
