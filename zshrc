@@ -344,7 +344,7 @@ claude-mimo() {
 claude-anyrouter() {
   local key_file=~/.secrets/anyrouter_api_key
   local base_url=https://anyrouter.top
-  local default_model='sonnet'
+  local default_model='opus'
   local haiku_model='claude-haiku-4-5-20251001'
   local sonnet_model='claude-sonnet-4-5-20250929[1m]'
   local opus_model='claude-opus-4-8[1m]'
