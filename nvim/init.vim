@@ -804,9 +804,29 @@ vim.lsp.config('*', {
   capabilities = require('blink.cmp').get_lsp_capabilities(),
 })
 
+local pyright_pull_diagnostics = vim.lsp.handlers['textDocument/diagnostic']
+
 vim.lsp.config('pyright', {
+  handlers = {
+    ['textDocument/diagnostic'] = function(err, result, ctx, config)
+      if result and result.items then
+        result = vim.deepcopy(result)
+        result.items = vim.tbl_filter(function(diagnostic)
+          return not (
+            diagnostic.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
+            and diagnostic.tags
+            and vim.list_contains(diagnostic.tags, vim.lsp.protocol.DiagnosticTag.Unnecessary)
+            and diagnostic.message:find('is not accessed', 1, true)
+          )
+        end, result.items)
+      end
+      return pyright_pull_diagnostics(err, result, ctx, config)
+    end,
+  },
   settings = {
-    pyright = { disableOrganizeImports = true },  -- ruff 处理 import 排序
+    pyright = {
+      disableOrganizeImports = true,
+    },  -- ruff 处理 import 排序
     python = {
       analysis = {
         inlayHints = {
