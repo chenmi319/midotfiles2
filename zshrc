@@ -345,7 +345,7 @@ claude-anyrouter() {
   local key_file=~/.secrets/anyrouter_api_key
   local base_url=https://anyrouter.top
   # local base_url=https://a-ocnfniawgw.cn-shanghai.fcapp.run
-  local default_model='opus'
+  local default_model='claude-fable-5[1m]'
   local haiku_model='claude-haiku-4-5-20251001'
   local sonnet_model='claude-sonnet-4-5-20250929[1m]'
   local opus_model='claude-opus-4-8[1m]'
@@ -520,3 +520,9 @@ if [ -f '/Users/chenmi/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/User
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/chenmi/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/chenmi/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
