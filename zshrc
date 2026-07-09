@@ -308,6 +308,7 @@ occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 command opencode "$@" --continue; 
 ### --- 9. 别名 --------------------------------------------------------------
 alias conda=micromamba
 alias genpass='openssl rand -base64 24 | cut -c1-16'
+alias tmuxid='tmux display-message -p "#{session_name}:#{window_index}.#{pane_index}"'
 alias uvs='source .venv/bin/activate'
 alias uvsb="source $HOME/uv_venv/base/bin/activate"
 # Claude Code：默认走 Pro 订阅（OAuth，月费封顶）
