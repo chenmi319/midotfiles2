@@ -323,6 +323,25 @@ claude-api() {
 
   ANTHROPIC_API_KEY="$(<"$key_file")" command claude --verbose "$@"
 }
+
+claude-cpa() {
+  local key_file=~/.secrets/cpa_api_key
+  local base_url=http://localhost:8317
+  local model=gpt-5.6-sol
+  if [[ ! -r "$key_file" ]]; then
+    echo "claude-cpa: $key_file 不存在或不可读" >&2
+    return 1
+  fi
+  command env \
+    ANTHROPIC_BASE_URL="$base_url" \
+    ANTHROPIC_AUTH_TOKEN="$(<"$key_file")" \
+    ANTHROPIC_MODEL="$model" \
+    ANTHROPIC_DEFAULT_SONNET_MODEL="$model" \
+    ANTHROPIC_DEFAULT_OPUS_MODEL="$model" \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL="$model" \
+    claude --verbose "$@"
+}
+
 claude-mimo() {
   local key_file=~/.secrets/xiaomimino_tpken_plan_api_key
   local base_url=https://token-plan-cn.xiaomimimo.com/anthropic
@@ -340,7 +359,6 @@ claude-mimo() {
     ANTHROPIC_DEFAULT_HAIKU_MODEL="$model" \
     claude --verbose "$@"
 }
-
 
 claude-anyrouter() {
   local key_file=~/.secrets/anyrouter_api_key
@@ -521,9 +539,3 @@ if [ -f '/Users/chenmi/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/User
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/chenmi/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/chenmi/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-# >>> grok installer >>>
-export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
-autoload -Uz compinit && compinit -C
-# <<< grok installer <<<
