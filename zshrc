@@ -7,8 +7,6 @@ fi
 
 ### --- 2. 环境变量与 PATH ---------------------------------------------------
 # PATH 去重（首次出现优先）
-typeset -U path PATH
-
 export BUN_INSTALL="$HOME/.bun"
 path=(
   "$HOME/bin"
@@ -124,6 +122,8 @@ zcompcache-clear() {
 
 ### --- 5. 加载 Oh-My-Zsh ---------------------------------------------------
 source "$ZSH/oh-my-zsh.sh"
+# nvm replaces the active Node prefix in PATH; PATH uniqueness keeps stale prefixes first.
+typeset +U path PATH
 
 ### --- 6. Zsh 选项与历史记录 ------------------------------------------------
 # 放在 source oh-my-zsh.sh 之后，覆盖 OMZ 默认的 share_history 等设置
@@ -530,6 +530,8 @@ alias nxprod-kops1-15='AWS_REGION=cn-northwest-1 KOPS_STATE_STORE=s3://alo7-kops
 
 # 修复终端鼠标状态（必须在 p10k 初始化之后）
 add-zsh-hook precmd fix_mouse
+# Re-apply .nvmrc after prompt hooks that may refresh PATH.
+add-zsh-hook precmd load-nvmrc
 # 若经常重复 source ~/.zshrc，可改用幂等版：
 # add-zsh-hook -d precmd fix_mouse 2>/dev/null
 # add-zsh-hook precmd fix_mouse
