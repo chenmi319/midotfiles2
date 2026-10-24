@@ -319,7 +319,8 @@ Telescope 内部：
 |------|------|
 | `genpass` | 生成 16 位随机密码 |
 | `uvs` | 激活当前目录 `.venv` |
-| `uvsb` | 激活全局 base venv（`~/uv_venv/base`） |
+| `uvsb` | 手动选择并固定最近的 `.venv`；无环境的项目标记处停止，未遇边界才回退 `~/.venv` |
+| `load-uv-venv` | 启动/chpwd 自动选择环境；遇无 `.venv` 的项目边界退出自动环境，保留手动环境并警告 |
 | `conda` | → `micromamba` |
 | `oc` | `opencode`（强制中文 locale） |
 | `occ` | `opencode --continue`（强制中文 locale） |
@@ -335,7 +336,6 @@ Telescope 内部：
 | `mysql57` | Docker 运行 MySQL 5.7 客户端 |
 | `psql13` / `psql11` / `psql10` | Docker 运行对应版本 PostgreSQL 客户端 |
 | `redis-cli` | Docker 运行 Redis CLI |
-| `load-uv-venv` | chpwd hook：自动激活/反激活目录下的 `.venv` |
 
 ### 键绑定说明
 

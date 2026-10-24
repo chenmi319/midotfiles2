@@ -280,16 +280,73 @@ update_mi_dot_files() {
   git -C ~/.midotfiles2 pull
 }
 
-# uv 虚拟环境自动激活/反激活（基于 .venv 目录）
-load-uv-venv() {
-  if [[ -f "$PWD/.venv/bin/activate" ]]; then
-    if [[ "$VIRTUAL_ENV" != "$PWD/.venv" ]]; then
-      source "$PWD/.venv/bin/activate"
-    fi
-  elif [[ -n "$VIRTUAL_ENV" ]] && [[ "$VIRTUAL_ENV" == */.venv ]]; then
-    deactivate 2>/dev/null
+# 仅用于可信目录：source 项目激活脚本会执行其中的代码。
+_uv_select_env() {
+  local mode="$1" dir="$PWD" target="$HOME/.venv" marker problem
+  local owned=0
+  if [[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV" == "$_UV_AUTO_VENV" && -z "$CONDA_PREFIX" ]]; then
+    owned=1
+  else
+    unset _UV_AUTO_VENV
   fi
+  # shortcut: 直接 source 同一路径无法与自动激活区分；需手动固定时使用 uvs/uvsb。
+
+  while true; do
+    if [[ -e "$dir/.venv" || -L "$dir/.venv" ]]; then
+      target="$dir/.venv"
+      break
+    fi
+    # 项目尚未创建环境时不能越界，否则依赖可能误装到父级或默认环境。
+    for marker in pyproject.toml uv.lock uv.toml; do
+      if [[ -e "$dir/$marker" || -L "$dir/$marker" ]]; then
+        problem="检测到 $dir/$marker，但同层没有 .venv；已停止查找，请先创建项目环境"
+        break 2
+      fi
+    done
+    [[ "$dir" == / ]] && break
+    dir=${dir:h}
+  done
+
+  if [[ -z "$problem" && ( ! -f "$target/bin/activate" || ! -r "$target/bin/activate" ) ]]; then
+    problem="激活文件不存在或不可读：$target/bin/activate"
+  fi
+  if [[ -n "$problem" ]]; then
+    if [[ "$mode" == auto && $owned == 1 ]]; then
+      deactivate || return 1
+      unset _UV_AUTO_VENV
+    fi
+    print -u2 -r -- "uvsb: $problem。勿直接安装依赖。"
+    if [[ -n "$VIRTUAL_ENV" || -n "$CONDA_PREFIX" ]]; then
+      print -u2 -r -- "uvsb: 当前手动或继承的环境仍然激活，请先退出并创建项目环境。"
+    fi
+    return 1
+  fi
+  # 手动和继承的环境不归 hook 管理，但仍须先检查项目边界并警告。
+  if [[ "$mode" == auto && $owned == 0 && ( -n "$VIRTUAL_ENV" || -n "$CONDA_PREFIX" ) ]]; then
+    return 0
+  fi
+  [[ "$mode" == manual ]] && unset _UV_AUTO_VENV
+  [[ -n "$VIRTUAL_ENV" && "${VIRTUAL_ENV:A}" == "${target:A}" ]] && return 0
+
+  unset _UV_AUTO_VENV
+  if ! source "$target/bin/activate"; then
+    print -u2 -r -- "uvsb: 激活失败：$target（环境可能已部分修改，请检查后重新激活）"
+    return 1
+  fi
+  if [[ -z "$VIRTUAL_ENV" || "${VIRTUAL_ENV:A}" != "${target:A}" ]]; then
+    print -u2 -r -- "uvsb: 激活脚本未设置预期的 VIRTUAL_ENV：$target"
+    return 1
+  fi
+  if [[ "$mode" == auto ]]; then
+    typeset -g _UV_AUTO_VENV="$VIRTUAL_ENV"
+  fi
+  return 0
 }
+
+# 清除旧别名，允许在已有 shell 中重新加载函数定义。
+(( $+aliases[uvsb] )) && unalias uvsb
+function uvsb() { _uv_select_env manual; }
+load-uv-venv() { _uv_select_env auto; }
 add-zsh-hook chpwd load-uv-venv
 load-uv-venv
 
@@ -309,8 +366,7 @@ occ() { LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 command opencode "$@" --continue; 
 alias conda=micromamba
 alias genpass='openssl rand -base64 24 | cut -c1-16'
 alias tmuxid='tmux display-message -p "#{session_name}:#{window_index}.#{pane_index}"'
-alias uvs='source .venv/bin/activate'
-alias uvsb="source $HOME/uv_venv/base/bin/activate"
+alias uvs='unset _UV_AUTO_VENV; source .venv/bin/activate'
 # Claude Code：默认走 Pro 订阅（OAuth，月费封顶）
 alias claude='claude --verbose'
 # 显式使用 API key 按量计费（惰性读取，不全局导出污染环境）
