@@ -166,6 +166,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 try_link ~/.midotfiles2/tmux.conf ~/.tmux.conf
 ```
 * 安装 tmux 插件：进入 tmux 后执行 `prefix + I`（默认 `Ctrl-b` 后按大写 `I`）
+* 终端标题显示“会话名:窗口编号 · 当前活动 pane 的程序名”，例如 `apply7-frontend:2 · node`；使用 tmux 原生格式，不依赖插件或 shell 钩子。程序名不包含完整命令参数，Node 程序可能只显示为 `node`。
+* iTerm2 的 `(tmux)` 来自独立的 Job 标题元素；若不需要，可在 Settings → Profiles → General → Title 取消 **Job**，保留 **Session Name**，并允许 **Applications in terminal may change the title**。`⌘2` 是标签切换快捷键提示，不受此标题格式影响。
 
 
 # nvm / Node.js

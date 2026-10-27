@@ -107,7 +107,6 @@ cscope.out
 .serena/
 
 # OpenCode
-opencode.jsonc
 opencodetmp/
 .tmp
 
