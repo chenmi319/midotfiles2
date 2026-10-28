@@ -367,6 +367,11 @@ alias conda=micromamba
 alias genpass='openssl rand -base64 24 | cut -c1-16'
 alias tmuxid='tmux display-message -p "#{session_name}:#{window_index}.#{pane_index}"'
 alias uvs='unset _UV_AUTO_VENV; source .venv/bin/activate'
+# Pi：当前 Node 环境 / 指定 Node 24
+alias pic='pi --continue'
+alias pir='pi --resume'
+alias pi24c='nvm exec 24 pi --continue'
+alias pi24r='nvm exec 24 pi --resume'
 # Claude Code：默认走 Pro 订阅（OAuth，月费封顶）
 alias claude='claude --verbose'
 # 显式使用 API key 按量计费（惰性读取，不全局导出污染环境）
