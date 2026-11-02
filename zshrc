@@ -283,6 +283,12 @@ update_mi_dot_files() {
 # 仅用于可信目录：source 项目激活脚本会执行其中的代码。
 _uv_select_env() {
   local mode="$1" dir="$PWD" target="$HOME/.venv" marker problem
+  # tmux/子 shell 会继承变量和 PATH，但不继承 deactivate；先清理伪激活状态。
+  if [[ -n "$VIRTUAL_ENV" && -z "$CONDA_PREFIX" ]] && (( ! $+functions[deactivate] )); then
+    local -a inherited_bins=("$VIRTUAL_ENV/bin")
+    path=("${(@)path:|inherited_bins}")
+    unset VIRTUAL_ENV VIRTUAL_ENV_PROMPT _UV_AUTO_VENV
+  fi
   local owned=0
   if [[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV" == "$_UV_AUTO_VENV" && -z "$CONDA_PREFIX" ]]; then
     owned=1
@@ -317,11 +323,11 @@ _uv_select_env() {
     fi
     print -u2 -r -- "uvsb: $problem。勿直接安装依赖。"
     if [[ -n "$VIRTUAL_ENV" || -n "$CONDA_PREFIX" ]]; then
-      print -u2 -r -- "uvsb: 当前手动或继承的环境仍然激活，请先退出并创建项目环境。"
+      print -u2 -r -- "uvsb: 当前手动或 Conda/mamba 环境仍然激活，请先退出并创建项目环境。"
     fi
     return 1
   fi
-  # 手动和继承的环境不归 hook 管理，但仍须先检查项目边界并警告。
+  # 实际激活的手动环境不归 hook 管理，但仍须先检查项目边界并警告。
   if [[ "$mode" == auto && $owned == 0 && ( -n "$VIRTUAL_ENV" || -n "$CONDA_PREFIX" ) ]]; then
     return 0
   fi

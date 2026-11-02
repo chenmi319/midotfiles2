@@ -81,10 +81,10 @@ deactivate
 builtin cd "$HOME"
 assert_env "$base" auto_after_deactivate
 
-# 继承的 venv 和 Conda 环境不被自动覆盖。
+# 同一 shell 中实际激活的手动环境和 Conda 不被自动覆盖。
 unset _UV_AUTO_VENV
 builtin cd "$work/project"
-assert_env "$base" inherited
+assert_env "$base" manual_active
 deactivate
 export CONDA_PREFIX="$work/conda"
 builtin cd "$HOME"
@@ -94,6 +94,48 @@ builtin cd "$boundary" 2> "$work/error" || true
 unset CONDA_PREFIX
 builtin cd "$HOME"
 assert_env "$base" conda_exit
+
+# 新进程只继承变量和 PATH，不继承 deactivate；模拟 tmux 恢复后的残留状态。
+print -r -- "$block" > "$work/env-block.zsh"
+for scenario in project home boundary metachar conda; do
+  inherited="$base"
+  destination="$work/project/sub"
+  expected="$project"
+  conda=''
+  case "$scenario" in
+    home) destination="$HOME"; expected="$base" ;;
+    boundary) destination="$boundary/sub"; expected='' ;;
+    metachar) inherited="$work/inherited [env]" ;;
+    conda) conda="$work/conda"; expected="$base" ;;
+  esac
+  VIRTUAL_ENV="$inherited" VIRTUAL_ENV_PROMPT=stale CONDA_PREFIX="$conda" \
+    PATH="/usr/local/bin:$inherited/bin:$PATH:$inherited/bin" \
+    command zsh -f -s -- "$work/env-block.zsh" "$destination" "$expected" "$inherited" "$scenario" <<'ZSH'
+setopt ERR_EXIT PIPE_FAIL
+block_file="$1" destination="$2" expected="$3" inherited_bin="$4/bin" scenario="$5"
+trap 'rc=$?; (( rc == 0 )) || print -u2 -r -- "FAIL: inherited scenario $scenario ($rc)"' EXIT
+[[ ${+functions[deactivate]} == 0 ]] || exit 1
+builtin cd "$destination"
+autoload -Uz add-zsh-hook
+if source "$block_file" 2> "$block_file.error"; then
+  [[ "$scenario" != boundary ]] || exit 1
+else
+  [[ "$scenario" == boundary && -s "$block_file.error" ]] || exit 1
+fi
+[[ "$VIRTUAL_ENV" == "$expected" ]] || exit 1
+if [[ "$scenario" == conda ]]; then
+  [[ -z "$_UV_AUTO_VENV" && ${+functions[deactivate]} == 0 ]] || exit 1
+elif [[ -n "$expected" ]]; then
+  [[ "$path[1]" == "$expected/bin" && "$_UV_AUTO_VENV" == "$expected" && ${+functions[deactivate]} == 1 ]] || exit 1
+  # 退出新环境后，也不应把旧环境的 PATH 恢复回来。
+  deactivate
+  for entry in "${path[@]}"; do [[ "$entry" != "$inherited_bin" ]] || exit 1; done
+else
+  [[ -z "$VIRTUAL_ENV_PROMPT" && -z "$_UV_AUTO_VENV" ]] || exit 1
+  for entry in "${path[@]}"; do [[ "$entry" != "$inherited_bin" ]] || exit 1; done
+fi
+ZSH
+done
 
 # 自动选择损坏的环境也要退出原先自动激活的 base。
 builtin cd "$work/project/broken" 2> "$work/error" || true
