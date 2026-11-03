@@ -376,6 +376,7 @@ alias uvs='unset _UV_AUTO_VENV; source .venv/bin/activate'
 # Pi：当前 Node 环境 / 指定 Node 24
 alias pic='pi --continue'
 alias pir='pi --resume'
+alias pi24='nvm exec 24 pi'
 alias pi24c='nvm exec 24 pi --continue'
 alias pi24r='nvm exec 24 pi --resume'
 # Claude Code：默认走 Pro 订阅（OAuth，月费封顶）
