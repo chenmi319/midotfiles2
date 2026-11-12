@@ -222,8 +222,11 @@ fixssh() {
   local sock
 
   [[ -n "$TMUX" ]] || return 0
-  sock=$(tmux show-environment -qv SSH_AUTH_SOCK 2>/dev/null) || return 1
-  [[ -S "$sock" ]] || return 1
+  sock=$(tmux show-environment -qv SSH_AUTH_SOCK) || return 1
+  [[ -S "$sock" ]] || {
+    printf 'fixssh: agent socket 不存在：%s\n' "$sock" >&2
+    return 1
+  }
 
   export SSH_AUTH_SOCK="$sock"
 }
